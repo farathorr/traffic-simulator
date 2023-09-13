@@ -40,7 +40,7 @@ public class Customer {
 		return id;
 	}
 	
-	public void raportti(){
+	public void report(){
 		Trace.out(Trace.Level.INFO, "\nCustomer "+id+ " valmis! ");
 		Trace.out(Trace.Level.INFO, "Customer "+id+ " saapui: " +saapumisaika);
 		Trace.out(Trace.Level.INFO,"Customer "+id+ " poistui: " +poistumisaika);

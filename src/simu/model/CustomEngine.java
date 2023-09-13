@@ -29,25 +29,27 @@ public class CustomEngine extends Engine {
 	}
 
 	@Override
-	protected void executeEvent(Event t){  // B-vaiheen tapahtumat
-
-		Customer a;
-		switch ((EventType)t.getType()){
-
-			case ARR1: servicePoints[0].addToQueue(new Customer());
-				       arrivalProcess.generateNext();
-				break;
-			case DEP1: a = (Customer) servicePoints[0].takeFromQueue();
-				   	   servicePoints[1].addToQueue(a);
-				break;
-			case DEP2: a = (Customer) servicePoints[1].takeFromQueue();
-				   	   servicePoints[2].addToQueue(a);
-				break;
-			case DEP3:
-				       a = (Customer) servicePoints[2].takeFromQueue();
-					   a.setPoistumisaika(Clock.getInstance().getTime());
-			           a.raportti();
-		}
+	protected void executeEvent(Event t) {  // B-vaiheen tapahtumat
+		Customer selectedCustomer;
+        switch ((EventType) t.getType()) {
+            case ARR1 -> {
+                servicePoints[0].addToQueue(new Customer());
+                arrivalProcess.generateNext();
+            }
+            case DEP1 -> {
+				selectedCustomer = servicePoints[0].takeFromQueue();
+                servicePoints[1].addToQueue(selectedCustomer);
+            }
+            case DEP2 -> {
+				selectedCustomer = servicePoints[1].takeFromQueue();
+                servicePoints[2].addToQueue(selectedCustomer);
+            }
+            case DEP3 -> {
+				selectedCustomer = servicePoints[2].takeFromQueue();
+				selectedCustomer.setPoistumisaika(Clock.getInstance().getTime());
+				selectedCustomer.report();
+            }
+        }
 	}
 
 	@Override
