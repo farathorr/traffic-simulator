@@ -18,7 +18,7 @@ public class ServicePoint {
 	private boolean reserved = false;
 
 
-	public ServicePoint(ContinuousGenerator generator, EventList eventList, EventType tyyppi){
+	public ServicePoint(ContinuousGenerator generator, EventList eventList, EventType tyyppi) {
 		this.eventList = eventList;
 		this.generator = generator;
 		this.scheduledEventType = tyyppi;
@@ -26,36 +26,34 @@ public class ServicePoint {
 	}
 
 
-	public void addToQueue(Customer a){   // Jonon 1. asiakas aina palvelussa
+	public void addToQueue(Customer a) {   // Jonon 1. asiakas aina palvelussa
 		queue.add(a);
-		
 	}
 
 
-	public Customer takeFromQueue(){  // Poistetaan palvelussa ollut
+	public Customer takeFromQueue() {  // Poistetaan palvelussa ollut
 		reserved = false;
 		return queue.poll();
 	}
 
 
-	public void startService(){  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
-		
+	public void startService() {  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
 		Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
 		
 		reserved = true;
 		double serviceTime = generator.sample();
-		eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime()+serviceTime));
+		eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
 	}
 
 
 
-	public boolean isReserved(){
+	public boolean isReserved() {
 		return reserved;
 	}
 
 
 
-	public boolean queueNotEmpty(){
+	public boolean queueNotEmpty() {
 		return queue.size() != 0;
 	}
 

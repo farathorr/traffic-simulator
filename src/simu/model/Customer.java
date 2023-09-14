@@ -11,7 +11,7 @@ public class Customer {
 	private static int i = 1;
 	private static long sum = 0;
 	
-	public Customer(){
+	public Customer() {
 	    id = i++;
 	    
 		saapumisaika = Clock.getInstance().getTime();
@@ -40,7 +40,7 @@ public class Customer {
 		return id;
 	}
 	
-	public void report(){
+	public void report() {
 		Trace.out(Trace.Level.INFO, "\nCustomer "+id+ " valmis! ");
 		Trace.out(Trace.Level.INFO, "Customer "+id+ " saapui: " +saapumisaika);
 		Trace.out(Trace.Level.INFO,"Customer "+id+ " poistui: " +poistumisaika);

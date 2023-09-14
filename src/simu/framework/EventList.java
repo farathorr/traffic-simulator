@@ -5,21 +5,21 @@ import java.util.PriorityQueue;
 public class EventList {
 	private PriorityQueue<Event> list = new PriorityQueue<Event>();
 	
-	public EventList(){
+	public EventList() {
 	 
 	}
 	
-	public Event delete(){
+	public Event delete() {
 		Trace.out(Trace.Level.INFO,"Tapahtumalistasta poisto " + list.peek().getType() + " " + list.peek().getTime() );
 		return list.remove();
 	}
 	
-	public void add(Event t){
+	public void add(Event t) {
 		Trace.out(Trace.Level.INFO,"Tapahtumalistaan lisätään uusi " + t.getType() + " " + t.getTime());
 		list.add(t);
 	}
 	
-	public double getNextTime(){
+	public double getNextTime() {
 		return list.peek().getTime();
 	}
 	

@@ -6,11 +6,11 @@ public class Trace {
 	
 	private static Level traceLevel;
 	
-	public static void setTraceLevel(Level lvl){
+	public static void setTraceLevel(Level lvl) {
 		traceLevel = lvl;
 	}
-	public static void out(Level lvl, String txt){
-		if (lvl.ordinal() >= traceLevel.ordinal()){
+	public static void out(Level lvl, String txt) {
+		if (lvl.ordinal() >= traceLevel.ordinal()) {
 			System.out.println(txt);
 		}
 	}

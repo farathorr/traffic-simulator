@@ -7,15 +7,15 @@ public class ArrivalProcess {
 	private EventList eventList;
 	private IEventType type;
 
-	public ArrivalProcess(ContinuousGenerator g, EventList tl, IEventType type){
+	public ArrivalProcess(ContinuousGenerator g, EventList el, IEventType type) {
 		this.generator = g;
-		this.eventList = tl;
+		this.eventList = el;
 		this.type = type;
 	}
 
-	public void generateNext(){
-		Event t = new Event(type, Clock.getInstance().getTime()+ generator.sample());
-		eventList.add(t);
+	public void generateNext() {
+		Event e = new Event(type, Clock.getInstance().getTime() + generator.sample());
+		eventList.add(e);
 	}
 
 }

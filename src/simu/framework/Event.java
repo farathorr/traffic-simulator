@@ -5,7 +5,7 @@ public class Event implements Comparable<Event> {
 	private IEventType type;
 	private double time;
 	
-	public Event(IEventType type, double time){
+	public Event(IEventType type, double time) {
 		this.type = type;
 		this.time = time;
 	}

@@ -8,7 +8,7 @@ public abstract class Engine {
 	
 	protected EventList eventList;
 
-	public Engine(){
+	public Engine() {
 
 		clock = Clock.getInstance(); // Otetaan clock muuttujaan yksinkertaistamaan koodia
 		
@@ -24,9 +24,9 @@ public abstract class Engine {
 	}
 	
 	
-	public void run(){
+	public void run() {
 		initializations(); // luodaan mm. ensimmäinen tapahtuma
-		while (simulating()){
+		while (simulating()) {
 			
 			Trace.out(Trace.Level.INFO, "\nA-vaihe: clock on " + currentTime());
 			clock.setTime(currentTime());
@@ -42,17 +42,17 @@ public abstract class Engine {
 		
 	}
 	
-	private void executeBEvents(){
-		while (eventList.getNextTime() == clock.getTime()){
+	private void executeBEvents() {
+		while (eventList.getNextTime() == clock.getTime()) {
 			executeEvent(eventList.delete());
 		}
 	}
 
-	private double currentTime(){
+	private double currentTime() {
 		return eventList.getNextTime();
 	}
 	
-	private boolean simulating(){
+	private boolean simulating() {
 		return clock.getTime() < simulationTime;
 	}
 
