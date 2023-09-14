@@ -10,9 +10,8 @@ public class Simulator { //Tekstipohjainen
 	public static void main(String[] args) {
 		
 		Trace.setTraceLevel(Level.INFO);
-		Engine m = new CustomEngine();
-		m.setSimulationTime(1000);
-		m.run();
-		///
+		Engine customEngine = new CustomEngine();
+		customEngine.setSimulationTime(1000);
+		customEngine.run();
 	}
 }
