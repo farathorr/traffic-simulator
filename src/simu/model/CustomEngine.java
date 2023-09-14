@@ -18,8 +18,8 @@ public class CustomEngine extends Engine {
 		servicePoints[1] = new ServicePoint(new Normal(10,10), eventList, EventType.DEP2);
 		servicePoints[2] = new TrafficLights(new Normal(5,3), eventList);
 
-		arrivalProcess = new ArrivalProcess(new Negexp(15,5), eventList, EventType.ARR1);
-
+		// arrivalProcess = new ArrivalProcess(new Negexp(15,5), eventList, EventType.ARR1);
+		arrivalProcess = new ArrivalProcess(new Negexp(15,5), eventList, EventType.ARR2);
 	}
 
 
@@ -36,6 +36,10 @@ public class CustomEngine extends Engine {
                 servicePoints[0].addToQueue(new Customer());
                 arrivalProcess.generateNext();
             }
+			case ARR2 -> {
+				servicePoints[2].addToQueue(new Customer());
+				arrivalProcess.generateNext();
+			}
             case DEP1 -> {
 				selectedCustomer = servicePoints[0].takeFromQueue();
                 servicePoints[1].addToQueue(selectedCustomer);
