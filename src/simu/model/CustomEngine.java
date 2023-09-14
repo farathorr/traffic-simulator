@@ -1,7 +1,7 @@
 package simu.model;
 
+import lib.Rounding;
 import simu.framework.*;
-import eduni.distributions.Negexp;
 import eduni.distributions.Normal;
 
 public class CustomEngine extends Engine {
@@ -11,15 +11,13 @@ public class CustomEngine extends Engine {
 	private ServicePoint[] servicePoints;
 
 	public CustomEngine() {
-
 		servicePoints = new ServicePoint[3];
-
 		servicePoints[0] = new ServicePoint(new Normal(10,6), eventList, EventType.DEP1);
 		servicePoints[1] = new ServicePoint(new Normal(10,10), eventList, EventType.DEP2);
 		servicePoints[2] = new TrafficLights(new Normal(5,3), eventList);
 
 		// arrivalProcess = new ArrivalProcess(new Negexp(15,5), eventList, EventType.ARR1);
-		arrivalProcess = new ArrivalProcess(new Negexp(15,5), eventList, EventType.ARR2);
+		arrivalProcess = new ArrivalProcess(new Normal(15,5), eventList, EventType.ARR2);
 	}
 
 
