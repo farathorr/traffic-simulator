@@ -12,7 +12,7 @@ public class Simulator { //Tekstipohjainen
 		
 		Trace.setTraceLevel(Level.INFO);
 		Engine customEngine = new CustomEngine();
-		customEngine.setSimulationTime(1000);
+		customEngine.setSimulationTime(50);
 		customEngine.run();
 	}
 }

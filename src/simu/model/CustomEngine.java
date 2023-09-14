@@ -1,6 +1,5 @@
 package simu.model;
 
-import lib.Rounding;
 import simu.framework.*;
 import eduni.distributions.Normal;
 
@@ -37,6 +36,9 @@ public class CustomEngine extends Engine {
 			case ARR2 -> {
 				servicePoints[2].addToQueue(new Customer());
 				arrivalProcess.generateNext();
+			}
+			case LIGHT_SWITCH -> {
+				((TrafficLights)servicePoints[2]).generateNextEvent();
 			}
             case DEP1 -> {
 				selectedCustomer = servicePoints[0].takeFromQueue();
