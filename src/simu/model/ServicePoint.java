@@ -6,23 +6,21 @@ import eduni.distributions.ContinuousGenerator;
 
 // TODO:
 // Palvelupistekohtaiset toiminnallisuudet, laskutoimitukset (+ tarvittavat muuttujat) ja raportointi koodattava
-public class ServicePoint {
+class ServicePoint {
 
-	private final LinkedList<Customer> queue = new LinkedList<>(); // Tietorakennetoteutus
-	private final ContinuousGenerator generator;
-	private final EventList eventList;
-	private final EventType scheduledEventType;
+	protected final LinkedList<Customer> queue = new LinkedList<>(); // Tietorakennetoteutus
+	protected final ContinuousGenerator generator;
+	protected final EventList eventList;
+	protected final EventType scheduledEventType;
 	
 	//JonoStartegia strategia; //optio: asiakkaiden järjestys
-	
-	private boolean reserved = false;
 
+	protected boolean reserved = false;
 
 	public ServicePoint(ContinuousGenerator generator, EventList eventList, EventType tyyppi) {
 		this.eventList = eventList;
 		this.generator = generator;
 		this.scheduledEventType = tyyppi;
-				
 	}
 
 

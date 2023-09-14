@@ -16,7 +16,7 @@ public class CustomEngine extends Engine {
 
 		servicePoints[0] = new ServicePoint(new Normal(10,6), eventList, EventType.DEP1);
 		servicePoints[1] = new ServicePoint(new Normal(10,10), eventList, EventType.DEP2);
-		servicePoints[2] = new ServicePoint(new Normal(5,3), eventList, EventType.DEP3);
+		servicePoints[2] = new TrafficLights(new Normal(5,3), eventList);
 
 		arrivalProcess = new ArrivalProcess(new Negexp(15,5), eventList, EventType.ARR1);
 
@@ -44,7 +44,7 @@ public class CustomEngine extends Engine {
 				selectedCustomer = servicePoints[1].takeFromQueue();
                 servicePoints[2].addToQueue(selectedCustomer);
             }
-            case DEP3 -> {
+			case TRAFFIC_LIGHTS -> {
 				selectedCustomer = servicePoints[2].takeFromQueue();
 				selectedCustomer.setPoistumisaika(Clock.getInstance().getTime());
 				selectedCustomer.report();
