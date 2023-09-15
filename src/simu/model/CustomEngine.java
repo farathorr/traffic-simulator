@@ -38,6 +38,7 @@ public class CustomEngine extends Engine {
 				arrivalProcess.generateNext();
 			}
 			case LIGHT_SWITCH -> {
+				((TrafficLights)servicePoints[2]).switchLight();
 				((TrafficLights)servicePoints[2]).generateNextEvent();
 			}
             case DEP1 -> {
@@ -50,7 +51,7 @@ public class CustomEngine extends Engine {
             }
 			case TRAFFIC_LIGHTS -> {
 				selectedCustomer = servicePoints[2].takeFromQueue();
-				selectedCustomer.setPoistumisaika(Clock.getInstance().getTime());
+				selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
 				selectedCustomer.report();
             }
         }
