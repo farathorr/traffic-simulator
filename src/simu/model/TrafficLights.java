@@ -6,7 +6,6 @@ import simu.framework.*;
 
 public class TrafficLights extends ServicePoint {
     private ArrivalProcess trafficLight;
-    private boolean isLightGreen = true;
 
     public TrafficLights(ContinuousGenerator generator, EventList eventList) {
         super(generator, eventList, EventType.TRAFFIC_LIGHTS);
@@ -25,11 +24,7 @@ public class TrafficLights extends ServicePoint {
         trafficLight.generateNext();
     }
 
-    public boolean isLightGreen() {
-        return isLightGreen;
-    }
-
     public void switchLight() {
-        isLightGreen = !isLightGreen;
+        reserved = !reserved;
     }
 }
