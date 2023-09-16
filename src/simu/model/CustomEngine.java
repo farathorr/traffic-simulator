@@ -4,9 +4,7 @@ import simu.framework.*;
 import eduni.distributions.Normal;
 
 public class CustomEngine extends Engine {
-
     private ArrivalProcess arrivalProcess;
-
     private ServicePoint[] servicePoints;
 
     public CustomEngine() {
@@ -18,7 +16,6 @@ public class CustomEngine extends Engine {
         // arrivalProcess = new ArrivalProcess(new Negexp(15,5), eventList, EventType.ARR1);
         arrivalProcess = new ArrivalProcess(new Normal(15, 5), eventList, EventType.ARR1);
     }
-
 
     @Override
     protected void initializations() {

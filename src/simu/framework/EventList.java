@@ -22,6 +22,4 @@ public class EventList {
 	public double getNextTime() {
 		return list.peek().getTime();
 	}
-	
-	
 }

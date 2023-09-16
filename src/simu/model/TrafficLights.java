@@ -22,10 +22,8 @@ public class TrafficLights extends ServicePoint {
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
     }
 
-
-    public void switchGreenLight(){
+    public void switchGreenLight() {
         greenLight = !greenLight;
         trafficLight.generateNext();
     }
-
 }
