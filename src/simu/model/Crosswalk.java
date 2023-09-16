@@ -24,7 +24,7 @@ public class Crosswalk extends ServicePoint{
     }
 
 
-    public void switchCrossable(){
+    public void switchCrossable() {
         crossable = !crossable;
         crosswalk.generateNext();
     }

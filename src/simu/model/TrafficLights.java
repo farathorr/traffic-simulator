@@ -23,7 +23,7 @@ public class TrafficLights extends ServicePoint {
     }
 
 
-    public void switchGreenLight(){
+    public void switchGreenLight() {
         greenLight = !greenLight;
         trafficLight.generateNext();
     }
