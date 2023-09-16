@@ -34,7 +34,6 @@ class ServicePoint {
 		return queue.poll();
 	}
 
-
 	public void startService() {  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
 		Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
 		
@@ -43,13 +42,9 @@ class ServicePoint {
 		eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
 	}
 
-
-
 	public boolean isReserved() {
 		return reserved;
 	}
-
-
 
 	public boolean queueNotEmpty() {
 		return queue.size() != 0;
