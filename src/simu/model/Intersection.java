@@ -7,8 +7,6 @@ import simu.framework.EventList;
 import simu.framework.Trace;
 
 public class Intersection extends ServicePoint {
-
-
     public Intersection(ContinuousGenerator generator, EventList eventList, EventType tyyppi) {
         super(generator, eventList, tyyppi);
     }
@@ -24,6 +22,4 @@ public class Intersection extends ServicePoint {
             eventList.add(new Event(EventType.TURN_LEFT, Clock.getInstance().getTime()));
         }
     }
-
-
 }

@@ -5,7 +5,6 @@ import eduni.distributions.Normal;
 import simu.framework.*;
 
 public class Crosswalk extends ServicePoint{
-
     private ArrivalProcess crosswalk;
     private boolean crossable = true;
 
@@ -28,8 +27,4 @@ public class Crosswalk extends ServicePoint{
         crossable = !crossable;
         crosswalk.generateNext();
     }
-
-
-
-
 }

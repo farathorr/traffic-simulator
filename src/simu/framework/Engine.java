@@ -1,11 +1,8 @@
 package simu.framework;
 
 public abstract class Engine {
-	
 	private double simulationTime = 0;
-	
 	private Clock clock;
-	
 	protected EventList eventList;
 
 	public Engine() {
@@ -22,8 +19,7 @@ public abstract class Engine {
 	public void setSimulationTime(double time) {
 		simulationTime = time;
 	}
-	
-	
+
 	public void run() {
 		initializations(); // luodaan mm. ensimmäinen tapahtuma
 		while (simulating()) {
@@ -57,6 +53,7 @@ public abstract class Engine {
 	}
 
 	protected abstract void executeEvent(Event t);  // Määritellään simu.model-pakkauksessa Moottorin aliluokassa
+
 	protected abstract void tryCEvents();	// Määritellään simu.model-pakkauksessa Moottorin aliluokassa
 
 	protected abstract void initializations(); // Määritellään simu.model-pakkauksessa Moottorin aliluokassa

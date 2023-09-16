@@ -38,8 +38,6 @@ public class Customer {
 	public double getWaitingTime() {
 		return Rounding.toFixed(leavingTime - arrivalTime, 2);
 	}
-	
-
 
 	public int getId() {
 		return id;
@@ -54,5 +52,4 @@ public class Customer {
 		double average = sum/id;
 		System.out.println("Autojen läpimenoaikojen keskiarvo tähän asti "+ average);
 	}
-
 }

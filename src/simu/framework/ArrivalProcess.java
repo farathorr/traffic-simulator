@@ -3,7 +3,6 @@ import eduni.distributions.*;
 import lib.Rounding;
 
 public class ArrivalProcess {
-	
 	private ContinuousGenerator generator;
 	private EventList eventList;
 	private IEventType type;
