@@ -1,5 +1,6 @@
 package simu.model;
 
+import lib.Rounding;
 import simu.framework.*;
 
 // TODO:
@@ -33,6 +34,10 @@ public class Customer {
 	public void setArrivalTime(double arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
+
+	public double getWaitingTime() {
+		return Rounding.toFixed(leavingTime - arrivalTime, 2);
+	}
 	
 
 
@@ -41,13 +46,13 @@ public class Customer {
 	}
 	
 	public void report() {
-		Trace.out(Trace.Level.INFO, "\nCustomer "+id+ " valmis! ");
-		Trace.out(Trace.Level.INFO, "Customer "+id+ " saapui: " + arrivalTime);
-		Trace.out(Trace.Level.INFO,"Customer "+id+ " poistui: " + leavingTime);
-		Trace.out(Trace.Level.INFO,"Customer "+id+ " viipyi: " +(leavingTime - arrivalTime));
-		sum += (leavingTime - arrivalTime);
+		Trace.out(Trace.Level.INFO, "\nAuto "+id+ " valmis! ");
+		Trace.out(Trace.Level.INFO, "Auto "+id+ " saapui: " + arrivalTime);
+		Trace.out(Trace.Level.INFO,"Auto "+id+ " poistui: " + leavingTime);
+		Trace.out(Trace.Level.INFO,"Auto "+id+ " viipyi: " +getWaitingTime());
+		sum += getWaitingTime();
 		double average = sum/id;
-		System.out.println("Asiakkaiden läpimenoaikojen keskiarvo tähän asti "+ average);
+		System.out.println("Autojen läpimenoaikojen keskiarvo tähän asti "+ average);
 	}
 
 }
