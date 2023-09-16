@@ -53,4 +53,8 @@ class ServicePoint {
 		return queue.size() != 0;
 	}
 
+	public void switchReserved() {
+		reserved = !reserved;
+	}
+
 }

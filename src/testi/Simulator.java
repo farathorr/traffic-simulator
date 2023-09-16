@@ -9,10 +9,9 @@ import simu.model.CustomEngine;
 public class Simulator { //Tekstipohjainen
 
 	public static void main(String[] args) {
-		
 		Trace.setTraceLevel(Level.INFO);
 		Engine customEngine = new CustomEngine();
-		customEngine.setSimulationTime(50);
+		customEngine.setSimulationTime(1000);
 		customEngine.run();
 	}
 }

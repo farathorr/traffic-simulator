@@ -8,9 +8,9 @@ public class Crosswalk extends ServicePoint{
 
     private ArrivalProcess crosswalk;
 
-    public Crosswalk(ContinuousGenerator generator, EventList eventList, EventType tyyppi) {
-        super(generator, eventList, tyyppi);
-        crosswalk = new ArrivalProcess(new Normal(10,5), eventList, EventType.ROAD_CROSSING);
+    public Crosswalk(ContinuousGenerator crossingTimeGenerator, ContinuousGenerator crossingFrequencyGenerator, EventList eventList, EventType tyyppi) {
+        super(crossingTimeGenerator, eventList, tyyppi);
+        crosswalk = new ArrivalProcess(crossingFrequencyGenerator, eventList, EventType.ROAD_CROSSING);
         crosswalk.generateNext();
     }
 
@@ -19,9 +19,12 @@ public class Crosswalk extends ServicePoint{
         double serviceTime = generator.sample();
         Trace.out(Trace.Level.INFO, "Jalankulkijat ylittävät tietä, aikaa kuluu: " + serviceTime);
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
+        reserved = true;
     }
 
-    public void generateNextEvent() {
+    @Override
+    public void switchReserved(){
+        reserved = !reserved;
         crosswalk.generateNext();
     }
 
