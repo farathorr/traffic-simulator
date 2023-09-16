@@ -9,7 +9,7 @@ public class TrafficLights extends ServicePoint {
 
     public TrafficLights(ContinuousGenerator generator, EventList eventList) {
         super(generator, eventList, EventType.TRAFFIC_LIGHTS);
-        trafficLight = new ArrivalProcess(new Normal(3,1), eventList, EventType.LIGHT_SWITCH);
+        trafficLight = new ArrivalProcess(new Normal(15,1), eventList, EventType.LIGHT_SWITCH);
         trafficLight.generateNext();
     }
 

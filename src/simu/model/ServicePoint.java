@@ -46,6 +46,9 @@ class ServicePoint {
 		return reserved;
 	}
 
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
+	}
 	public boolean queueNotEmpty() {
 		return queue.size() != 0;
 	}
