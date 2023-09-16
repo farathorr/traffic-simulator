@@ -1,5 +1,7 @@
 package simu.framework;
 
+import lib.Rounding;
+
 public class Event implements Comparable<Event> {
 
 	private IEventType type;
@@ -7,7 +9,7 @@ public class Event implements Comparable<Event> {
 	
 	public Event(IEventType type, double time) {
 		this.type = type;
-		this.time = time;
+		this.time = Rounding.toFixed(time, 2);
 	}
 	
 	public void setType(IEventType type) {

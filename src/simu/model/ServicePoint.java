@@ -6,23 +6,21 @@ import eduni.distributions.ContinuousGenerator;
 
 // TODO:
 // Palvelupistekohtaiset toiminnallisuudet, laskutoimitukset (+ tarvittavat muuttujat) ja raportointi koodattava
-public class ServicePoint {
+class ServicePoint {
 
-	private final LinkedList<Customer> queue = new LinkedList<>(); // Tietorakennetoteutus
-	private final ContinuousGenerator generator;
-	private final EventList eventList;
-	private final EventType scheduledEventType;
+	protected final LinkedList<Customer> queue = new LinkedList<>(); // Tietorakennetoteutus
+	protected final ContinuousGenerator generator;
+	protected final EventList eventList;
+	protected final EventType scheduledEventType;
 	
 	//JonoStartegia strategia; //optio: asiakkaiden järjestys
-	
-	private boolean reserved = false;
 
+	protected boolean reserved = false;
 
 	public ServicePoint(ContinuousGenerator generator, EventList eventList, EventType tyyppi) {
 		this.eventList = eventList;
 		this.generator = generator;
 		this.scheduledEventType = tyyppi;
-				
 	}
 
 
@@ -36,8 +34,7 @@ public class ServicePoint {
 		return queue.poll();
 	}
 
-
-	public void startService() {  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
+	public void startService() {
 		Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
 		
 		reserved = true;
@@ -45,16 +42,16 @@ public class ServicePoint {
 		eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
 	}
 
-
-
 	public boolean isReserved() {
 		return reserved;
 	}
 
-
-
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
+	}
 	public boolean queueNotEmpty() {
 		return queue.size() != 0;
 	}
+
 
 }

@@ -1,5 +1,6 @@
 package simu.framework;
 import eduni.distributions.*;
+import lib.Rounding;
 
 public class ArrivalProcess {
 	
@@ -14,7 +15,8 @@ public class ArrivalProcess {
 	}
 
 	public void generateNext() {
-		Event e = new Event(type, Clock.getInstance().getTime() + generator.sample());
+		double sample = generator.sample();
+		Event e = new Event(type, Clock.getInstance().getTime() + sample);
 		eventList.add(e);
 	}
 

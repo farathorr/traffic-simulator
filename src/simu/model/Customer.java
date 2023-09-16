@@ -1,12 +1,13 @@
 package simu.model;
 
+import lib.Rounding;
 import simu.framework.*;
 
 // TODO:
 // Customer koodataan simulointimallin edellyttämällä tavalla (data!)
 public class Customer {
-	private double saapumisaika;
-	private double poistumisaika;
+	private double arrivalTime;
+	private double leavingTime;
 	private int id;
 	private static int i = 1;
 	private static long sum = 0;
@@ -14,24 +15,28 @@ public class Customer {
 	public Customer() {
 	    id = i++;
 	    
-		saapumisaika = Clock.getInstance().getTime();
-		Trace.out(Trace.Level.INFO, "Uusi asiakas nro " + id + " saapui klo "+saapumisaika);
+		arrivalTime = Clock.getInstance().getTime();
+		Trace.out(Trace.Level.INFO, "Uusi asiakas nro " + id + " saapui klo "+ arrivalTime);
 	}
 
-	public double getPoistumisaika() {
-		return poistumisaika;
+	public double getLeavingTime() {
+		return leavingTime;
 	}
 
-	public void setPoistumisaika(double poistumisaika) {
-		this.poistumisaika = poistumisaika;
+	public void setLeavingTime(double leavingTime) {
+		this.leavingTime = leavingTime;
 	}
 
-	public double getSaapumisaika() {
-		return saapumisaika;
+	public double getArrivalTime() {
+		return arrivalTime;
 	}
 
-	public void setSaapumisaika(double saapumisaika) {
-		this.saapumisaika = saapumisaika;
+	public void setArrivalTime(double arrivalTime) {
+		this.arrivalTime = arrivalTime;
+	}
+
+	public double getWaitingTime() {
+		return Rounding.toFixed(leavingTime - arrivalTime, 2);
 	}
 	
 
@@ -41,13 +46,13 @@ public class Customer {
 	}
 	
 	public void report() {
-		Trace.out(Trace.Level.INFO, "\nCustomer "+id+ " valmis! ");
-		Trace.out(Trace.Level.INFO, "Customer "+id+ " saapui: " +saapumisaika);
-		Trace.out(Trace.Level.INFO,"Customer "+id+ " poistui: " +poistumisaika);
-		Trace.out(Trace.Level.INFO,"Customer "+id+ " viipyi: " +(poistumisaika-saapumisaika));
-		sum += (poistumisaika-saapumisaika);
-		double keskiarvo = sum/id;
-		System.out.println("Asiakkaiden läpimenoaikojen keskiarvo tähän asti "+ keskiarvo);
+		Trace.out(Trace.Level.INFO, "\nAuto "+id+ " valmis! ");
+		Trace.out(Trace.Level.INFO, "Auto "+id+ " saapui: " + arrivalTime);
+		Trace.out(Trace.Level.INFO,"Auto "+id+ " poistui: " + leavingTime);
+		Trace.out(Trace.Level.INFO,"Auto "+id+ " viipyi: " +getWaitingTime());
+		sum += getWaitingTime();
+		double average = sum/id;
+		System.out.println("Autojen läpimenoaikojen keskiarvo tähän asti "+ average);
 	}
 
 }
