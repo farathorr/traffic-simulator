@@ -6,6 +6,7 @@ import simu.framework.*;
 
 public class TrafficLights extends ServicePoint {
     private ArrivalProcess trafficLight;
+    private boolean greenLight = true;
 
     public TrafficLights(ContinuousGenerator generator,ContinuousGenerator lightSwitchFrequencyGenerator, EventList eventList) {
         super(generator, eventList, EventType.TRAFFIC_LIGHTS);
@@ -15,15 +16,15 @@ public class TrafficLights extends ServicePoint {
 
     @Override
     public void startService() {
+        reserved = true;
         Trace.out(Trace.Level.INFO, "Auto " + queue.peek().getId()+" ajaa liikennevalojen läpi.");
         double serviceTime = generator.sample();
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
-        reserved = true;
     }
 
     @Override
     public void switchReserved(){
-        reserved = !reserved;
+        greenLight = !greenLight;
         trafficLight.generateNext();
     }
 

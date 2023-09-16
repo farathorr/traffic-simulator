@@ -7,6 +7,7 @@ import simu.framework.*;
 public class Crosswalk extends ServicePoint{
 
     private ArrivalProcess crosswalk;
+    private boolean crossable = true;
 
     public Crosswalk(ContinuousGenerator crossingTimeGenerator, ContinuousGenerator crossingFrequencyGenerator, EventList eventList, EventType tyyppi) {
         super(crossingTimeGenerator, eventList, tyyppi);
@@ -24,7 +25,7 @@ public class Crosswalk extends ServicePoint{
 
     @Override
     public void switchReserved(){
-        reserved = !reserved;
+        crossable = !crossable;
         crosswalk.generateNext();
     }
 
