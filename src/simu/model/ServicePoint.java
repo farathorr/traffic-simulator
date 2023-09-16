@@ -34,7 +34,7 @@ class ServicePoint {
 		return queue.poll();
 	}
 
-	public void startService() {  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
+	public void startService() {
 		Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
 		
 		reserved = true;
@@ -53,8 +53,5 @@ class ServicePoint {
 		return queue.size() != 0;
 	}
 
-	public void switchReserved() {
-		reserved = !reserved;
-	}
 
 }

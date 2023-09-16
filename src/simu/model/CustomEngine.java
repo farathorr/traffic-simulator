@@ -41,13 +41,13 @@ public class CustomEngine extends Engine {
                 selectedCustomer = servicePoints[0].takeFromQueue();
                 servicePoints[2].addToQueue(selectedCustomer);
             }
-            case LIGHT_SWITCH -> servicePoints[2].switchReserved();
+            case LIGHT_SWITCH -> ((TrafficLights)servicePoints[2]).switchGreenLight();
             case TRAFFIC_LIGHTS -> {
                 selectedCustomer = servicePoints[2].takeFromQueue();
                 selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
                 selectedCustomer.report();
             }
-            case ROAD_CROSSING -> servicePoints[1].switchReserved();
+            case ROAD_CROSSING -> ((Crosswalk)servicePoints[1]).switchCrossable();
             case CROSSWALK -> {
                 selectedCustomer = servicePoints[1].takeFromQueue();
                 selectedCustomer.setLeavingTime(Clock.getInstance().getTime());

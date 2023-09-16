@@ -22,8 +22,8 @@ public class TrafficLights extends ServicePoint {
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
     }
 
-    @Override
-    public void switchReserved(){
+
+    public void switchGreenLight(){
         greenLight = !greenLight;
         trafficLight.generateNext();
     }

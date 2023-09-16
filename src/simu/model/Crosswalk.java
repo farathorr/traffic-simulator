@@ -23,8 +23,8 @@ public class Crosswalk extends ServicePoint{
         reserved = true;
     }
 
-    @Override
-    public void switchReserved(){
+
+    public void switchCrossable(){
         crossable = !crossable;
         crosswalk.generateNext();
     }
