@@ -90,13 +90,15 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
             timeLabel = new Label("Simulointiaika:");
             timeLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-            time = new TextField("Syötä aika");
+            time = new TextField("1000");
+            time.setPromptText("Syötä aika");
             time.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
             time.setPrefWidth(150);
 
             delayLabel = new Label("Viive:");
             delayLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-            delay = new TextField("Syötä viive");
+            delay = new TextField("10");
+            delay.setPromptText("Syötä viive");
             delay.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
             delay.setPrefWidth(150);
 
