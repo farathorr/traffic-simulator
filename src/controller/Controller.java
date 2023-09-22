@@ -6,7 +6,7 @@ import simu.model.CustomEngine;
 import simu.model.Customer;
 import view.ISimulatorUI;
 
-public class Controller implements IControllerForM, IControllerForV {   // UUSI
+public class Controller implements IControllerForM, IControllerForV {
 	
 	private IEngine engine;
 	private ISimulatorUI ui;
@@ -16,9 +16,6 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 		
 	}
 
-	
-	// Moottorin ohjausta:
-		
 	@Override
 	public void startSimulator() {
 		engine = new CustomEngine(this); // luodaan uusi moottorisäie jokaista simulointia varten
@@ -28,7 +25,6 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 		engine.setDelay(ui.getDelay());
 		ui.getVisualization().clearScreen();
 		((Thread) engine).start();
-		//((Thread)moottori).run(); // Ei missään tapauksessa näin. Miksi?		
 	}
 	
 	@Override
@@ -41,26 +37,20 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 		engine.setDelay((long)(engine.getDelay()*0.9));
 	}
 	
-	
-	
 	// Simulointitulosten välittämistä käyttöliittymään.
 	// Koska FX-ui:n päivitykset tulevat moottorisäikeestä, ne pitää ohjata JavaFX-säikeeseen:
 		
 	@Override
 	public void showEndtime(double time) {
-		Platform.runLater(()->ui.setEndTime(time));
+		Platform.runLater(() -> ui.setEndTime(time));
 	}
-
 	
 	@Override
 	public void visualizeCustomer() {
-		Platform.runLater(new Runnable(){
+		Platform.runLater(new Runnable() {
 			public void run(){
 				ui.getVisualization().newCustomer();
 			}
 		});
 	}
-
-
-
 }
