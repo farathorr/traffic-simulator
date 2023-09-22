@@ -1,5 +1,6 @@
 package simu.model;
 
+import controller.IControllerForM;
 import simu.framework.*;
 import eduni.distributions.Normal;
 
@@ -7,13 +8,12 @@ public class CustomEngine extends Engine {
     private ArrivalProcess arrivalProcess;
     private ServicePoint[] servicePoints;
 
-    public CustomEngine() {
+    public CustomEngine(IControllerForM controller) {
+        super(controller);
         servicePoints = new ServicePoint[3];
         servicePoints[0] = new Intersection(new Normal(50, 50), eventList, EventType.INTERSECTION);
-        servicePoints[1] = new Crosswalk(new Normal(5, 2),new Normal(10,5), eventList, EventType.CROSSWALK);
-        servicePoints[2] = new TrafficLights(new Normal(5, 3),new Normal(15,1) , eventList);
-
-        // arrivalProcess = new ArrivalProcess(new Negexp(15,5), eventList, EventType.ARR1);
+        servicePoints[1] = new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, EventType.CROSSWALK);
+        servicePoints[2] = new TrafficLights(new Normal(5, 3), new Normal(15, 1), eventList);
         arrivalProcess = new ArrivalProcess(new Normal(15, 5), eventList, EventType.ARR1);
     }
 
@@ -38,13 +38,13 @@ public class CustomEngine extends Engine {
                 selectedCustomer = servicePoints[0].takeFromQueue();
                 servicePoints[2].addToQueue(selectedCustomer);
             }
-            case LIGHT_SWITCH -> ((TrafficLights)servicePoints[2]).switchGreenLight();
+            case LIGHT_SWITCH -> ((TrafficLights) servicePoints[2]).switchGreenLight();
             case TRAFFIC_LIGHTS -> {
                 selectedCustomer = servicePoints[2].takeFromQueue();
                 selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
                 selectedCustomer.report();
             }
-            case ROAD_CROSSING -> ((Crosswalk)servicePoints[1]).switchCrossable();
+            case ROAD_CROSSING -> ((Crosswalk) servicePoints[1]).switchCrossable();
             case CROSSWALK -> {
                 selectedCustomer = servicePoints[1].takeFromQueue();
                 selectedCustomer.setLeavingTime(Clock.getInstance().getTime());

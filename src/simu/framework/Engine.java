@@ -1,21 +1,31 @@
 package simu.framework;
 
-public abstract class Engine {
+import controller.IControllerForM;
+
+public abstract class Engine extends Thread implements IEngine {
 	private double simulationTime = 0;
+	static private int engineCount = 0;
+	private int engineNumber = 0;
+	private long delay = 0;
 	private Clock clock;
 	protected EventList eventList;
+	protected IControllerForM controller;
 
-	public Engine() {
-
+	public Engine(IControllerForM controller) {
+		this.controller = controller;
 		clock = Clock.getInstance(); // Otetaan clock muuttujaan yksinkertaistamaan koodia
-		
 		eventList = new EventList();
-		
 		// Palvelupisteet luodaan simu.model-pakkauksessa Moottorin aliluokassa 
-		
-		
+		this.engineNumber = ++engineCount;
 	}
 
+	public void setDelay(long time) {
+		delay = time;
+	}
+
+	public long getDelay() {
+		return (long) delay;
+	}
 	public void setSimulationTime(double time) {
 		simulationTime = time;
 	}
@@ -23,7 +33,8 @@ public abstract class Engine {
 	public void run() {
 		initializations(); // luodaan mm. ensimmäinen tapahtuma
 		while (simulating()) {
-			
+			delay();
+
 			Trace.out(Trace.Level.INFO, "\nA-vaihe: clock on " + currentTime());
 			clock.setTime(currentTime());
 			
@@ -33,9 +44,10 @@ public abstract class Engine {
 			Trace.out(Trace.Level.INFO, "\nC-vaihe:" );
 			tryCEvents();
 
+			this.controller.showEndtime(this.clock.getTime());
 		}
 		results();
-		
+
 	}
 	
 	private void executeBEvents() {
@@ -49,7 +61,7 @@ public abstract class Engine {
 	}
 	
 	private boolean simulating() {
-		return clock.getTime() < simulationTime;
+		return clock.getTime() < simulationTime && this.engineNumber == engineCount;
 	}
 
 	protected abstract void executeEvent(Event t);  // Määritellään simu.model-pakkauksessa Moottorin aliluokassa
@@ -59,5 +71,17 @@ public abstract class Engine {
 	protected abstract void initializations(); // Määritellään simu.model-pakkauksessa Moottorin aliluokassa
 
 	protected abstract void results(); // Määritellään simu.model-pakkauksessa Moottorin aliluokassa
-	
+
+	private void delay() { // UUSI
+		Trace.out(Trace.Level.INFO, "Viive " + delay);
+		try {
+			Thread.sleep(delay);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Clock getClock() {
+		return clock;
+	}
 }

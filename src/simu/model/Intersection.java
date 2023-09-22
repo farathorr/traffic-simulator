@@ -14,11 +14,10 @@ public class Intersection extends ServicePoint {
     @Override
     public void startService() {  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
         if (this.generator.sample() > 50) {
-            Trace.out(Trace.Level.INFO, "Auto "+ queue.peek().getId() +" kääntyy oikealle.");
+            Trace.out(Trace.Level.INFO, "Auto " + queue.peek().getId() + " kääntyy oikealle.");
             eventList.add(new Event(EventType.TURN_RIGHT, Clock.getInstance().getTime()));
-        }
-        else{
-            Trace.out(Trace.Level.INFO, "Auto "+ queue.peek().getId() +" kääntyy vasemmalle.");
+        } else {
+            Trace.out(Trace.Level.INFO, "Auto " + queue.peek().getId() + " kääntyy vasemmalle.");
             eventList.add(new Event(EventType.TURN_LEFT, Clock.getInstance().getTime()));
         }
     }
