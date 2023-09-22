@@ -33,7 +33,7 @@ public abstract class Engine extends Thread implements IEngine {
 		initializations(); // luodaan mm. ensimmäinen tapahtuma
 		while (simulating()) {
 			delay();
-			
+
 			Trace.out(Trace.Level.INFO, "\nA-vaihe: clock on " + currentTime());
 			clock.setTime(currentTime());
 			
@@ -43,9 +43,10 @@ public abstract class Engine extends Thread implements IEngine {
 			Trace.out(Trace.Level.INFO, "\nC-vaihe:" );
 			tryCEvents();
 
+			this.controller.showEndtime(this.clock.getTime());
 		}
 		results();
-		
+
 	}
 	
 	private void executeBEvents() {
