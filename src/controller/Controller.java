@@ -3,6 +3,7 @@ package controller;
 import javafx.application.Platform;
 import simu.framework.IEngine;
 import simu.model.CustomEngine;
+import simu.model.Customer;
 import view.ISimulatorUI;
 
 public class Controller implements IControllerForM, IControllerForV {   // UUSI
@@ -21,6 +22,7 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 	@Override
 	public void startSimulator() {
 		engine = new CustomEngine(this); // luodaan uusi moottorisäie jokaista simulointia varten
+		Customer.resetCustomerCount();
 		engine.getClock().setTime(0);
 		engine.setSimulationTime(ui.getTime());
 		engine.setDelay(ui.getDelay());

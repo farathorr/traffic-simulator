@@ -9,14 +9,17 @@ public class Customer {
 	private double arrivalTime;
 	private double leavingTime;
 	private int id;
-	private static int i = 1;
+	private static int customerCount = 1;
 	private static long sum = 0;
 	
 	public Customer() {
-	    id = i++;
+	    id = customerCount++;
 	    
 		arrivalTime = Clock.getInstance().getTime();
 		Trace.out(Trace.Level.INFO, "Uusi asiakas nro " + id + " saapui klo "+ arrivalTime);
+	}
+	public static void resetCustomerCount(){
+		customerCount = 1;
 	}
 
 	public double getLeavingTime() {
