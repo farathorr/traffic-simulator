@@ -4,7 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class Visualisointi extends Canvas implements IVisualisointi{
+public class Visualization extends Canvas implements IVisualization {
 
 	private final GraphicsContext gc;
 	
@@ -12,19 +12,19 @@ public class Visualisointi extends Canvas implements IVisualisointi{
 	double j = 10;
 	
 	
-	public Visualisointi(int w, int h) {
+	public Visualization(int w, int h) {
 		super(w, h);
 		gc = this.getGraphicsContext2D();
-		tyhjennaNaytto();
+		clearScreen();
 	}
 	
 
-	public void tyhjennaNaytto() {
+	public void clearScreen() {
 		gc.setFill(Color.YELLOW);
 		gc.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 	
-	public void uusiAsiakas() {
+	public void newCustomer() {
 		gc.setFill(Color.RED);
 		gc.fillOval(i,j,10,10);
 		

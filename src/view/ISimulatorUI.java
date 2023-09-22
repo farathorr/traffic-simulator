@@ -1,15 +1,15 @@
 package view;
 
-public interface ISimulaattorinUI {
+public interface ISimulatorUI {
 	
 	// Kontrolleri tarvitsee syötteitä, jotka se välittää Moottorille
-	public double getAika();
-	public long getViive();
+	public double getTime();
+	public long getDelay();
 	
 	//Kontrolleri antaa käyttöliittymälle tuloksia, joita Moottori tuottaa 
-	public void setLoppuaika(double aika);
+	public void setEndTime(double time);
 	
 	// Kontrolleri tarvitsee  
-	public IVisualisointi getVisualisointi();
+	public IVisualization getVisualization();
 
 }

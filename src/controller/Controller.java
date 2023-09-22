@@ -3,14 +3,14 @@ package controller;
 import javafx.application.Platform;
 import simu.framework.IEngine;
 import simu.model.CustomEngine;
-import view.ISimulaattorinUI;
+import view.ISimulatorUI;
 
 public class Controller implements IControllerForM, IControllerForV {   // UUSI
 	
 	private IEngine moottori;
-	private ISimulaattorinUI ui;
+	private ISimulatorUI ui;
 	
-	public Controller(ISimulaattorinUI ui) {
+	public Controller(ISimulatorUI ui) {
 		this.ui = ui;
 		
 	}
@@ -21,9 +21,9 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 	@Override
 	public void startSimulator() {
 		moottori = new CustomEngine(this); // luodaan uusi moottorisäie jokaista simulointia varten
-		moottori.setSimulationTime(ui.getAika());
-		moottori.setDelay(ui.getViive());
-		ui.getVisualisointi().tyhjennaNaytto();
+		moottori.setSimulationTime(ui.getTime());
+		moottori.setDelay(ui.getDelay());
+		ui.getVisualization().clearScreen();
 		((Thread)moottori).start();
 		//((Thread)moottori).run(); // Ei missään tapauksessa näin. Miksi?		
 	}
@@ -45,7 +45,7 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 		
 	@Override
 	public void showEndtime(double aika) {
-		Platform.runLater(()->ui.setLoppuaika(aika)); 
+		Platform.runLater(()->ui.setEndTime(aika));
 	}
 
 	
@@ -53,7 +53,7 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 	public void visualizeCustomer() {
 		Platform.runLater(new Runnable(){
 			public void run(){
-				ui.getVisualisointi().uusiAsiakas();
+				ui.getVisualization().newCustomer();
 			}
 		});
 	}
