@@ -7,4 +7,5 @@ public interface IEngine { // UUSI
 	public void setSimulationTime(double time);
 	public void setDelay(long time);
 	public long getDelay();
+	public Clock getClock();
 }

@@ -74,7 +74,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 @Override
                 public void handle(ActionEvent event) {
                     controller.startSimulator();
-                    startButton.setDisable(true);
+                    startButton.setDisable(false);
                 }
             });
 

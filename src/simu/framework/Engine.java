@@ -4,6 +4,8 @@ import controller.IControllerForM;
 
 public abstract class Engine extends Thread implements IEngine {
 	private double simulationTime = 0;
+	static private int engineCount = 0;
+	private int engineNumber = 0;
 	private long delay = 0;
 	private Clock clock;
 	protected EventList eventList;
@@ -14,8 +16,7 @@ public abstract class Engine extends Thread implements IEngine {
 		clock = Clock.getInstance(); // Otetaan clock muuttujaan yksinkertaistamaan koodia
 		eventList = new EventList();
 		// Palvelupisteet luodaan simu.model-pakkauksessa Moottorin aliluokassa 
-		
-		
+		this.engineNumber = ++engineCount;
 	}
 
 	public void setDelay(long time) {
@@ -60,7 +61,7 @@ public abstract class Engine extends Thread implements IEngine {
 	}
 	
 	private boolean simulating() {
-		return clock.getTime() < simulationTime;
+		return clock.getTime() < simulationTime && this.engineNumber == engineCount;
 	}
 
 	protected abstract void executeEvent(Event t);  // Määritellään simu.model-pakkauksessa Moottorin aliluokassa
@@ -79,5 +80,8 @@ public abstract class Engine extends Thread implements IEngine {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public Clock getClock() {
+		return clock;
+	}
 }
