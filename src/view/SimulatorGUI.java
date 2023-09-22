@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -80,11 +79,11 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
             slowdownButton = new Button();
             slowdownButton.setText("Hidasta");
-            slowdownButton.setOnAction(e -> controller.hidasta());
+            slowdownButton.setOnAction(e -> controller.slowdown());
 
             speedupButton = new Button();
             speedupButton.setText("Nopeuta");
-            speedupButton.setOnAction(e -> controller.nopeuta());
+            speedupButton.setOnAction(e -> controller.speedup());
 
             timeInput = new InputElement("Simulointiaika:", "1000", "Syötä aika");
 

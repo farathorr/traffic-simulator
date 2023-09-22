@@ -30,12 +30,12 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 	}
 	
 	@Override
-	public void hidasta() { // hidastetaan moottorisäiettä
-		engine.setDelay((long)(engine.getDelay()*1.10));
+	public void slowdown() { // hidastetaan moottorisäiettä
+		engine.setDelay((long)(engine.getDelay()*1.15));
 	}
 
 	@Override
-	public void nopeuta() { // nopeutetaan moottorisäiettä
+	public void speedup() { // nopeutetaan moottorisäiettä
 		engine.setDelay((long)(engine.getDelay()*0.9));
 	}
 	
