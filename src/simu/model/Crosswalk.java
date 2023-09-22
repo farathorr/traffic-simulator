@@ -1,10 +1,9 @@
 package simu.model;
 
 import eduni.distributions.ContinuousGenerator;
-import eduni.distributions.Normal;
 import simu.framework.*;
 
-public class Crosswalk extends ServicePoint{
+public class Crosswalk extends ServicePoint {
     private ArrivalProcess crosswalk;
     private boolean crossable = true;
 
@@ -21,7 +20,6 @@ public class Crosswalk extends ServicePoint{
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
         reserved = true;
     }
-
 
     public void switchCrossable() {
         crossable = !crossable;
