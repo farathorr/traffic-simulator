@@ -1,17 +1,18 @@
 package simu.framework;
 
+import controller.IControllerForM;
+
 public abstract class Engine implements IEngine {
 	private double simulationTime = 0;
 	private Clock clock;
 	protected EventList eventList;
 	private double delay = 0;
+	protected IControllerForM controller;
 
-	public Engine() {
-
+	public Engine(IControllerForM controller) {
+		this.controller = controller;
 		clock = Clock.getInstance(); // Otetaan clock muuttujaan yksinkertaistamaan koodia
-		
 		eventList = new EventList();
-		
 		// Palvelupisteet luodaan simu.model-pakkauksessa Moottorin aliluokassa 
 		
 		

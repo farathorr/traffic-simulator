@@ -1,5 +1,6 @@
 package simu.model;
 
+import controller.IControllerForM;
 import simu.framework.*;
 import eduni.distributions.Normal;
 
@@ -7,7 +8,8 @@ public class CustomEngine extends Engine {
     private ArrivalProcess arrivalProcess;
     private ServicePoint[] servicePoints;
 
-    public CustomEngine() {
+    public CustomEngine(IControllerForM controller) {
+        super(controller);
         servicePoints = new ServicePoint[3];
         servicePoints[0] = new Intersection(new Normal(50, 50), eventList, EventType.INTERSECTION);
         servicePoints[1] = new Crosswalk(new Normal(5, 2),new Normal(10,5), eventList, EventType.CROSSWALK);
