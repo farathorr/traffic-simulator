@@ -1,9 +1,10 @@
 package simu.framework;
 
-public abstract class Engine {
+public abstract class Engine implements IEngine {
 	private double simulationTime = 0;
 	private Clock clock;
 	protected EventList eventList;
+	private double delay = 0;
 
 	public Engine() {
 
@@ -16,6 +17,13 @@ public abstract class Engine {
 		
 	}
 
+	public void setDelay(long time) {
+		delay = time;
+	}
+
+	public long getDelay() {
+		return (long) delay;
+	}
 	public void setSimulationTime(double time) {
 		simulationTime = time;
 	}

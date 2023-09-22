@@ -29,7 +29,7 @@ import java.text.DecimalFormat;
 public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
     //Kontrollerin esittely (tarvitaan käyttöliittymässä)
-    private IKontrolleriForV kontrolleri;
+    private IControllerForV kontrolleri;
 
     // Käyttöliittymäkomponentit:
     private TextField aika;
@@ -51,7 +51,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
         Trace.setTraceLevel(Level.INFO);
 
-        kontrolleri = new Kontrolleri(this);
+        kontrolleri = new Controller(this);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
             kaynnistaButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    kontrolleri.kaynnistaSimulointi();
+                    kontrolleri.startSimulator();
                     kaynnistaButton.setDisable(true);
                 }
             });

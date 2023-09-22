@@ -1,16 +1,16 @@
 package controller;
 
 import javafx.application.Platform;
-import simu.framework.IMoottori;
-import simu.model.OmaMoottori;
+import simu.framework.IEngine;
+import simu.model.CustomEngine;
 import view.ISimulaattorinUI;
 
-public class Kontrolleri implements IKontrolleriForM, IKontrolleriForV{   // UUSI
+public class Controller implements IControllerForM, IControllerForV {   // UUSI
 	
-	private IMoottori moottori; 
+	private IEngine moottori;
 	private ISimulaattorinUI ui;
 	
-	public Kontrolleri(ISimulaattorinUI ui) {
+	public Controller(ISimulaattorinUI ui) {
 		this.ui = ui;
 		
 	}
@@ -19,10 +19,10 @@ public class Kontrolleri implements IKontrolleriForM, IKontrolleriForV{   // UUS
 	// Moottorin ohjausta:
 		
 	@Override
-	public void kaynnistaSimulointi() {
-		moottori = new OmaMoottori(this); // luodaan uusi moottorisäie jokaista simulointia varten
-		moottori.setSimulointiaika(ui.getAika());
-		moottori.setViive(ui.getViive());
+	public void startSimulator() {
+		moottori = new CustomEngine(this); // luodaan uusi moottorisäie jokaista simulointia varten
+		moottori.setSimulationTime(ui.getAika());
+		moottori.setDelay(ui.getViive());
 		ui.getVisualisointi().tyhjennaNaytto();
 		((Thread)moottori).start();
 		//((Thread)moottori).run(); // Ei missään tapauksessa näin. Miksi?		
@@ -30,12 +30,12 @@ public class Kontrolleri implements IKontrolleriForM, IKontrolleriForV{   // UUS
 	
 	@Override
 	public void hidasta() { // hidastetaan moottorisäiettä
-		moottori.setViive((long)(moottori.getViive()*1.10));
+		moottori.setDelay((long)(moottori.getDelay()*1.10));
 	}
 
 	@Override
 	public void nopeuta() { // nopeutetaan moottorisäiettä
-		moottori.setViive((long)(moottori.getViive()*0.9));
+		moottori.setDelay((long)(moottori.getDelay()*0.9));
 	}
 	
 	
@@ -44,13 +44,13 @@ public class Kontrolleri implements IKontrolleriForM, IKontrolleriForV{   // UUS
 	// Koska FX-ui:n päivitykset tulevat moottorisäikeestä, ne pitää ohjata JavaFX-säikeeseen:
 		
 	@Override
-	public void naytaLoppuaika(double aika) {
+	public void showEndtime(double aika) {
 		Platform.runLater(()->ui.setLoppuaika(aika)); 
 	}
 
 	
 	@Override
-	public void visualisoiAsiakas() {
+	public void visualizeCustomer() {
 		Platform.runLater(new Runnable(){
 			public void run(){
 				ui.getVisualisointi().uusiAsiakas();

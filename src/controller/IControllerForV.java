@@ -1,10 +1,10 @@
 package controller;
 
-public interface IKontrolleriForV {
+public interface IControllerForV {
 
     // Rajapinta, joka tarjotaan  käyttöliittymälle:
 
-    public void kaynnistaSimulointi();
+    public void startSimulator();
     public void nopeuta();
     public void hidasta();
 }
