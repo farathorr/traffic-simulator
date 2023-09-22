@@ -4,6 +4,7 @@ import controller.IControllerForM;
 
 public abstract class Engine implements IEngine {
 	private double simulationTime = 0;
+	private long delay = 0;
 	private Clock clock;
 	protected EventList eventList;
 	private double delay = 0;
@@ -32,6 +33,7 @@ public abstract class Engine implements IEngine {
 	public void run() {
 		initializations(); // luodaan mm. ensimmäinen tapahtuma
 		while (simulating()) {
+			delay();
 			
 			Trace.out(Trace.Level.INFO, "\nA-vaihe: clock on " + currentTime());
 			clock.setTime(currentTime());
@@ -68,5 +70,14 @@ public abstract class Engine implements IEngine {
 	protected abstract void initializations(); // Määritellään simu.model-pakkauksessa Moottorin aliluokassa
 
 	protected abstract void results(); // Määritellään simu.model-pakkauksessa Moottorin aliluokassa
+
+	private void delay() { // UUSI
+		Trace.out(Trace.Level.INFO, "Viive " + delay);
+		try {
+			sleep(delay);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

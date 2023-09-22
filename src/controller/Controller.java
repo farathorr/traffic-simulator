@@ -7,7 +7,7 @@ import view.ISimulatorUI;
 
 public class Controller implements IControllerForM, IControllerForV {   // UUSI
 	
-	private IEngine moottori;
+	private IEngine engine;
 	private ISimulatorUI ui;
 	
 	public Controller(ISimulatorUI ui) {
@@ -20,22 +20,22 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 		
 	@Override
 	public void startSimulator() {
-		moottori = new CustomEngine(this); // luodaan uusi moottorisäie jokaista simulointia varten
-		moottori.setSimulationTime(ui.getTime());
-		moottori.setDelay(ui.getDelay());
+		engine = new CustomEngine(this); // luodaan uusi moottorisäie jokaista simulointia varten
+		engine.setSimulationTime(ui.getTime());
+		engine.setDelay(ui.getDelay());
 		ui.getVisualization().clearScreen();
-		((Thread)moottori).start();
+		((Thread) engine).start();
 		//((Thread)moottori).run(); // Ei missään tapauksessa näin. Miksi?		
 	}
 	
 	@Override
 	public void hidasta() { // hidastetaan moottorisäiettä
-		moottori.setDelay((long)(moottori.getDelay()*1.10));
+		engine.setDelay((long)(engine.getDelay()*1.10));
 	}
 
 	@Override
 	public void nopeuta() { // nopeutetaan moottorisäiettä
-		moottori.setDelay((long)(moottori.getDelay()*0.9));
+		engine.setDelay((long)(engine.getDelay()*0.9));
 	}
 	
 	
@@ -44,8 +44,8 @@ public class Controller implements IControllerForM, IControllerForV {   // UUSI
 	// Koska FX-ui:n päivitykset tulevat moottorisäikeestä, ne pitää ohjata JavaFX-säikeeseen:
 		
 	@Override
-	public void showEndtime(double aika) {
-		Platform.runLater(()->ui.setEndTime(aika));
+	public void showEndtime(double time) {
+		Platform.runLater(()->ui.setEndTime(time));
 	}
 
 	
