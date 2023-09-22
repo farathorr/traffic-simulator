@@ -2,7 +2,7 @@ package simu.framework;
 
 import controller.IControllerForM;
 
-public abstract class Engine implements IEngine {
+public abstract class Engine extends Thread implements IEngine {
 	private double simulationTime = 0;
 	private long delay = 0;
 	private Clock clock;
