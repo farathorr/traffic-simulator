@@ -7,7 +7,6 @@ public abstract class Engine implements IEngine {
 	private long delay = 0;
 	private Clock clock;
 	protected EventList eventList;
-	private double delay = 0;
 	protected IControllerForM controller;
 
 	public Engine(IControllerForM controller) {
@@ -74,7 +73,7 @@ public abstract class Engine implements IEngine {
 	private void delay() { // UUSI
 		Trace.out(Trace.Level.INFO, "Viive " + delay);
 		try {
-			sleep(delay);
+			Thread.sleep(delay);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
