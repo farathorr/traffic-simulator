@@ -24,12 +24,10 @@ import simu.framework.Trace.Level;
 import java.text.DecimalFormat;
 
 
-
 public class SimulatorGUI extends Application implements ISimulatorUI {
 
     //Kontrollerin esittely (tarvitaan käyttöliittymässä)
     private IControllerForV controller;
-
     // Käyttöliittymäkomponentit:
     private Label result;
     private Label resultLabel;
@@ -37,11 +35,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private Button slowdownButton;
     private Button speedupButton;
     private InputElement timeInput, delayInput;
-
-
-
     private IVisualization screen;
-
 
     @Override
     public void init() {
@@ -63,7 +57,6 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                     System.exit(0);
                 }
             });
-
 
             primaryStage.setTitle("Simulaattori");
 
@@ -97,8 +90,6 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             result.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
             result.setPrefWidth(150);
 
-
-
             HBox hBox = new HBox();
             hBox.setPadding(new Insets(15, 12, 15, 12)); // marginaalit ylÃ¤, oikea, ala, vasen
             hBox.setSpacing(10);   // noodien välimatka 10 pikseliä
@@ -108,7 +99,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             grid.setVgap(10);
             grid.setHgap(5);
 
-            for(int y = 0; y < inputArray.length; y++){
+            for (int y = 0; y < inputArray.length; y++) {
                 grid.add(inputArray[y].getLabel(), 0, y);   // sarake, rivi
                 grid.add(inputArray[y].getTextField(), 1, y);          // sarake, rivi
 
@@ -154,13 +145,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         this.result.setText(formatter.format(aika));
     }
 
-
     @Override
     public IVisualization getVisualization() {
         return screen;
     }
 }
-
-
-
-

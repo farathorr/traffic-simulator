@@ -1,15 +1,12 @@
 package view;
 
-
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-
 public class InputElement{
     private String labelText, defaultText, promptText;
-
     private Label label = null;
     private TextField textField = null;
 
@@ -34,5 +31,3 @@ public class InputElement{
         return textField;
     }
 }
-
-
