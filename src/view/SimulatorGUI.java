@@ -32,16 +32,14 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private IControllerForV controller;
 
     // Käyttöliittymäkomponentit:
-    private TextField time;
-    private TextField delay;
     private Label result;
-    private Label timeLabel;
-    private Label delayLabel;
     private Label resultLabel;
-
     private Button startButton;
     private Button slowdownButton;
     private Button speedupButton;
+    private InputElement timeInput, delayInput;
+
+
 
     private IVisualization screen;
 
@@ -88,25 +86,19 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             speedupButton.setText("Nopeuta");
             speedupButton.setOnAction(e -> controller.nopeuta());
 
-            timeLabel = new Label("Simulointiaika:");
-            timeLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-            time = new TextField("1000");
-            time.setPromptText("Syötä aika");
-            time.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-            time.setPrefWidth(150);
+            timeInput = new InputElement("Simulointiaika:", "1000", "Syötä aika");
 
-            delayLabel = new Label("Viive:");
-            delayLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-            delay = new TextField("10");
-            delay.setPromptText("Syötä viive");
-            delay.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-            delay.setPrefWidth(150);
+            delayInput = new InputElement("Viive:", "10", "Syötä viive");
+
+            InputElement[] inputArray = {timeInput, delayInput};
 
             resultLabel = new Label("Kokonaisaika:");
             resultLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
             result = new Label();
             result.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
             result.setPrefWidth(150);
+
+
 
             HBox hBox = new HBox();
             hBox.setPadding(new Insets(15, 12, 15, 12)); // marginaalit ylÃ¤, oikea, ala, vasen
@@ -117,10 +109,12 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             grid.setVgap(10);
             grid.setHgap(5);
 
-            grid.add(timeLabel, 0, 0);   // sarake, rivi
-            grid.add(time, 1, 0);          // sarake, rivi
-            grid.add(delayLabel, 0, 1);      // sarake, rivi
-            grid.add(delay, 1, 1);           // sarake, rivi
+            for(int y = 0; y < inputArray.length; y++){
+                grid.add(inputArray[y].getLabel(), 0, y);   // sarake, rivi
+                grid.add(inputArray[y].getTextField(), 1, y);          // sarake, rivi
+
+            }
+
             grid.add(resultLabel, 0, 2);      // sarake, rivi
             grid.add(result, 1, 2);           // sarake, rivi
             grid.add(startButton, 0, 3);  // sarake, rivi
@@ -147,12 +141,12 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     @Override
     public double getTime() {
-        return Double.parseDouble(time.getText());
+        return Double.parseDouble(timeInput.getTextField().getText());
     }
 
     @Override
     public long getDelay() {
-        return Long.parseLong(delay.getText());
+        return Long.parseLong(delayInput.getTextField().getText());
     }
 
     @Override
