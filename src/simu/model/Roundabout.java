@@ -45,7 +45,7 @@ public class Roundabout extends ServicePoint {
         Customer selectedCustomer = queue.peek();
         if (selectedCustomer.getRoundaboutExit() == null) {
             do {
-                int randomIndex = (int) Math.round(Math.abs(exitGenerator.sample()));
+                int randomIndex = Math.min((int) Math.round(Math.abs(exitGenerator.sample())),3);
                 selectedCustomer.setRoundaboutExit(eventTypeList[randomIndex]);
             } while (selectedCustomer.getRoundaboutExit() == scheduledEventType);
         }
