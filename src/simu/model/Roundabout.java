@@ -7,12 +7,14 @@ import simu.framework.EventList;
 import simu.framework.Trace;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public class Roundabout extends ServicePoint {
 
     private ContinuousGenerator exitGenerator;
     private static final EventType[] eventTypeList = {EventType.ROUNDABOUT_BOTTOM, EventType.ROUNDABOUT_LEFT, EventType.ROUNDABOUT_TOP, EventType.ROUNDABOUT_RIGHT};
 
+    private PriorityQueue<Customer> queue = new PriorityQueue<>();
 
     public Roundabout(ContinuousGenerator generator, ContinuousGenerator exitGenerator, EventList eventList, EventType tyyppi) {
         super(generator, eventList, tyyppi);
@@ -20,13 +22,34 @@ public class Roundabout extends ServicePoint {
     }
 
     @Override
+    public void addToQueue(Customer a) {   // Jonon 1. asiakas aina palvelussa
+        queue.add(a);
+    }
+
+    @Override
+    public Customer takeFromQueue() {  // Poistetaan palvelussa ollut
+        reserved = false;
+        Customer selectedCustomer = queue.poll();
+        selectedCustomer.setLastServicePoint(scheduledEventType);
+        return selectedCustomer;
+    }
+
+    @Override
+    public boolean queueNotEmpty() {
+        return queue.size() != 0;
+    }
+
+    @Override
     public void startService() {
         //Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
         Customer selectedCustomer = queue.peek();
         if (selectedCustomer.getRoundaboutExit() == null) {
-            int randomIndex = (int) Math.round(Math.abs(exitGenerator.sample()));
-            selectedCustomer.setRoundaboutExit(eventTypeList[randomIndex]);
+            do {
+                int randomIndex = (int) Math.round(Math.abs(exitGenerator.sample()));
+                selectedCustomer.setRoundaboutExit(eventTypeList[randomIndex]);
+            } while (selectedCustomer.getRoundaboutExit() == scheduledEventType);
         }
+
         reserved = true;
         double serviceTime = generator.sample();
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
