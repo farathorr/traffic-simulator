@@ -5,12 +5,15 @@ import simu.framework.*;
 
 // TODO:
 // Customer koodataan simulointimallin edellyttämällä tavalla (data!)
-public class Customer {
+public class Customer implements Comparable<Customer> {
     private double arrivalTime;
     private double leavingTime;
     private int id;
     private static int customerCount = 1;
     private static long sum = 0;
+    private EventType lastServicePoint = null;
+
+    private EventType roundaboutExit = null;
 
     public Customer() {
         id = customerCount++;
@@ -43,5 +46,37 @@ public class Customer {
         sum += getWaitingTime();
         double average = sum / id;
         System.out.println("Autojen läpimenoaikojen keskiarvo tähän asti " + average);
+    }
+
+    public EventType getRoundaboutExit() {
+        return roundaboutExit;
+    }
+
+    public void setRoundaboutExit(EventType roundaboutExit) {
+        this.roundaboutExit = roundaboutExit;
+    }
+
+    public void setLastServicePoint(EventType lastServicePoint) {
+        this.lastServicePoint = lastServicePoint;
+    }
+
+    @Override
+    public int compareTo(Customer arg) {
+//        if (this.time < arg.time) return -1;
+//        else if (this.time > arg.time) return 1;
+//        return 0;
+        if (isRoundAbout(this) == isRoundAbout(arg)) {
+            return 0;
+        } else {
+            if (isRoundAbout(this)) return -1;
+            else return 1;
+        }
+    }
+
+    private boolean isRoundAbout(Customer customer) {
+        return customer.lastServicePoint == EventType.ROUNDABOUT_BOTTOM ||
+                customer.lastServicePoint == EventType.ROUNDABOUT_LEFT ||
+                customer.lastServicePoint == EventType.ROUNDABOUT_TOP ||
+                customer.lastServicePoint == EventType.ROUNDABOUT_RIGHT;
     }
 }
