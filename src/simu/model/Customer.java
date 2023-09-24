@@ -12,6 +12,8 @@ public class Customer {
     private static int customerCount = 1;
     private static long sum = 0;
 
+    private EventType roundaboutExit = null;
+
     public Customer() {
         id = customerCount++;
 
@@ -43,5 +45,13 @@ public class Customer {
         sum += getWaitingTime();
         double average = sum / id;
         System.out.println("Autojen läpimenoaikojen keskiarvo tähän asti " + average);
+    }
+
+    public EventType getRoundaboutExit() {
+        return roundaboutExit;
+    }
+
+    public void setRoundaboutExit(EventType roundaboutExit) {
+        this.roundaboutExit = roundaboutExit;
     }
 }
