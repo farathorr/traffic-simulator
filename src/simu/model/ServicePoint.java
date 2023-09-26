@@ -12,11 +12,11 @@ class ServicePoint {
     protected final LinkedList<Customer> queue = new LinkedList<>(); // Tietorakennetoteutus
     protected final ContinuousGenerator generator;
     protected final EventList eventList;
-    protected final EventType scheduledEventType;
+    protected final String scheduledEventType;
 
     protected boolean reserved = false;
 
-    public ServicePoint(ContinuousGenerator generator, EventList eventList, EventType tyyppi) {
+    public ServicePoint(ContinuousGenerator generator, EventList eventList, String tyyppi) {
         this.eventList = eventList;
         this.generator = generator;
         this.scheduledEventType = tyyppi;
@@ -41,6 +41,10 @@ class ServicePoint {
 
     public boolean isReserved() {
         return reserved;
+    }
+
+    public String getScheduledEventType() {
+        return scheduledEventType;
     }
 
     public boolean queueNotEmpty() {

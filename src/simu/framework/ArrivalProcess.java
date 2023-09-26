@@ -5,9 +5,9 @@ import lib.Rounding;
 public class ArrivalProcess {
 	private ContinuousGenerator generator;
 	private EventList eventList;
-	private IEventType type;
+	private String type;
 
-	public ArrivalProcess(ContinuousGenerator g, EventList el, IEventType type) {
+	public ArrivalProcess(ContinuousGenerator g, EventList el, String type) {
 		this.generator = g;
 		this.eventList = el;
 		this.type = type;
@@ -17,6 +17,10 @@ public class ArrivalProcess {
 		double sample = generator.sample();
 		Event e = new Event(type, Clock.getInstance().getTime() + sample);
 		eventList.add(e);
+	}
+
+	public String getScheduledEventType() {
+		return type;
 	}
 
 }

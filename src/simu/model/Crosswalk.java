@@ -7,7 +7,7 @@ public class Crosswalk extends ServicePoint {
     private ArrivalProcess crosswalk;
     private boolean crossable = true;
 
-    public Crosswalk(ContinuousGenerator crossingTimeGenerator, ContinuousGenerator crossingFrequencyGenerator, EventList eventList, EventType tyyppi) {
+    public Crosswalk(ContinuousGenerator crossingTimeGenerator, ContinuousGenerator crossingFrequencyGenerator, EventList eventList, String tyyppi) {
         super(crossingTimeGenerator, eventList, tyyppi);
         crosswalk = new ArrivalProcess(crossingFrequencyGenerator, eventList, EventType.ROAD_CROSSING);
         crosswalk.generateNext();
