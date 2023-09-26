@@ -14,14 +14,17 @@ public class Level {
 
     public void add(ServicePoint point) {
         servicePoints.put(point.getScheduledEventType(), point);
+//        String className = point.getClass().getSimpleName();
+//        switch(className) {
+//            case "TrafficLights" -> {
+//                arrivalProcesses.put(className, )
+//            }
+//        }
+//        System.out.println(point.getClass().getSimpleName());
     }
 
     public void add(ServicePoint point, String nextPoint) {
-        servicePoints.put(point.getScheduledEventType(), point);
-
-        ArrayList<String> nextPoints = new ArrayList<>();
-        nextPoints.add(nextPoint);
-        this.nextPoints.put(point, nextPoints);
+        add(point, new String[]{nextPoint});
     }
 
     public void add(ServicePoint point, String[] nextPoint) {

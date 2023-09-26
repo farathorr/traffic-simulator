@@ -26,10 +26,11 @@ public class CustomEngine extends Engine {
 //        arrivalProcess = new ArrivalProcess(new Normal(15, 5), eventList, EventType.ARR1);
 
 
-       level1.arrival(new ArrivalProcess(new Normal(15, 5), eventList, "ARR1"), "Intersection");
-       level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection"), new String[]{"Intersection_vasen", "Intersection_oikee"});
-        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_vasen"));
-        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_oikee"));
+       level1.arrival(new ArrivalProcess(new Normal(15, 5), eventList, "ARR1"), "light");
+       level1.add(new TrafficLights(new Normal(5, 3), new Normal(15, 1), eventList, "light"), "Crosswalk");
+       level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk"));
+//        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_vasen"));
+//        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_oikee"));
 //       level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk"));
     }
 
@@ -52,10 +53,16 @@ public class CustomEngine extends Engine {
             selectedCustomer = servicePoint.takeFromQueue();
             level1.getNextServicePoint(servicePoint).addToQueue(selectedCustomer);
         } else {
-            ServicePoint servicePoint = level1.getServicePoint(type);
-            selectedCustomer = servicePoint.takeFromQueue();
-            selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
-            selectedCustomer.report();
+            if(type.contains("Light Switch")) {
+                ((TrafficLights) level1.getServicePoint(type.replace(" Light Switch", ""))).switchGreenLight();
+            } else if(type.contains("Road Crossing")) {
+                ((Crosswalk) level1.getServicePoint(type.replace(" Road Crossing", ""))).switchCrossable();
+            } else {
+                ServicePoint servicePoint = level1.getServicePoint(type);
+                selectedCustomer = servicePoint.takeFromQueue();
+                selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
+                selectedCustomer.report();
+            }
         }
 //        switch ((EventType) t.getType()) {
 //            case ARR1 -> {
