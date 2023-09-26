@@ -12,11 +12,11 @@ import java.util.PriorityQueue;
 public class Roundabout extends ServicePoint {
 
     private ContinuousGenerator exitGenerator;
-    private static final EventType[] eventTypeList = {EventType.ROUNDABOUT_BOTTOM, EventType.ROUNDABOUT_LEFT, EventType.ROUNDABOUT_TOP, EventType.ROUNDABOUT_RIGHT};
+    private static final String[] eventTypeList = {"ROUNDABOUT_BOTTOM", "ROUNDABOUT_LEFT", "ROUNDABOUT_TOP", "ROUNDABOUT_RIGHT"};
 
     private PriorityQueue<Customer> queue = new PriorityQueue<>();
 
-    public Roundabout(ContinuousGenerator generator, ContinuousGenerator exitGenerator, EventList eventList, EventType tyyppi) {
+    public Roundabout(ContinuousGenerator generator, ContinuousGenerator exitGenerator, EventList eventList, String tyyppi) {
         super(generator, eventList, tyyppi);
         this.exitGenerator = exitGenerator;
     }

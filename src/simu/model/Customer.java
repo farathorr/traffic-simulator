@@ -11,9 +11,9 @@ public class Customer implements Comparable<Customer> {
     private int id;
     private static int customerCount = 1;
     private static long sum = 0;
-    private EventType lastServicePoint = null;
+    private String lastServicePoint = null;
 
-    private EventType roundaboutExit = null;
+    private String roundaboutExit = null;
 
     public Customer() {
         id = customerCount++;
@@ -48,15 +48,15 @@ public class Customer implements Comparable<Customer> {
         System.out.println("Autojen läpimenoaikojen keskiarvo tähän asti " + average);
     }
 
-    public EventType getRoundaboutExit() {
+    public String getRoundaboutExit() {
         return roundaboutExit;
     }
 
-    public void setRoundaboutExit(EventType roundaboutExit) {
+    public void setRoundaboutExit(String roundaboutExit) {
         this.roundaboutExit = roundaboutExit;
     }
 
-    public void setLastServicePoint(EventType lastServicePoint) {
+    public void setLastServicePoint(String lastServicePoint) {
         this.lastServicePoint = lastServicePoint;
     }
 
@@ -74,9 +74,9 @@ public class Customer implements Comparable<Customer> {
     }
 
     private boolean isRoundAbout(Customer customer) {
-        return customer.lastServicePoint == EventType.ROUNDABOUT_BOTTOM ||
-                customer.lastServicePoint == EventType.ROUNDABOUT_LEFT ||
-                customer.lastServicePoint == EventType.ROUNDABOUT_TOP ||
-                customer.lastServicePoint == EventType.ROUNDABOUT_RIGHT;
+        return customer.lastServicePoint.equals("ROUNDABOUT_BOTTOM") ||
+                customer.lastServicePoint.equals("ROUNDABOUT_LEFT") ||
+                customer.lastServicePoint.equals("ROUNDABOUT_TOP") ||
+                customer.lastServicePoint.equals("ROUNDABOUT_RIGHT");
     }
 }

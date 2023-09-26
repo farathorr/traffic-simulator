@@ -4,11 +4,13 @@ import controller.IControllerForM;
 import simu.framework.*;
 import eduni.distributions.Normal;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CustomEngine extends Engine {
     private ArrivalProcess arrivalProcess;
+    private Level level1 = new Level();
     private ServicePoint[] servicePoints;
 
     public CustomEngine(IControllerForM controller) {
@@ -23,20 +25,38 @@ public class CustomEngine extends Engine {
 //        servicePoints[6] = new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, EventType.ROUNDABOUT_LEFT);
 //        arrivalProcess = new ArrivalProcess(new Normal(15, 5), eventList, EventType.ARR1);
 
-       Level level1 = new Level();
-       level1.arrival(new ArrivalProcess(new Normal(15, 5), eventList, "ARR1"));
-       level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection")).next("Crosswalk");
-       level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk"));
+
+       level1.arrival(new ArrivalProcess(new Normal(15, 5), eventList, "ARR1"), "Intersection");
+       level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection"), new String[]{"Intersection_vasen", "Intersection_oikee"});
+        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_vasen"));
+        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_oikee"));
+//       level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk"));
     }
 
     @Override
     protected void initializations() {
-        arrivalProcess.generateNext(); // Ensimmäinen saapuminen järjestelmään
+        level1.startSimulation();
+        //arrivalProcess.generateNext(); // Ensimmäinen saapuminen järjestelmään
     }
 
     @Override
-    protected void executeEvent(Event t) {  // B-vaiheen tapahtumat
+    protected void executeEvent(Event event) {  // B-vaiheen tapahtumat
         Customer selectedCustomer;
+        String type = event.getType();
+        if (level1.isArrivalProcess(type)) {
+            ArrivalProcess arrivalProcess = level1.getArrivalProcess(type);
+            level1.getNextServicePoint(arrivalProcess).addToQueue(new Customer());
+            arrivalProcess.generateNext();
+        } else if(level1.hasNextServicePoint(type)) {
+            ServicePoint servicePoint = level1.getServicePoint(type);
+            selectedCustomer = servicePoint.takeFromQueue();
+            level1.getNextServicePoint(servicePoint).addToQueue(selectedCustomer);
+        } else {
+            ServicePoint servicePoint = level1.getServicePoint(type);
+            selectedCustomer = servicePoint.takeFromQueue();
+            selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
+            selectedCustomer.report();
+        }
 //        switch ((EventType) t.getType()) {
 //            case ARR1 -> {
 //                servicePoints[0].addToQueue(new Customer());
@@ -105,7 +125,7 @@ public class CustomEngine extends Engine {
 
     @Override
     protected void tryCEvents() {
-        for (ServicePoint servicePoint : servicePoints) {
+        for (ServicePoint servicePoint : level1.getServicePoints()) {
             if (!servicePoint.isReserved() && servicePoint.queueNotEmpty()) {
                 servicePoint.startService();
             }
