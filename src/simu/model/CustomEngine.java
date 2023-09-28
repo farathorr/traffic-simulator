@@ -28,7 +28,12 @@ public class CustomEngine extends Engine {
 
        level1.arrival(new ArrivalProcess(new Normal(15, 5), eventList, "ARR1"), "light");
        level1.add(new TrafficLights(new Normal(5, 3), new Normal(15, 1), eventList, "light"), "Crosswalk");
-       level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk"));
+       level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk"), "ROUNDABOUT_BOTTOM");
+
+        level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "ROUNDABOUT_BOTTOM"), "ROUNDABOUT_RIGHT");
+        level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "ROUNDABOUT_RIGHT"), "ROUNDABOUT_TOP");
+        level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "ROUNDABOUT_TOP"), "ROUNDABOUT_LEFT");
+        level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "ROUNDABOUT_LEFT"), "ROUNDABOUT_BOTTOM");
 //        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_vasen"));
 //        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_oikee"));
 //       level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk"));
@@ -46,10 +51,12 @@ public class CustomEngine extends Engine {
         String type = event.getType();
         if (level1.isArrivalProcess(type)) {
             ArrivalProcess arrivalProcess = level1.getArrivalProcess(type);
-            level1.getNextServicePoint(arrivalProcess).addToQueue(new Customer());
+            level1.getNextServicePoint(arrivalProcess).addToQueue(new Customer(level1));
             arrivalProcess.generateNext();
         } else if(level1.hasNextServicePoint(type)) {
             ServicePoint servicePoint = level1.getServicePoint(type);
+            System.out.println("----------------" + type);
+            System.out.println("----------------" + level1.getNextServicePoint(servicePoint));
             selectedCustomer = servicePoint.takeFromQueue();
             level1.getNextServicePoint(servicePoint).addToQueue(selectedCustomer);
         } else {

@@ -16,22 +16,14 @@ public class Roundabout extends ServicePoint {
 
     private PriorityQueue<Customer> queue = new PriorityQueue<>();
 
-    public Roundabout(ContinuousGenerator generator, ContinuousGenerator exitGenerator, EventList eventList, String tyyppi) {
-        super(generator, eventList, tyyppi);
+    public Roundabout(ContinuousGenerator generator, ContinuousGenerator exitGenerator, EventList eventList, String type) {
+        super(generator, eventList, type);
         this.exitGenerator = exitGenerator;
     }
 
     @Override
     public void addToQueue(Customer a) {   // Jonon 1. asiakas aina palvelussa
         queue.add(a);
-    }
-
-    @Override
-    public Customer takeFromQueue() {  // Poistetaan palvelussa ollut
-        reserved = false;
-        Customer selectedCustomer = queue.poll();
-        selectedCustomer.setLastServicePoint(scheduledEventType);
-        return selectedCustomer;
     }
 
     @Override
