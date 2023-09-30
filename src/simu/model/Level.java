@@ -14,6 +14,7 @@ public class Level {
 
     public void add(ServicePoint point) {
         servicePoints.put(point.getScheduledEventType(), point);
+        point.setLevel(this);
 //        String className = point.getClass().getSimpleName();
 //        switch(className) {
 //            case "TrafficLights" -> {
@@ -33,6 +34,7 @@ public class Level {
         ArrayList<String> nextPoints = new ArrayList<>();
         nextPoints.addAll(Arrays.asList(nextPoint));
         this.nextPoints.put(point, nextPoints);
+        point.setLevel(this);
     }
 
     public void arrival(ArrivalProcess arrivalProcess, String nextPoint) {
@@ -58,7 +60,8 @@ public class Level {
     }
 
     public boolean hasNextServicePoint(String key) {
-        return nextPoints.containsKey(servicePoints.get(key));
+        ServicePoint servicePoint = servicePoints.get(key);
+        return nextPoints.containsKey(servicePoint);
     }
 
     public ServicePoint getServicePoint(String key) {
@@ -71,6 +74,20 @@ public class Level {
     public ServicePoint getNextServicePoint(Object servicePoint) {
         int r = (int) Math.floor(Math.random() * nextPoints.get(servicePoint).size());
         return servicePoints.get(nextPoints.get(servicePoint).get(r));
+    }
+
+    public ServicePoint getNextRoundaboutServicePoint(Object servicePoint, boolean isExiting) {
+        if (isExiting) {
+            int r = (int) Math.ceil(Math.random() * nextPoints.get(servicePoint).size() - 2) + 1;
+            return servicePoints.get(nextPoints.get(servicePoint).get(r));
+        }
+        return servicePoints.get(nextPoints.get(servicePoint).get(0));
+    }
+
+    public int getNextServicePointCount(String key) {
+        ServicePoint servicePoint = servicePoints.get(key);
+        if (nextPoints.containsKey(servicePoint)) return nextPoints.get(servicePoint).size();
+        return 0;
     }
 
     public ArrivalProcess getArrivalProcess(String key) {

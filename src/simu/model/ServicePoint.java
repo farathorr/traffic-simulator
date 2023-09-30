@@ -12,6 +12,7 @@ class ServicePoint {
     protected final LinkedList<Customer> queue = new LinkedList<>(); // Tietorakennetoteutus
     protected final ContinuousGenerator generator;
     protected final EventList eventList;
+    private Level level;
     protected final String scheduledEventType;
 
     protected boolean reserved = false;
@@ -52,5 +53,13 @@ class ServicePoint {
 
     public boolean queueNotEmpty() {
         return queue.size() != 0;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 }
