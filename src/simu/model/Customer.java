@@ -15,10 +15,15 @@ public class Customer implements Comparable<Customer> {
     private String lastServicePoint = null;
 
     private String roundaboutExit = null;
+    private double x, y, destinationX, destinationY;
 
-    public Customer(Level level) {
+    public Customer(Level level, double x, double y) {
         id = customerCount++;
         this.level = level;
+        this.x = x;
+        this.y = y;
+        this.destinationX = x;
+        this.destinationY = y;
 
         arrivalTime = Clock.getInstance().getTime();
         Trace.out(Trace.Level.INFO, "Uusi asiakas nro " + id + " saapui klo " + arrivalTime);
@@ -47,7 +52,7 @@ public class Customer implements Comparable<Customer> {
         Trace.out(Trace.Level.INFO, "Auto " + id + " viipyi: " + getWaitingTime());
         sum += getWaitingTime();
         double average = sum / id;
-        System.out.println("Autojen läpimenoaikojen keskiarvo tähän asti " + average);
+        Trace.out(Trace.Level.INFO, "Autojen läpimenoaikojen keskiarvo tähän asti " + average);
     }
 
     public String getRoundaboutExit() {
@@ -79,5 +84,28 @@ public class Customer implements Comparable<Customer> {
         if (customer.level.getServicePoint(lastServicePoint) != null) {
             return customer.level.getServicePoint(lastServicePoint).getClass().getSimpleName().equals("Roundabout");
         } return false;
+    }
+
+    public void setDestinationX(double destinationX) {
+        this.destinationX = destinationX;
+    }
+
+    public void setDestinationY(double destinationY) {
+        this.destinationY = destinationY;
+    }
+
+    public void moveCustomer() {
+        double deltaX = destinationX - this.x;
+        double deltaY = destinationY - this.y;
+        this.x += deltaX / 20;
+        this.y += deltaY / 20;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
     }
 }

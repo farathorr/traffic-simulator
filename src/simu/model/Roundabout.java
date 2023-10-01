@@ -12,7 +12,6 @@ import java.util.PriorityQueue;
 public class Roundabout extends ServicePoint {
 
     private ContinuousGenerator exitGenerator;
-    private static final String[] eventTypeList = {"ROUNDABOUT_BOTTOM", "ROUNDABOUT_LEFT", "ROUNDABOUT_TOP", "ROUNDABOUT_RIGHT"};
     private int maxRotations;
 
     private PriorityQueue<Customer> queue = new PriorityQueue<>();
@@ -24,8 +23,10 @@ public class Roundabout extends ServicePoint {
     }
 
     @Override
-    public void addToQueue(Customer a) { // Override to use the PriorityQueue
-        queue.add(a);
+    public void addToQueue(Customer customer) { // Override to use the PriorityQueue
+        queue.add(customer);
+        customer.setDestinationX(this.getX());
+        customer.setDestinationY(this.getY());
     }
 
     @Override
@@ -52,14 +53,15 @@ public class Roundabout extends ServicePoint {
                 currentRoundabout = (Roundabout) this.getLevel().getNextRoundaboutServicePoint(currentRoundabout, false);
             }
             selectedCustomer.setRoundaboutExit(currentRoundabout.getScheduledEventType());
-//            do {
-//                int randomIndex = Math.min((int) Math.round(Math.abs(exitGenerator.sample())), 3);
-//                selectedCustomer.setRoundaboutExit(eventTypeList[randomIndex]);
-//            } while (selectedCustomer.getRoundaboutExit() == scheduledEventType);
         }
 
         reserved = true;
         double serviceTime = generator.sample();
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
+    }
+
+    @Override
+    public Customer getFirstCustomer() {
+        return queue.peek();
     }
 }

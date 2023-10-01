@@ -32,8 +32,10 @@ public abstract class ServicePoint {
         return selectedCustomer;
     }
 
-    public void addToQueue(Customer a) {   // Jonon 1. asiakas aina palvelussa
-        queue.add(a);
+    public void addToQueue(Customer customer) {
+        queue.add(customer);
+        customer.setDestinationX(x);
+        customer.setDestinationY(y);
     }
 
 
@@ -81,5 +83,9 @@ public abstract class ServicePoint {
 
     public String getRotation() {
         return rotation;
+    }
+
+    public Customer getFirstCustomer() {
+    	return queue.peek();
     }
 }

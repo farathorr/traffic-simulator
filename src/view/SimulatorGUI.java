@@ -41,7 +41,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     @Override
     public void init() {
 
-        Trace.setTraceLevel(Level.INFO);
+        Trace.setTraceLevel(Level.ERR);
 
         controller = new Controller(this);
         renderLoop = new RenderLoop(this);

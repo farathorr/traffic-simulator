@@ -24,7 +24,7 @@ public class CustomEngine extends Engine {
 //        arrivalProcess = new ArrivalProcess(new Normal(15, 5), eventList, EventType.ARR1);
 
 
-        level1.arrival(new ArrivalProcess(new Normal(15, 5), eventList, "ARR1"), "road0_0");
+        level1.arrival(new ArrivalProcess(new Normal(15, 5), eventList, "ARR1", 0, 0), "road0_0");
         level1.add(new Road(new Normal(5, 3), eventList, "road0_0"), "crosswalk1_0");
         level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "crosswalk1_0"), "road1_1");
         level1.add(new Road(new Normal(5, 3), eventList, "road1_1"), "trafficlights1_2");
@@ -34,6 +34,7 @@ public class CustomEngine extends Engine {
         level1.add(new Road(new Normal(5, 3), eventList, "road1_4"));
         level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "crosswalk3_3"), "road4_3");
         level1.add(new Road(new Normal(5, 3), eventList, "road4_3"), "roundabout_right4_2");
+
         level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "roundabout_right4_2", 3), "roundabout_top5_2");
         level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "roundabout_top5_2", 3), "roundabout_left5_1");
         level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "roundabout_left5_1", 3), "roundabout_bottom4_1");
@@ -94,7 +95,7 @@ public class CustomEngine extends Engine {
         String type = event.getType();
         if (level1.isArrivalProcess(type)) {
             ArrivalProcess arrivalProcess = level1.getArrivalProcess(type);
-            level1.getNextServicePoint(arrivalProcess).addToQueue(new Customer(level1));
+            level1.getNextServicePoint(arrivalProcess).addToQueue(new Customer(level1, arrivalProcess.getX(), arrivalProcess.getY()));
             arrivalProcess.generateNext();
         } else if(level1.hasNextServicePoint(type)) {
             ServicePoint servicePoint = level1.getServicePoint(type);
@@ -123,70 +124,6 @@ public class CustomEngine extends Engine {
                 selectedCustomer.report();
             }
         }
-//        switch ((EventType) t.getType()) {
-//            case ARR1 -> {
-//                servicePoints[0].addToQueue(new Customer());
-//                arrivalProcess.generateNext();
-//            }
-//            case TURN_LEFT -> {
-//                selectedCustomer = servicePoints[0].takeFromQueue();
-//                servicePoints[1].addToQueue(selectedCustomer);
-//            }
-//            case TURN_RIGHT -> {
-//                selectedCustomer = servicePoints[0].takeFromQueue();
-//                servicePoints[2].addToQueue(selectedCustomer);
-//            }
-//            case LIGHT_SWITCH -> ((TrafficLights) servicePoints[2]).switchGreenLight();
-//            case TRAFFIC_LIGHTS -> {
-//                selectedCustomer = servicePoints[2].takeFromQueue();
-//                servicePoints[5].addToQueue(selectedCustomer);
-//            }
-//            case ROAD_CROSSING -> ((Crosswalk) servicePoints[1]).switchCrossable();
-//            case CROSSWALK -> {
-//                selectedCustomer = servicePoints[1].takeFromQueue();
-//                servicePoints[3].addToQueue(selectedCustomer);
-//            }
-//            case ROUNDABOUT_BOTTOM -> {
-//                selectedCustomer = servicePoints[3].takeFromQueue();
-//                if (selectedCustomer.getRoundaboutExit() == EventType.ROUNDABOUT_BOTTOM) {
-//                    selectedCustomer.setRoundaboutExit(null);
-//                    selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
-//                    selectedCustomer.report();
-//                } else {
-//                    servicePoints[4].addToQueue(selectedCustomer);
-//                }
-//            }
-//            case ROUNDABOUT_RIGHT -> {
-//                selectedCustomer = servicePoints[4].takeFromQueue();
-//                if (selectedCustomer.getRoundaboutExit() == EventType.ROUNDABOUT_RIGHT) {
-//                    selectedCustomer.setRoundaboutExit(null);
-//                    selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
-//                    selectedCustomer.report();
-//                } else {
-//                    servicePoints[5].addToQueue(selectedCustomer);
-//                }
-//            }
-//            case ROUNDABOUT_TOP -> {
-//                selectedCustomer = servicePoints[5].takeFromQueue();
-//                if (selectedCustomer.getRoundaboutExit() == EventType.ROUNDABOUT_TOP) {
-//                    selectedCustomer.setRoundaboutExit(null);
-//                    selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
-//                    selectedCustomer.report();
-//                } else {
-//                    servicePoints[6].addToQueue(selectedCustomer);
-//                }
-//            }
-//            case ROUNDABOUT_LEFT -> {
-//                selectedCustomer = servicePoints[6].takeFromQueue();
-//                if (selectedCustomer.getRoundaboutExit() == EventType.ROUNDABOUT_LEFT) {
-//                    selectedCustomer.setRoundaboutExit(null);
-//                    selectedCustomer.setLeavingTime(Clock.getInstance().getTime());
-//                    selectedCustomer.report();
-//                } else {
-//                    servicePoints[3].addToQueue(selectedCustomer);
-//                }
-//            }
-//        }
     }
 
     @Override
