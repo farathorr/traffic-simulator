@@ -4,10 +4,6 @@ import controller.IControllerForM;
 import simu.framework.*;
 import eduni.distributions.Normal;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 public class CustomEngine extends Engine {
     private ArrivalProcess arrivalProcess;
     private Level level1 = new Level();
@@ -35,8 +31,8 @@ public class CustomEngine extends Engine {
         level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "ROUNDABOUT_TOP", 3), new String[]{"ROUNDABOUT_LEFT", "Intersection_vasen"});
         level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "ROUNDABOUT_LEFT", 3), "ROUNDABOUT_BOTTOM");
 
-        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_vasen"));
-        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_alas"));
+        level1.add(new Road( new Normal(50, 50), eventList, "Intersection_vasen"));
+        level1.add(new Road( new Normal(50, 50), eventList, "Intersection_alas"));
 
         level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk_vasen"));
         level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk_alas"));

@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import simu.model.Crosswalk;
-import simu.model.Intersection;
+import simu.model.Road;
 import simu.model.Roundabout;
 import simu.model.ServicePoint;
 import simu.model.TrafficLights;
@@ -57,7 +57,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         gc.clearRect(0, 0, this.getWidth(), this.getHeight());
         int gridSize = 128;
         servicePoints.forEach(servicePoint -> {
-            if(servicePoint.getClass() == Intersection.class) {
+            if(servicePoint.getClass() == Road.class) {
                 switch(servicePoint.getRotation()){
                     case "right", "left" -> gc.drawImage(roadImageHorizontal,servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     case "top", "bottom" -> gc.drawImage(roadImageVertical,servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
