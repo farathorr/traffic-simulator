@@ -24,6 +24,7 @@ public class Controller implements IControllerForM, IControllerForV {
 		engine.setSimulationTime(ui.getTime());
 		engine.setDelay(ui.getDelay());
 		ui.getVisualization().clearScreen();
+		ui.getVisualization().newCustomer();
 		((Thread) engine).start();
 	}
 	

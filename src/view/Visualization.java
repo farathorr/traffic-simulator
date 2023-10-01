@@ -7,8 +7,7 @@ import javafx.scene.paint.Color;
 public class Visualization extends Canvas implements IVisualization {
 
     private final GraphicsContext gc;
-    double i = 0;
-    double j = 10;
+    double x = 0, y = 10;
 
     public Visualization(int w, int h) {
         super(w, h);
@@ -22,12 +21,12 @@ public class Visualization extends Canvas implements IVisualization {
     }
 
     public void newCustomer() {
-        gc.setFill(Color.RED);
-        gc.fillOval(i, j, 10, 10);
+        gc.setFill(Color.web("#32a852"));
+        gc.fillOval(x, y, 10, 10);
 
-        i = (i + 10) % this.getWidth();
+        x = (x + 10) % this.getWidth();
         //j = (j + 12) % this.getHeight();
-        if (i == 0) j += 10;
+        if (x == 0) y += 10;
     }
 
 }
