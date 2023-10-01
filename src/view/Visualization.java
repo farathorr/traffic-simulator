@@ -2,8 +2,10 @@ package view;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import simu.model.Intersection;
+import simu.model.Roundabout;
 import simu.model.ServicePoint;
 
 import java.util.ArrayList;
@@ -14,6 +16,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private final GraphicsContext gc;
     double x = 0, y = 10;
     private List<ServicePoint> servicePoints = new ArrayList<>();
+    private Image roundaboutBottom = new Image("roundabout-bottom.png");
+    private Image roundaboutRight = new Image("roundabout-right.png");
+    private Image roundaboutTop = new Image("roundabout-top.png");
+    private Image roundaboutLeft = new Image("roundabout-left.png");
 
     public Visualization(int w, int h) {
         super(w, h);
@@ -46,6 +52,14 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             if(servicePoint.getClass() == Intersection.class) {
                 gc.setFill(Color.web("#000000"));
                 gc.fillRect(servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize / 3.0);
+            }
+            if(servicePoint.getClass() == Roundabout.class) {
+                switch (servicePoint.getRotation()) {
+                    case "right" -> gc.drawImage(roundaboutRight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                    case "top" -> gc.drawImage(roundaboutTop, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                    case "left" -> gc.drawImage(roundaboutLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                    case "bottom" -> gc.drawImage(roundaboutBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                }
             }
         });
     }

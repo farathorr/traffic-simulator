@@ -42,13 +42,13 @@ public class CustomEngine extends Engine {
         level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk_alas"));
 
         controller.render(level1, "Intersection_vasen", 0, 0, "right");
-        controller.render(level1, "Intersection_alas", 1, 0, "down");
+        controller.render(level1, "Intersection_alas", 1, 0, "bottom");
 
         controller.render(level1, "Crosswalk_vasen", 2, 2, "right");
-        controller.render(level1, "Crosswalk_alas", 3, 2, "down");
+        controller.render(level1, "Crosswalk_alas", 3, 2, "bottom");
 
         controller.render(level1, "ROUNDABOUT_BOTTOM", 0, 1, "top");
-        controller.render(level1, "ROUNDABOUT_RIGHT", 1, 1, "down");
+        controller.render(level1, "ROUNDABOUT_RIGHT", 1, 1, "bottom");
         controller.render(level1, "ROUNDABOUT_TOP", 2, 1, "right");
         controller.render(level1, "ROUNDABOUT_LEFT", 3, 1, "left");
 //        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_oikee"));
