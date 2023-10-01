@@ -56,7 +56,7 @@ public abstract class Engine extends Thread implements IEngine {
 		}
 	}
 
-	private double currentTime() {
+	protected double currentTime() {
 		return eventList.getNextTime();
 	}
 	

@@ -24,11 +24,11 @@ public class CustomEngine extends Engine {
 //        arrivalProcess = new ArrivalProcess(new Normal(15, 5), eventList, EventType.ARR1);
 
 
-        level1.arrival(new ArrivalProcess(new Normal(15, 5), eventList, "ARR1", 0, 0), "road0_0");
+        level1.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
         level1.add(new Road(new Normal(5, 3), eventList, "road0_0"), "crosswalk1_0");
         level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "crosswalk1_0"), "road1_1");
         level1.add(new Road(new Normal(5, 3), eventList, "road1_1"), "trafficlights1_2");
-        level1.add(new TrafficLights(new Normal(5, 3), new Normal(15, 1), eventList, "trafficlights1_2"), "road1_3");
+        level1.add(new TrafficLights(new Normal(5, 3), new Normal(100, 1), eventList, "trafficlights1_2"), "road1_3");
         level1.add(new Road(new Normal(5, 3), eventList, "road1_3"), new String[]{"road1_4", "road2_3"});
         level1.add(new Road(new Normal(5, 3), eventList, "road2_3"), "crosswalk3_3");
         level1.add(new Road(new Normal(5, 3), eventList, "road1_4"));
@@ -129,9 +129,16 @@ public class CustomEngine extends Engine {
     @Override
     protected void tryCEvents() {
         for (ServicePoint servicePoint : level1.getServicePoints()) {
-            if (!servicePoint.isReserved() && servicePoint.queueNotEmpty()) {
-                servicePoint.startService();
+            if (servicePoint.isReserved() || !servicePoint.queueNotEmpty()) continue;
+
+            if (servicePoint.getClass() == TrafficLights.class) {
+                TrafficLights trafficPoint = (TrafficLights)servicePoint;
+                if(!trafficPoint.isGreenLight()) continue;
+                if(trafficPoint.generateSampleDelay() + this.currentTime() < trafficPoint.getNextLightSwitchEvent().getTime()) {
+                    trafficPoint.startService();
+                }
             }
+            else servicePoint.startService();
         }
     }
 

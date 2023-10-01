@@ -22,10 +22,11 @@ public class ArrivalProcess {
 		this.y = y;
 	}
 
-	public void generateNext() {
+	public Event generateNext() {
 		double sample = generator.sample();
-		Event e = new Event(type, Clock.getInstance().getTime() + sample);
-		eventList.add(e);
+		Event event = new Event(type, Clock.getInstance().getTime() + sample);
+		eventList.add(event);
+		return event;
 	}
 
 	public double getX() {
