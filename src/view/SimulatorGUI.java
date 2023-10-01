@@ -155,4 +155,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     public RenderLoop getRenderLoop() {
         return renderLoop;
     }
+
+    public Controller getController() {
+    	return (Controller) controller;
+    }
 }

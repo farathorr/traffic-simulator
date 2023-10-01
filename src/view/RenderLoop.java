@@ -8,7 +8,7 @@ public class RenderLoop extends Thread {
     }
 
     public void run() {
-        while(true) {
+        while(ui.getController().getEngine().simulating()) {
             try {
                 Thread.sleep(16);
                 ui.getVisualization().render();

@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.application.Platform;
+import simu.framework.Engine;
 import simu.framework.IEngine;
 import simu.model.CustomEngine;
 import simu.model.Customer;
@@ -58,5 +59,9 @@ public class Controller implements IControllerForM, IControllerForV {
 //				ui.getVisualization().render(level, type, x, y, rotation);
 //			}
 //		});
+	}
+
+	public Engine getEngine() {
+		return (Engine) engine;
 	}
 }
