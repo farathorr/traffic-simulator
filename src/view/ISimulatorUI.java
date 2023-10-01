@@ -11,6 +11,8 @@ public interface ISimulatorUI {
     public void setEndTime(double time);
 
     // Kontrolleri tarvitsee
-    public IVisualization getVisualization();
+    public Visualization getVisualization();
+
+    public RenderLoop getRenderLoop();
 
 }

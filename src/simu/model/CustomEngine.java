@@ -35,6 +35,8 @@ public class CustomEngine extends Engine {
         level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "ROUNDABOUT_TOP", 3), new String[]{"ROUNDABOUT_LEFT", "Intersection_vasen"});
         level1.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "ROUNDABOUT_LEFT", 3), "ROUNDABOUT_BOTTOM");
         level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_vasen"));
+
+        controller.render(level1, "ROUNDABOUT_BOTTOM", 0, 0, 0);
 //        level1.add(new Intersection( new Normal(50, 50), eventList, "Intersection_oikee"));
 //       level1.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "Crosswalk"));
     }
