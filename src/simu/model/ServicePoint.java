@@ -8,12 +8,14 @@ import eduni.distributions.ContinuousGenerator;
 
 // TODO:
 // Palvelupistekohtaiset toiminnallisuudet, laskutoimitukset (+ tarvittavat muuttujat) ja raportointi koodattava
-class ServicePoint {
+public abstract class ServicePoint {
     protected final LinkedList<Customer> queue = new LinkedList<>(); // Tietorakennetoteutus
     protected final ContinuousGenerator generator;
     protected final EventList eventList;
     private Level level;
     protected final String scheduledEventType;
+    private double x = 0, y = 0;
+    private String rotation;
 
     protected boolean reserved = false;
 
@@ -30,8 +32,10 @@ class ServicePoint {
         return selectedCustomer;
     }
 
-    public void addToQueue(Customer a) {   // Jonon 1. asiakas aina palvelussa
-        queue.add(a);
+    public void addToQueue(Customer customer) {
+        queue.add(customer);
+        customer.setDestinationX(x);
+        customer.setDestinationY(y);
     }
 
 
@@ -61,5 +65,27 @@ class ServicePoint {
 
     public void setLevel(Level level) {
         this.level = level;
+    }
+
+    public void render(double x, double y, String rotation) {
+    	this.x = x;
+    	this.y = y;
+        this.rotation = rotation;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public String getRotation() {
+        return rotation;
+    }
+
+    public Customer getFirstCustomer() {
+    	return queue.peek();
     }
 }

@@ -15,13 +15,6 @@ public class Level {
     public void add(ServicePoint point) {
         servicePoints.put(point.getScheduledEventType(), point);
         point.setLevel(this);
-//        String className = point.getClass().getSimpleName();
-//        switch(className) {
-//            case "TrafficLights" -> {
-//                arrivalProcesses.put(className, )
-//            }
-//        }
-//        System.out.println(point.getClass().getSimpleName());
     }
 
     public void add(ServicePoint point, String nextPoint) {

@@ -1,7 +1,7 @@
 package view;
 
 
-public interface IVisualization {
+public interface IVisualizationForV {
 
     public void clearScreen();
 

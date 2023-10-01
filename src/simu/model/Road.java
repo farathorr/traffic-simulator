@@ -4,11 +4,10 @@ import eduni.distributions.ContinuousGenerator;
 import simu.framework.Clock;
 import simu.framework.Event;
 import simu.framework.EventList;
-import simu.framework.Trace;
 
-public class Intersection extends ServicePoint {
-    public Intersection(ContinuousGenerator generator, EventList eventList, String tyyppi) {
-        super(generator, eventList, tyyppi);
+public class Road extends ServicePoint {
+    public Road(ContinuousGenerator generator, EventList eventList, String type) {
+        super(generator, eventList, type);
     }
 
     @Override

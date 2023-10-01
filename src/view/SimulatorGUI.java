@@ -28,6 +28,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     //Kontrollerin esittely (tarvitaan käyttöliittymässä)
     private IControllerForV controller;
+    private RenderLoop renderLoop;
     // Käyttöliittymäkomponentit:
     private Label result;
     private Label resultLabel;
@@ -35,14 +36,15 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private Button slowdownButton;
     private Button speedupButton;
     private InputElement timeInput, delayInput;
-    private IVisualization screen;
+    private Visualization screen;
 
     @Override
     public void init() {
 
-        Trace.setTraceLevel(Level.INFO);
+        Trace.setTraceLevel(Level.ERR);
 
         controller = new Controller(this);
+        renderLoop = new RenderLoop(this);
     }
 
     @Override
@@ -111,7 +113,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             grid.add(speedupButton, 0, 4);   // sarake, rivi
             grid.add(slowdownButton, 1, 4);   // sarake, rivi
 
-            screen = new Visualization(400, 200);
+            screen = new Visualization(1000, 800);
 
             // TÃ¤ytetÃ¤Ã¤n boxi:
             hBox.getChildren().addAll(grid, (Canvas) screen);
@@ -146,7 +148,15 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     }
 
     @Override
-    public IVisualization getVisualization() {
+    public Visualization getVisualization() {
         return screen;
+    }
+
+    public RenderLoop getRenderLoop() {
+        return renderLoop;
+    }
+
+    public Controller getController() {
+    	return (Controller) controller;
     }
 }

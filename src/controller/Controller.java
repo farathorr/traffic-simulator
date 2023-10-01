@@ -1,10 +1,14 @@
 package controller;
 
 import javafx.application.Platform;
+import simu.framework.Engine;
 import simu.framework.IEngine;
 import simu.model.CustomEngine;
 import simu.model.Customer;
+import simu.model.Level;
+import simu.model.ServicePoint;
 import view.ISimulatorUI;
+import view.RenderLoop;
 
 public class Controller implements IControllerForM, IControllerForV {
 	
@@ -13,7 +17,6 @@ public class Controller implements IControllerForM, IControllerForV {
 	
 	public Controller(ISimulatorUI ui) {
 		this.ui = ui;
-		
 	}
 
 	@Override
@@ -24,7 +27,7 @@ public class Controller implements IControllerForM, IControllerForV {
 		engine.setSimulationTime(ui.getTime());
 		engine.setDelay(ui.getDelay());
 		ui.getVisualization().clearScreen();
-		ui.getVisualization().newCustomer();
+		ui.getRenderLoop().start();
 		((Thread) engine).start();
 	}
 	
@@ -45,13 +48,20 @@ public class Controller implements IControllerForM, IControllerForV {
 	public void showEndtime(double time) {
 		Platform.runLater(() -> ui.setEndTime(time));
 	}
-	
+
 	@Override
-	public void visualizeCustomer() {
-		Platform.runLater(new Runnable() {
-			public void run(){
-				ui.getVisualization().newCustomer();
-			}
-		});
+	public void render(Level level, String type, double x, double y, String rotation) {
+		ServicePoint servicePoint = level.getServicePoint(type);
+		servicePoint.render(x, y, rotation);
+		ui.getVisualization().addToRenderQueue(servicePoint);
+//		Platform.runLater(new Runnable() {
+//			public void run(){
+//				ui.getVisualization().render(level, type, x, y, rotation);
+//			}
+//		});
+	}
+
+	public Engine getEngine() {
+		return (Engine) engine;
 	}
 }

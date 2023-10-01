@@ -56,11 +56,11 @@ public abstract class Engine extends Thread implements IEngine {
 		}
 	}
 
-	private double currentTime() {
+	protected double currentTime() {
 		return eventList.getNextTime();
 	}
 	
-	private boolean simulating() {
+	public boolean simulating() {
 		return clock.getTime() < simulationTime && this.engineNumber == engineCount;
 	}
 
