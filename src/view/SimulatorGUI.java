@@ -113,7 +113,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             grid.add(speedupButton, 0, 4);   // sarake, rivi
             grid.add(slowdownButton, 1, 4);   // sarake, rivi
 
-            screen = new Visualization(400, 200);
+            screen = new Visualization(1000, 550);
 
             // TÃ¤ytetÃ¤Ã¤n boxi:
             hBox.getChildren().addAll(grid, (Canvas) screen);

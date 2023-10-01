@@ -14,7 +14,8 @@ public abstract class ServicePoint {
     protected final EventList eventList;
     private Level level;
     protected final String scheduledEventType;
-    private double x = 0, y = 0, rotation = 0;
+    private double x = 0, y = 0;
+    private String rotation;
 
     protected boolean reserved = false;
 
@@ -64,7 +65,7 @@ public abstract class ServicePoint {
         this.level = level;
     }
 
-    public void render(double x, double y, double rotation) {
+    public void render(double x, double y, String rotation) {
     	this.x = x;
     	this.y = y;
         this.rotation = rotation;
@@ -78,7 +79,7 @@ public abstract class ServicePoint {
         return y;
     }
 
-    public double getRotation() {
+    public String getRotation() {
         return rotation;
     }
 }

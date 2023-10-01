@@ -49,7 +49,7 @@ public class Controller implements IControllerForM, IControllerForV {
 	}
 
 	@Override
-	public void render(Level level, String type, double x, double y, double rotation) {
+	public void render(Level level, String type, double x, double y, String rotation) {
 		ServicePoint servicePoint = level.getServicePoint(type);
 		servicePoint.render(x, y, rotation);
 		ui.getVisualization().addToRenderQueue(servicePoint);

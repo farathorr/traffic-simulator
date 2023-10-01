@@ -3,6 +3,7 @@ package view;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import simu.model.Intersection;
 import simu.model.ServicePoint;
 
 import java.util.ArrayList;
@@ -40,9 +41,12 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void render() {
         gc.clearRect(0, 0, this.getWidth(), this.getHeight());
+        int gridSize = 128;
         servicePoints.forEach(servicePoint -> {
-            gc.setFill(Color.web("#000000"));
-            gc.fillRect(servicePoint.getX(), servicePoint.getY(), 10, 10);
+            if(servicePoint.getClass() == Intersection.class) {
+                gc.setFill(Color.web("#000000"));
+                gc.fillRect(servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize / 3.0);
+            }
         });
     }
 

@@ -8,5 +8,5 @@ public interface IControllerForM {
 
     public void showEndtime(double aika);
 
-    public void render(Level level, String type, double x, double y, double rotation);
+    public void render(Level level, String type, double x, double y, String rotation);
 }
