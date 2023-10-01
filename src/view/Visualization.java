@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import simu.model.Crosswalk;
 import simu.model.Intersection;
 import simu.model.Roundabout;
 import simu.model.ServicePoint;
@@ -20,6 +21,11 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image roundaboutRight = new Image("roundabout-right.png");
     private Image roundaboutTop = new Image("roundabout-top.png");
     private Image roundaboutLeft = new Image("roundabout-left.png");
+
+    Image crosswalkImageHorizontal = new Image("crosswalk.png");
+    Image crosswalkImageVertical = new Image("crosswalkVertical.png");
+    Image roadImageHorizontal = new Image("road.png");
+    Image roadImageVertical = new Image("roadVertical.png");
 
     public Visualization(int w, int h) {
         super(w, h);
@@ -50,8 +56,18 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         int gridSize = 128;
         servicePoints.forEach(servicePoint -> {
             if(servicePoint.getClass() == Intersection.class) {
-                gc.setFill(Color.web("#000000"));
-                gc.fillRect(servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize / 3.0);
+                switch(servicePoint.getRotation()){
+                    case "right", "left" -> gc.drawImage(roadImageHorizontal,servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                    case "top", "bottom" -> gc.drawImage(roadImageVertical,servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                }
+            }
+            if(servicePoint.getClass() == Crosswalk.class) {
+                switch (servicePoint.getRotation()) {
+                    case "right" -> gc.drawImage(crosswalkImageHorizontal, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                    case "left" -> gc.drawImage(crosswalkImageHorizontal, (servicePoint.getX()-1) * gridSize, (servicePoint.getY()+1) * gridSize, -gridSize, -gridSize);
+                    case "top" -> gc.drawImage(crosswalkImageVertical, (servicePoint.getX()+1) * gridSize, (servicePoint.getY()+1) * gridSize, -gridSize, -gridSize);
+                    case "bottom" -> gc.drawImage(crosswalkImageVertical, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                }
             }
             if(servicePoint.getClass() == Roundabout.class) {
                 switch (servicePoint.getRotation()) {
