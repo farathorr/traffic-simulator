@@ -12,24 +12,28 @@ class ServicePoint {
     protected final LinkedList<Customer> queue = new LinkedList<>(); // Tietorakennetoteutus
     protected final ContinuousGenerator generator;
     protected final EventList eventList;
-    protected final EventType scheduledEventType;
+    private Level level;
+    protected final String scheduledEventType;
 
     protected boolean reserved = false;
 
-    public ServicePoint(ContinuousGenerator generator, EventList eventList, EventType tyyppi) {
+    public ServicePoint(ContinuousGenerator generator, EventList eventList, String type) {
         this.eventList = eventList;
         this.generator = generator;
-        this.scheduledEventType = tyyppi;
+        this.scheduledEventType = type;
+    }
+
+    public Customer takeFromQueue() {  // Poistetaan palvelussa ollut
+        reserved = false;
+        Customer selectedCustomer = queue.poll();
+        selectedCustomer.setLastServicePoint(scheduledEventType);
+        return selectedCustomer;
     }
 
     public void addToQueue(Customer a) {   // Jonon 1. asiakas aina palvelussa
         queue.add(a);
     }
 
-    public Customer takeFromQueue() {  // Poistetaan palvelussa ollut
-        reserved = false;
-        return queue.poll();
-    }
 
     public void startService() {
         Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
@@ -43,7 +47,19 @@ class ServicePoint {
         return reserved;
     }
 
+    public String getScheduledEventType() {
+        return scheduledEventType;
+    }
+
     public boolean queueNotEmpty() {
         return queue.size() != 0;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 }

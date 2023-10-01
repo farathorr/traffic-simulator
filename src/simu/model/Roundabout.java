@@ -12,26 +12,20 @@ import java.util.PriorityQueue;
 public class Roundabout extends ServicePoint {
 
     private ContinuousGenerator exitGenerator;
-    private static final EventType[] eventTypeList = {EventType.ROUNDABOUT_BOTTOM, EventType.ROUNDABOUT_LEFT, EventType.ROUNDABOUT_TOP, EventType.ROUNDABOUT_RIGHT};
+    private static final String[] eventTypeList = {"ROUNDABOUT_BOTTOM", "ROUNDABOUT_LEFT", "ROUNDABOUT_TOP", "ROUNDABOUT_RIGHT"};
+    private int maxRotations;
 
     private PriorityQueue<Customer> queue = new PriorityQueue<>();
 
-    public Roundabout(ContinuousGenerator generator, ContinuousGenerator exitGenerator, EventList eventList, EventType tyyppi) {
-        super(generator, eventList, tyyppi);
+    public Roundabout(ContinuousGenerator generator, ContinuousGenerator exitGenerator, EventList eventList, String type, int maxRotations) {
+        super(generator, eventList, type);
         this.exitGenerator = exitGenerator;
+        this.maxRotations = maxRotations;
     }
 
     @Override
-    public void addToQueue(Customer a) {   // Jonon 1. asiakas aina palvelussa
+    public void addToQueue(Customer a) { // Override to use the PriorityQueue
         queue.add(a);
-    }
-
-    @Override
-    public Customer takeFromQueue() {  // Poistetaan palvelussa ollut
-        reserved = false;
-        Customer selectedCustomer = queue.poll();
-        selectedCustomer.setLastServicePoint(scheduledEventType);
-        return selectedCustomer;
     }
 
     @Override
@@ -40,14 +34,28 @@ public class Roundabout extends ServicePoint {
     }
 
     @Override
+    public Customer takeFromQueue() { // Override to use the PriorityQueue
+        reserved = false;
+        Customer selectedCustomer = queue.poll();
+        selectedCustomer.setLastServicePoint(scheduledEventType);
+        return selectedCustomer;
+    }
+
+    @Override
     public void startService() {
         //Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
         Customer selectedCustomer = queue.peek();
         if (selectedCustomer.getRoundaboutExit() == null) {
-            do {
-                int randomIndex = Math.min((int) Math.round(Math.abs(exitGenerator.sample())),3);
-                selectedCustomer.setRoundaboutExit(eventTypeList[randomIndex]);
-            } while (selectedCustomer.getRoundaboutExit() == scheduledEventType);
+            int i = Math.min((int) Math.round(Math.abs(exitGenerator.sample())), maxRotations);
+            Roundabout currentRoundabout = this;
+            for(int j = 0; j < i; j++) {
+                currentRoundabout = (Roundabout) this.getLevel().getNextRoundaboutServicePoint(currentRoundabout, false);
+            }
+            selectedCustomer.setRoundaboutExit(currentRoundabout.getScheduledEventType());
+//            do {
+//                int randomIndex = Math.min((int) Math.round(Math.abs(exitGenerator.sample())), 3);
+//                selectedCustomer.setRoundaboutExit(eventTypeList[randomIndex]);
+//            } while (selectedCustomer.getRoundaboutExit() == scheduledEventType);
         }
 
         reserved = true;

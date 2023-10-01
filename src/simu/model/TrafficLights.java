@@ -7,9 +7,9 @@ public class TrafficLights extends ServicePoint {
     private ArrivalProcess trafficLight;
     private boolean greenLight = true;
 
-    public TrafficLights(ContinuousGenerator generator, ContinuousGenerator lightSwitchFrequencyGenerator, EventList eventList) {
-        super(generator, eventList, EventType.TRAFFIC_LIGHTS);
-        trafficLight = new ArrivalProcess(lightSwitchFrequencyGenerator, eventList, EventType.LIGHT_SWITCH);
+    public TrafficLights(ContinuousGenerator generator, ContinuousGenerator lightSwitchFrequencyGenerator, EventList eventList, String type) {
+        super(generator, eventList, type);
+        trafficLight = new ArrivalProcess(lightSwitchFrequencyGenerator, eventList, type + " Light Switch");
         trafficLight.generateNext();
     }
 

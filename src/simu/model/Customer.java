@@ -9,14 +9,16 @@ public class Customer implements Comparable<Customer> {
     private double arrivalTime;
     private double leavingTime;
     private int id;
+    private Level level;
     private static int customerCount = 1;
     private static long sum = 0;
-    private EventType lastServicePoint = null;
+    private String lastServicePoint = null;
 
-    private EventType roundaboutExit = null;
+    private String roundaboutExit = null;
 
-    public Customer() {
+    public Customer(Level level) {
         id = customerCount++;
+        this.level = level;
 
         arrivalTime = Clock.getInstance().getTime();
         Trace.out(Trace.Level.INFO, "Uusi asiakas nro " + id + " saapui klo " + arrivalTime);
@@ -48,15 +50,15 @@ public class Customer implements Comparable<Customer> {
         System.out.println("Autojen läpimenoaikojen keskiarvo tähän asti " + average);
     }
 
-    public EventType getRoundaboutExit() {
+    public String getRoundaboutExit() {
         return roundaboutExit;
     }
 
-    public void setRoundaboutExit(EventType roundaboutExit) {
+    public void setRoundaboutExit(String roundaboutExit) {
         this.roundaboutExit = roundaboutExit;
     }
 
-    public void setLastServicePoint(EventType lastServicePoint) {
+    public void setLastServicePoint(String lastServicePoint) {
         this.lastServicePoint = lastServicePoint;
     }
 
@@ -65,18 +67,17 @@ public class Customer implements Comparable<Customer> {
 //        if (this.time < arg.time) return -1;
 //        else if (this.time > arg.time) return 1;
 //        return 0;
-        if (isRoundAbout(this) == isRoundAbout(arg)) {
+        if (cameFromRoundabout(this) == cameFromRoundabout(arg)) {
             return 0;
         } else {
-            if (isRoundAbout(this)) return -1;
+            if (cameFromRoundabout(this)) return -1;
             else return 1;
         }
     }
 
-    private boolean isRoundAbout(Customer customer) {
-        return customer.lastServicePoint == EventType.ROUNDABOUT_BOTTOM ||
-                customer.lastServicePoint == EventType.ROUNDABOUT_LEFT ||
-                customer.lastServicePoint == EventType.ROUNDABOUT_TOP ||
-                customer.lastServicePoint == EventType.ROUNDABOUT_RIGHT;
+    private boolean cameFromRoundabout(Customer customer) {
+        if (customer.level.getServicePoint(lastServicePoint) != null) {
+            return customer.level.getServicePoint(lastServicePoint).getClass().getSimpleName().equals("Roundabout");
+        } return false;
     }
 }

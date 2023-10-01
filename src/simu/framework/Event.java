@@ -3,19 +3,19 @@ package simu.framework;
 import lib.Rounding;
 
 public class Event implements Comparable<Event> {
-	private IEventType type;
+	private String type;
 	private double time;
 
-	public Event(IEventType type, double time) {
+	public Event(String type, double time) {
 		this.type = type;
 		this.time = Rounding.toFixed(time, 2);
 	}
 	
-	public void setType(IEventType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
-	public IEventType getType() {
+	public String getType() {
 		return type;
 	}
 
