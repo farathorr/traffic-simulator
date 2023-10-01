@@ -8,6 +8,7 @@ import simu.model.Crosswalk;
 import simu.model.Intersection;
 import simu.model.Roundabout;
 import simu.model.ServicePoint;
+import simu.model.TrafficLights;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image roundaboutRight = new Image("roundabout-right.png");
     private Image roundaboutTop = new Image("roundabout-top.png");
     private Image roundaboutLeft = new Image("roundabout-left.png");
+    private Image trafficLight = new Image("trafficlight.png");
 
     Image crosswalkImageHorizontal = new Image("crosswalk.png");
     Image crosswalkImageVertical = new Image("crosswalkVertical.png");
@@ -75,6 +77,12 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                     case "top" -> gc.drawImage(roundaboutTop, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     case "left" -> gc.drawImage(roundaboutLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     case "bottom" -> gc.drawImage(roundaboutBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                }
+            }
+            if (servicePoint.getClass() == TrafficLights.class){
+                switch (servicePoint.getRotation()) {
+                    case "bottom" -> gc.drawImage(trafficLight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+
                 }
             }
         });
