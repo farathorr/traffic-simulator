@@ -3,6 +3,7 @@ package simu.model;
 import simu.framework.*;
 
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 import eduni.distributions.ContinuousGenerator;
 
@@ -34,8 +35,8 @@ public abstract class ServicePoint {
 
     public void addToQueue(Customer customer) {
         queue.add(customer);
-        customer.setDestinationX(x);
-        customer.setDestinationY(y);
+        customer.setDestinationX(x + Math.random() - 0.5);
+        customer.setDestinationY(y + Math.random() - 0.5);
     }
 
 
@@ -87,5 +88,9 @@ public abstract class ServicePoint {
 
     public Customer getFirstCustomer() {
     	return queue.peek();
+    }
+
+    public LinkedList<Customer> getQueue() {
+    	return queue;
     }
 }
