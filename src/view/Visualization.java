@@ -9,11 +9,13 @@ import simu.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Visualization extends Canvas implements IVisualizationForV, IVisualizationForM {
 
     private final GraphicsContext gc;
     double x = 0, y = 10;
+    private int gridSize = 128;
     private List<ServicePoint> servicePoints = new ArrayList<>();
     private Image roundaboutBottom = new Image("roundabout-bottom.png");
     private Image roundaboutRight = new Image("roundabout-right.png");
@@ -53,7 +55,6 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     public void render() {
         Platform.runLater(()->{
             gc.clearRect(0, 0, this.getWidth(), this.getHeight());
-            int gridSize = 128;
             servicePoints.forEach(servicePoint -> {
                 if(servicePoint.getClass() == Road.class) {
                     switch(servicePoint.getRotation()){
@@ -83,8 +84,11 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                     }
                 }
 
-
                 Customer customer = servicePoint.getFirstCustomer();
+                if ( servicePoint.getClass() == Roundabout.class ) {
+                    ((Roundabout) servicePoint).getRoundaboutQueue().forEach(c -> drawQueue(c == customer ? null : c));
+                } else servicePoint.getQueue().forEach(c -> drawQueue(c == customer ? null : c));
+
                 if(customer != null) {
                     customer.moveCustomer();
                     gc.setFill(Color.web("#32a852"));
@@ -92,6 +96,14 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 }
             });
         });
+    }
+
+    public void drawQueue(Customer customer) {
+        if(customer != null) {
+            customer.moveCustomer();
+            gc.setFill(Color.web("#eb4034"));
+            gc.fillOval(customer.getX() * gridSize + gridSize / 2, customer.getY() * gridSize + gridSize / 2, 10, 10);
+        }
     }
 
 }

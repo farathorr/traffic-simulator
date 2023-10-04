@@ -8,7 +8,6 @@ import simu.model.Customer;
 import simu.model.Level;
 import simu.model.ServicePoint;
 import view.ISimulatorUI;
-import view.RenderLoop;
 
 public class Controller implements IControllerForM, IControllerForV {
 	
@@ -27,7 +26,6 @@ public class Controller implements IControllerForM, IControllerForV {
 		engine.setSimulationTime(ui.getTime());
 		engine.setDelay(ui.getDelay());
 		ui.getVisualization().clearScreen();
-		ui.getRenderLoop().start();
 		((Thread) engine).start();
 	}
 	
@@ -54,11 +52,6 @@ public class Controller implements IControllerForM, IControllerForV {
 		ServicePoint servicePoint = level.getServicePoint(type);
 		servicePoint.render(x, y, rotation);
 		ui.getVisualization().addToRenderQueue(servicePoint);
-//		Platform.runLater(new Runnable() {
-//			public void run(){
-//				ui.getVisualization().render(level, type, x, y, rotation);
-//			}
-//		});
 	}
 
 	public Engine getEngine() {

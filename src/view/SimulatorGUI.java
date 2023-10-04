@@ -2,6 +2,7 @@ package view;
 
 
 import controller.*;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -28,7 +29,6 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     //Kontrollerin esittely (tarvitaan käyttöliittymässä)
     private IControllerForV controller;
-    private RenderLoop renderLoop;
     // Käyttöliittymäkomponentit:
     private Label result;
     private Label resultLabel;
@@ -44,7 +44,6 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         Trace.setTraceLevel(Level.ERR);
 
         controller = new Controller(this);
-        renderLoop = new RenderLoop(this);
     }
 
     @Override
@@ -104,7 +103,6 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             for (int y = 0; y < inputArray.length; y++) {
                 grid.add(inputArray[y].getLabel(), 0, y);   // sarake, rivi
                 grid.add(inputArray[y].getTextField(), 1, y);          // sarake, rivi
-
             }
 
             grid.add(resultLabel, 0, 2);      // sarake, rivi
@@ -121,6 +119,15 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             Scene scene = new Scene(hBox);
             primaryStage.setScene(scene);
             primaryStage.show();
+
+            AnimationTimer timer = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    screen.render();
+                }
+            };
+
+            timer.start();
 
 
         } catch (Exception e) {
@@ -150,10 +157,6 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     @Override
     public Visualization getVisualization() {
         return screen;
-    }
-
-    public RenderLoop getRenderLoop() {
-        return renderLoop;
     }
 
     public Controller getController() {

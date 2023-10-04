@@ -4,9 +4,8 @@ import eduni.distributions.ContinuousGenerator;
 import simu.framework.Clock;
 import simu.framework.Event;
 import simu.framework.EventList;
-import simu.framework.Trace;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class Roundabout extends ServicePoint {
@@ -63,5 +62,9 @@ public class Roundabout extends ServicePoint {
     @Override
     public Customer getFirstCustomer() {
         return queue.peek();
+    }
+
+    public PriorityQueue<Customer> getRoundaboutQueue() {
+        return queue;
     }
 }
