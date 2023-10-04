@@ -12,4 +12,6 @@ public interface ISimulatorUI {
 
     // Kontrolleri tarvitsee
     public Visualization getVisualization();
+
+    public void enableStartButton();
 }

@@ -20,12 +20,12 @@ public class Controller implements IControllerForM, IControllerForV {
 
 	@Override
 	public void startSimulator() {
+		ui.getVisualization().reset();
 		engine = new CustomEngine(this); // luodaan uusi moottorisäie jokaista simulointia varten
 		Customer.resetCustomerCount();
 		engine.getClock().setTime(0);
 		engine.setSimulationTime(ui.getTime());
 		engine.setDelay(ui.getDelay());
-		ui.getVisualization().clearScreen();
 		((Thread) engine).start();
 	}
 	
@@ -56,5 +56,9 @@ public class Controller implements IControllerForM, IControllerForV {
 
 	public Engine getEngine() {
 		return (Engine) engine;
+	}
+
+	public void enableStartButton() {
+		ui.enableStartButton();
 	}
 }

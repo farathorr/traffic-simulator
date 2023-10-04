@@ -34,9 +34,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         clearScreen();
     }
 
+    public void reset() {
+        servicePoints.clear();
+        clearScreen();
+    }
+
     public void clearScreen() {
-        gc.setFill(Color.YELLOW);
-        gc.fillRect(0, 0, this.getWidth(), this.getHeight());
+        gc.clearRect(0, 0, this.getWidth(), this.getHeight());
     }
 
     public void newCustomer() {

@@ -63,12 +63,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
             startButton = new Button();
             startButton.setText("Käynnistä simulointi");
-            startButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    controller.startSimulator();
-                    startButton.setDisable(false);
-                }
+            startButton.setOnAction(event -> {
+                controller.startSimulator();
+                startButton.setDisable(true);
             });
 
             slowdownButton = new Button();
@@ -161,5 +158,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     public Controller getController() {
     	return (Controller) controller;
+    }
+
+    public void enableStartButton() {
+        startButton.setDisable(false);
     }
 }
