@@ -10,7 +10,6 @@ import simu.model.*;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class Visualization extends Canvas implements IVisualizationForV, IVisualizationForM {
 
@@ -25,8 +24,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image roundaboutLeft = new Image("roundabout-left.png");
     private Image trafficLight = new Image("trafficlight.png");
 
-    Image crosswalkImageHorizontal = new Image("crosswalk.png");
-    Image crosswalkImageVertical = new Image("crosswalkVertical.png");
+    Image crosswalkImageRight = new Image("crosswalk-right.png");
+    Image crosswalkImageTop = new Image("crosswalk-top.png");
+    Image crosswalkImageLeft = new Image("crosswalk-left.png");
+    Image crosswalkImageBottom = new Image("crosswalk-bottom.png");
     Image roadImageHorizontal = new Image("road.png");
     Image roadImageVertical = new Image("roadVertical.png");
 
@@ -64,48 +65,56 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     }
 
     public void render() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             gc.clearRect(0, 0, this.getWidth(), this.getHeight());
             servicePoints.forEach(servicePoint -> {
-                if(servicePoint.getClass() == Road.class) {
-                    switch(servicePoint.getRotation()){
-                        case "right", "left" -> gc.drawImage(roadImageHorizontal,servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "top", "bottom" -> gc.drawImage(roadImageVertical,servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                    }
-                }
-                else if(servicePoint.getClass() == Crosswalk.class) {
+                if (servicePoint.getClass() == Road.class) {
                     switch (servicePoint.getRotation()) {
-                        case "right" -> gc.drawImage(crosswalkImageHorizontal, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "left" -> gc.drawImage(crosswalkImageHorizontal, (servicePoint.getX()-1) * gridSize, (servicePoint.getY()+1) * gridSize, -gridSize, -gridSize);
-                        case "top" -> gc.drawImage(crosswalkImageVertical, (servicePoint.getX()+1) * gridSize, (servicePoint.getY()+1) * gridSize, -gridSize, -gridSize);
-                        case "bottom" -> gc.drawImage(crosswalkImageVertical, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "right", "left" ->
+                                gc.drawImage(roadImageHorizontal, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "top", "bottom" ->
+                                gc.drawImage(roadImageVertical, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     }
-                }
-                else if(servicePoint.getClass() == Roundabout.class) {
+                } else if (servicePoint.getClass() == Crosswalk.class) {
                     switch (servicePoint.getRotation()) {
-                        case "right" -> gc.drawImage(roundaboutRight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "top" -> gc.drawImage(roundaboutTop, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "left" -> gc.drawImage(roundaboutLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "bottom" -> gc.drawImage(roundaboutBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "right" ->
+                                gc.drawImage(crosswalkImageRight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "left" ->
+                                gc.drawImage(crosswalkImageLeft, (servicePoint.getX() - 1) * gridSize, (servicePoint.getY() + 1) * gridSize, -gridSize, -gridSize);
+                        case "top" ->
+                                gc.drawImage(crosswalkImageTop, (servicePoint.getX() + 1) * gridSize, (servicePoint.getY() + 1) * gridSize, -gridSize, -gridSize);
+                        case "bottom" ->
+                                gc.drawImage(crosswalkImageBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     }
-                }
-                else if (servicePoint.getClass() == TrafficLights.class) {
+                } else if (servicePoint.getClass() == Roundabout.class) {
                     switch (servicePoint.getRotation()) {
-                        case "bottom" -> gc.drawImage(trafficLight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "right" ->
+                                gc.drawImage(roundaboutRight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "top" ->
+                                gc.drawImage(roundaboutTop, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "left" ->
+                                gc.drawImage(roundaboutLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "bottom" ->
+                                gc.drawImage(roundaboutBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                    }
+                } else if (servicePoint.getClass() == TrafficLights.class) {
+                    switch (servicePoint.getRotation()) {
+                        case "bottom" ->
+                                gc.drawImage(trafficLight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     }
                 }
             });
 
             try {
                 customers.forEach(this::drawQueue);
-            } catch(ConcurrentModificationException e) {
+            } catch (ConcurrentModificationException e) {
                 System.out.println("Working as intended");
             }
         });
     }
 
     public void drawQueue(Customer customer) {
-        if(customer != null) {
+        if (customer != null) {
             customer.moveCustomer();
             if (customer.isFirstInQueue()) gc.setFill(Color.web("#32a852"));
             else gc.setFill(Color.web("#eb4034"));

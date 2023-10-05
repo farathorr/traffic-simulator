@@ -50,7 +50,7 @@ public class LevelController {
         controller.render(level, "road1_3", 1, 3, "bottom");
         controller.render(level, "road1_4", 1, 4, "bottom");
         controller.render(level, "crosswalk3_3", 3, 3, "right");
-        controller.render(level, "road4_3", 4, 3, "right");
+        controller.render(level, "road4_3", 4, 3, "right-top");
         controller.render(level, "roundabout_right4_2", 4, 2, "right");
         controller.render(level, "roundabout_top5_2", 5, 2, "top");
         controller.render(level, "roundabout_left5_1", 5, 1, "left");
