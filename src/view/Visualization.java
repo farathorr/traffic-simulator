@@ -22,14 +22,22 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image roundaboutRight = new Image("roundabout-right.png");
     private Image roundaboutTop = new Image("roundabout-top.png");
     private Image roundaboutLeft = new Image("roundabout-left.png");
+    private Image roundaboutBottomRoad = new Image("roundabout-bottom-with-road.png");
+    private Image roundaboutRightRoad = new Image("roundabout-right-with-road.png");
+    private Image roundaboutTopRoad = new Image("roundabout-top-with-road.png");
+    private Image roundaboutLeftRoad = new Image("roundabout-left-with-road.png");
     private Image trafficLight = new Image("trafficlight.png");
 
-    Image crosswalkImageRight = new Image("crosswalk-right.png");
-    Image crosswalkImageTop = new Image("crosswalk-top.png");
-    Image crosswalkImageLeft = new Image("crosswalk-left.png");
-    Image crosswalkImageBottom = new Image("crosswalk-bottom.png");
-    Image roadImageHorizontal = new Image("road.png");
-    Image roadImageVertical = new Image("roadVertical.png");
+    private Image crosswalkImageRight = new Image("crosswalk-right.png");
+    private Image crosswalkImageTop = new Image("crosswalk-top.png");
+    private Image crosswalkImageLeft = new Image("crosswalk-left.png");
+    private Image crosswalkImageBottom = new Image("crosswalk-bottom.png");
+    private Image roadImageHorizontal = new Image("road.png");
+    private Image roadImageVertical = new Image("roadVertical.png");
+    private Image tIntersectionRight = new Image("t-intersection-right.png");
+    private Image tIntersectionTop = new Image("t-intersection-top.png");
+    private Image tIntersectionLeft = new Image("t-intersection-left.png");
+    private Image tIntersectionBottom = new Image("t-intersection-bottom.png");
 
     public Visualization(int w, int h) {
         super(w, h);
@@ -74,6 +82,14 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                                 gc.drawImage(roadImageHorizontal, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                         case "top", "bottom" ->
                                 gc.drawImage(roadImageVertical, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "t-intersection-right" ->
+                                gc.drawImage(tIntersectionRight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "t-intersection-top" ->
+                                gc.drawImage(tIntersectionTop, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "t-intersection-left" ->
+                                gc.drawImage(tIntersectionLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "t-intersection-bottom" ->
+                                gc.drawImage(tIntersectionBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     }
                 } else if (servicePoint.getClass() == Crosswalk.class) {
                     switch (servicePoint.getRotation()) {
@@ -96,6 +112,14 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                                 gc.drawImage(roundaboutLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                         case "bottom" ->
                                 gc.drawImage(roundaboutBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "right-road" ->
+                                gc.drawImage(roundaboutRightRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "top-road" ->
+                                gc.drawImage(roundaboutTopRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "left-road" ->
+                                gc.drawImage(roundaboutLeftRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "bottom-road" ->
+                                gc.drawImage(roundaboutBottomRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     }
                 } else if (servicePoint.getClass() == TrafficLights.class) {
                     switch (servicePoint.getRotation()) {
