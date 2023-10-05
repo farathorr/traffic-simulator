@@ -21,6 +21,7 @@ public class Crosswalk extends ServicePoint {
     @Override
     public void startService() {  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
         double serviceTime = generateSampleDelay();
+        queue.peek().setFirstInQueue(true);
         Trace.out(Trace.Level.INFO, "Jalankulkijat ylittävät tietä, aikaa kuluu: " + serviceTime);
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
         reserved = true;

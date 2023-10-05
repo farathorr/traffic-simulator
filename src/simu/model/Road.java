@@ -13,14 +13,7 @@ public class Road extends ServicePoint {
     @Override
     public void startService() {  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
         reserved = true;
-//        if (this.generator.sample() > 50) {
-//            Trace.out(Trace.Level.INFO, "Auto " + queue.peek().getId() + " kääntyy oikealle.");
-//            eventList.add(new Event("TURN_RIGHT", Clock.getInstance().getTime() + 2));
-//        } else {
-//            Trace.out(Trace.Level.INFO, "Auto " + queue.peek().getId() + " kääntyy vasemmalle.");
-//            eventList.add(new Event("TURN_LEFT", Clock.getInstance().getTime() + 2));
-//        }
-
+        queue.peek().setFirstInQueue(true);
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + 2));
     }
 }

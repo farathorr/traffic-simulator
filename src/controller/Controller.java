@@ -54,6 +54,11 @@ public class Controller implements IControllerForM, IControllerForV {
 		ui.getVisualization().addToRenderQueue(servicePoint);
 	}
 
+	@Override
+	public void addCustomerToRendererQueue(Customer customer) {
+		ui.getVisualization().addToCustomerQueue(customer);
+	}
+
 	public Engine getEngine() {
 		return (Engine) engine;
 	}

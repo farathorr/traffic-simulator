@@ -24,8 +24,9 @@ public class Roundabout extends ServicePoint {
     @Override
     public void addToQueue(Customer customer) { // Override to use the PriorityQueue
         queue.add(customer);
-        customer.setDestinationX(this.getX());
-        customer.setDestinationY(this.getY());
+        customer.setDestinationX(this.getX() + Math.random() - 0.5);
+        customer.setDestinationY(this.getY() + Math.random() - 0.5);
+        customer.setFirstInQueue(false);
     }
 
     @Override
@@ -45,6 +46,7 @@ public class Roundabout extends ServicePoint {
     public void startService() {
         //Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
         Customer selectedCustomer = queue.peek();
+        selectedCustomer.setFirstInQueue(true);
         if (selectedCustomer.getRoundaboutExit() == null) {
             int i = Math.min((int) Math.round(Math.abs(exitGenerator.sample())), maxRotations);
             Roundabout currentRoundabout = this;

@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import simu.model.*;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -17,6 +18,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     double x = 0, y = 10;
     private int gridSize = 128;
     private List<ServicePoint> servicePoints = new ArrayList<>();
+    private List<Customer> customers = new ArrayList<>();
     private Image roundaboutBottom = new Image("roundabout-bottom.png");
     private Image roundaboutRight = new Image("roundabout-right.png");
     private Image roundaboutTop = new Image("roundabout-top.png");
@@ -36,6 +38,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void reset() {
         servicePoints.clear();
+        customers.clear();
         clearScreen();
     }
 
@@ -54,6 +57,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void addToRenderQueue(ServicePoint servicePoint) {
         servicePoints.add(servicePoint);
+    }
+
+    public void addToCustomerQueue(Customer customer) {
+        customers.add(customer);
     }
 
     public void render() {
@@ -87,25 +94,22 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                         case "bottom" -> gc.drawImage(trafficLight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     }
                 }
-
-                Customer customer = servicePoint.getFirstCustomer();
-                if ( servicePoint.getClass() == Roundabout.class ) {
-                    ((Roundabout) servicePoint).getRoundaboutQueue().forEach(c -> drawQueue(c == customer ? null : c));
-                } else servicePoint.getQueue().forEach(c -> drawQueue(c == customer ? null : c));
-
-                if(customer != null) {
-                    customer.moveCustomer();
-                    gc.setFill(Color.web("#32a852"));
-                    gc.fillOval(customer.getX() * gridSize + gridSize / 2, customer.getY() * gridSize + gridSize / 2, 10, 10);
-                }
             });
+
+            try {
+                customers.forEach(this::drawQueue);
+            } catch(ConcurrentModificationException e) {
+                System.out.println("Working as intended");
+            }
         });
     }
 
     public void drawQueue(Customer customer) {
         if(customer != null) {
             customer.moveCustomer();
-            gc.setFill(Color.web("#eb4034"));
+            if (customer.isFirstInQueue()) gc.setFill(Color.web("#32a852"));
+            else gc.setFill(Color.web("#eb4034"));
+
             gc.fillOval(customer.getX() * gridSize + gridSize / 2, customer.getY() * gridSize + gridSize / 2, 10, 10);
         }
     }

@@ -16,6 +16,7 @@ public class Customer implements Comparable<Customer> {
 
     private String roundaboutExit = null;
     private double x, y, destinationX, destinationY;
+    private boolean firstInQueue = false;
 
     public Customer(Level level, double x, double y) {
         id = customerCount++;
@@ -78,6 +79,14 @@ public class Customer implements Comparable<Customer> {
             if (cameFromRoundabout(this)) return -1;
             else return 1;
         }
+    }
+
+    public boolean isFirstInQueue() {
+        return firstInQueue;
+    }
+
+    public void setFirstInQueue(boolean firstInQueue) {
+        this.firstInQueue = firstInQueue;
     }
 
     private boolean cameFromRoundabout(Customer customer) {

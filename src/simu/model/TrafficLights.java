@@ -21,6 +21,7 @@ public class TrafficLights extends ServicePoint {
     @Override
     public void startService() {
         reserved = true;
+        queue.peek().setFirstInQueue(true);
         Trace.out(Trace.Level.INFO, "Auto " + queue.peek().getId() + " ajaa liikennevalojen läpi.");
         double serviceTime = generateSampleDelay();
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
