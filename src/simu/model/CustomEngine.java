@@ -11,7 +11,7 @@ public class CustomEngine extends Engine {
         super(controller);
 
         LevelController levelController = new LevelController(controller, eventList);
-        currentLevel = levelController.getLevel(3);
+        currentLevel = levelController.getLevel(1);
     }
 
     @Override
@@ -63,7 +63,10 @@ public class CustomEngine extends Engine {
         for (ServicePoint servicePoint : currentLevel.getServicePoints()) {
             if (servicePoint.isReserved() || !servicePoint.queueNotEmpty()) continue;
 
-            if (servicePoint.getClass() == TrafficLights.class) {
+            if(servicePoint.getClass() != Roundabout.class && currentLevel.hasNextServicePoint(servicePoint) && currentLevel.getNextServicePoint(servicePoint).getClass() == Roundabout.class) {
+                if (!currentLevel.getNextServicePoint(servicePoint).queueNotEmpty()) servicePoint.startService();
+            }
+            else if (servicePoint.getClass() == TrafficLights.class) {
                 TrafficLights trafficPoint = (TrafficLights)servicePoint;
                 if(!trafficPoint.isGreenLight()) continue;
                 if(trafficPoint.generateSampleDelay() + this.currentTime() < trafficPoint.getNextLightSwitchEvent().getTime()) {
@@ -77,6 +80,7 @@ public class CustomEngine extends Engine {
                     crosswalk.startService();
                 }
             }
+
             else servicePoint.startService();
         }
     }

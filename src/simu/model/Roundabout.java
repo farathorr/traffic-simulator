@@ -24,8 +24,10 @@ public class Roundabout extends ServicePoint {
     @Override
     public void addToQueue(Customer customer) { // Override to use the PriorityQueue
         queue.add(customer);
-        customer.addDestination(this.getX() + (Math.random() - 0.5)/3, this.getY() + (Math.random() - 0.5)/3);
         customer.setFirstInQueue(false);
+        if (!customer.cameFromRoundabout()) return; // Render waiting queue on the road next to the roundabout
+
+        customer.addDestination(this.getX() + (Math.random() - 0.5)/3, this.getY() + (Math.random() - 0.5)/3);
     }
 
     @Override
@@ -47,11 +49,13 @@ public class Roundabout extends ServicePoint {
         Customer selectedCustomer = queue.peek();
         selectedCustomer.setFirstInQueue(true);
         if (selectedCustomer.getRoundaboutExit() == null) {
-            int i = Math.min((int) Math.round(Math.abs(exitGenerator.sample())), maxRotations);
             Roundabout currentRoundabout = this;
-            for(int j = 0; j < i; j++) {
-                currentRoundabout = (Roundabout) this.getLevel().getNextRoundaboutServicePoint(currentRoundabout, false);
-            }
+            do {
+                int i = Math.min((int) Math.round(Math.abs(exitGenerator.sample())), maxRotations);
+                for(int j = 0; j < i; j++) {
+                    currentRoundabout = (Roundabout) this.getLevel().getNextRoundaboutServicePoint(currentRoundabout, false);
+                }
+            } while(!this.getLevel().roundaboutHasExitPoint(currentRoundabout));
             selectedCustomer.setRoundaboutExit(currentRoundabout.getScheduledEventType());
         }
 
