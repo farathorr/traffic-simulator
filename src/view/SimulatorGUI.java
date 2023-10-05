@@ -196,12 +196,17 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     private void setCanvasZoom(Canvas canvas) {
         final Visualization screen = (Visualization) canvas;
+        final double minScale = .1, maxScale = 150.0;
         canvas.setOnScroll(event -> {
-            if (event.getDeltaY() < 0)
-                screen.setZoomLevel(Math.max(screen.getZoomLevel() * 0.9, 0.1));
-            else
-                screen.setZoomLevel(Math.min(screen.getZoomLevel() * 1.1, 10));
-//            System.out.println("Scroll started " + event.getDeltaY() + "    " + event.getX());
+            double zoomLevel = screen.getZoomLevel();
+            if (event.getDeltaY() < 0) screen.setZoomLevel(Math.max(Math.pow(screen.getZoomLevel(), 0.9) - .1, minScale));
+            else screen.setZoomLevel(Math.min(Math.pow(screen.getZoomLevel(), 1.15) + .1, maxScale));
+
+            System.out.println(screen.getZoomLevel());
+
+            double scale = screen.getZoomLevel() / zoomLevel;
+            screen.setX(screen.getX() * scale);
+            screen.setY(screen.getY() * scale);
         });
     }
 }
