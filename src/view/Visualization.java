@@ -21,9 +21,8 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private List<Customer> customers = new ArrayList<>();
     private Image roundaboutTurn = new Image("roundabout.png");
     private Image roundaboutRoad = new Image("roundabout-with-road.png");
-
+    private Image roundaboutRoad2 = new Image("roundabout-with-road2.png");
     private Image trafficLight = new Image("trafficlight.png");
-
     private Image crosswalkImageRight = new Image("crosswalk-right.png");
     private Image crosswalkImageTop = new Image("crosswalk-top.png");
     private Image crosswalkImageLeft = new Image("crosswalk-left.png");
@@ -88,9 +87,9 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                         case "left" -> drawImage(roundaboutTurn, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
                         case "bottom" -> drawImage(roundaboutTurn, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
                         case "right-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "top-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
+                        case "top-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                         case "left-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
-                        case "bottom-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
+                        case "bottom-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
                     }
                 } 
                 else if (servicePoint.getClass() == TrafficLights.class) {
