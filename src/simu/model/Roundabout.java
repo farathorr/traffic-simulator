@@ -24,8 +24,7 @@ public class Roundabout extends ServicePoint {
     @Override
     public void addToQueue(Customer customer) { // Override to use the PriorityQueue
         queue.add(customer);
-        customer.setDestinationX(this.getX() + Math.random() - 0.5);
-        customer.setDestinationY(this.getY() + Math.random() - 0.5);
+        customer.addDestination(this.getX() + (Math.random() - 0.5)/3, this.getY() + (Math.random() - 0.5)/3);
         customer.setFirstInQueue(false);
     }
 

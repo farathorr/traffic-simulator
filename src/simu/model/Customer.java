@@ -3,6 +3,9 @@ package simu.model;
 import lib.Rounding;
 import simu.framework.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // TODO:
 // Customer koodataan simulointimallin edellyttämällä tavalla (data!)
 public class Customer implements Comparable<Customer> {
@@ -17,6 +20,8 @@ public class Customer implements Comparable<Customer> {
     private String roundaboutExit = null;
     private double x, y, destinationX, destinationY;
     private boolean firstInQueue = false;
+
+    private List<Double[]> destinations = new ArrayList<>();
 
     public Customer(Level level, double x, double y) {
         id = customerCount++;
@@ -95,19 +100,35 @@ public class Customer implements Comparable<Customer> {
         } return false;
     }
 
-    public void setDestinationX(double destinationX) {
-        this.destinationX = destinationX;
-    }
-
-    public void setDestinationY(double destinationY) {
-        this.destinationY = destinationY;
+    public void addDestination(double x, double y){
+        Double[] destination = new Double[2];
+        destination[0] = x;
+        destination[1] = y;
+        if (destinations.isEmpty()){
+            this.destinationX = x;
+            this.destinationY = y;
+        }
+        destinations.add(destination);
     }
 
     public void moveCustomer() {
+
+        double speed = Math.max(20/destinations.size(), 1);
+
         double deltaX = destinationX - this.x;
         double deltaY = destinationY - this.y;
-        this.x += deltaX / 20;
-        this.y += deltaY / 20;
+        this.x += deltaX / speed;
+        this.y += deltaY / speed;
+
+        if (this.destinationX - this.x < 0.05 && this.destinationY - this.y < 0.05) {
+            if (destinations.size() > 1) {
+                destinations.remove(0);
+                this.destinationX = destinations.get(0)[0];
+                this.destinationY = destinations.get(0)[1];
+            }
+        }
+
+
     }
 
     public double getX() {

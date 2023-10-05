@@ -35,8 +35,7 @@ public abstract class ServicePoint {
 
     public void addToQueue(Customer customer) {
         queue.add(customer);
-        customer.setDestinationX(x + Math.random() - 0.5);
-        customer.setDestinationY(y + Math.random() - 0.5);
+        customer.addDestination(x + (Math.random() - 0.5)/3, y + (Math.random() - 0.5)/3);
         customer.setFirstInQueue(false);
     }
 
