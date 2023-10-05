@@ -5,7 +5,6 @@ import controller.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,6 +23,7 @@ import simu.framework.Trace;
 import simu.framework.Trace.Level;
 
 import java.text.DecimalFormat;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class SimulatorGUI extends Application implements ISimulatorUI {
@@ -130,8 +130,16 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             vBox.setSpacing(500);
 
             screen = new Visualization(1000, 800);
+//            screen.setOnMouseMoved(event -> {
+////                System.out.println(event.getButton());
+//                System.out.println("X: " + event.getX() + " Y: " + event.getY());
+////                screen.setMouseX(event.getX());
+////                screen.setMouseY(event.getY());
+//            });
 
-            // TÃ¤ytetÃ¤Ã¤n boxi:
+            setCanvasDrag(screen);
+            setCanvasZoom(screen);
+
             hBox.getChildren().addAll(vBox, (Canvas) screen);
 
             Scene scene = new Scene(hBox);
@@ -183,5 +191,44 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     public void enableStartButton() {
         startButton.setDisable(false);
+    }
+
+    private void setCanvasDrag(Canvas canvas) {
+        AtomicReference<Double> startX = new AtomicReference<>((double) 0);
+        AtomicReference<Double> startY = new AtomicReference<>((double) 0);
+        AtomicReference<Double> canvasX = new AtomicReference<>(((Visualization) canvas).getX());
+        AtomicReference<Double> canvasY = new AtomicReference<>(((Visualization) canvas).getY());
+        final Visualization screen = (Visualization) canvas;
+
+        canvas.setOnMousePressed(event -> {
+            startX.set(event.getX());
+            startY.set(event.getY());
+            canvasX.set(screen.getX());
+            canvasY.set(screen.getY());
+        });
+
+        canvas.setOnMouseDragged(event -> {
+            double deltaX = event.getX() - startX.get();
+            double deltaY = event.getY() - startY.get();
+            screen.setX(canvasX.get() + deltaX);
+            screen.setY(canvasY.get() + deltaY);
+        });
+    }
+
+    private void setCanvasZoom(Canvas canvas) {
+        final Visualization screen = (Visualization) canvas;
+        final double minScale = .1, maxScale = 150.0;
+        canvas.setOnScroll(event -> {
+            double zoomLevel = screen.getZoomLevel();
+            if (event.getDeltaY() < 0) screen.setZoomLevel(Math.max(Math.pow(screen.getZoomLevel(), 0.9) - .1, minScale));
+            else screen.setZoomLevel(Math.min(Math.pow(screen.getZoomLevel(), 1.15) + .1, maxScale));
+
+            double scale = screen.getZoomLevel() / zoomLevel;
+            double deltaX = (event.getX() * scale) - event.getX();
+            double deltaY = (event.getY() * scale) - event.getY();
+
+            screen.setX(screen.getX() * scale - deltaX);
+            screen.setY(screen.getY() * scale - deltaY);
+        });
     }
 }
