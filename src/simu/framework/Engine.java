@@ -14,6 +14,7 @@ public abstract class Engine extends Thread implements IEngine {
 	public Engine(IControllerForM controller) {
 		this.controller = controller;
 		clock = Clock.getInstance(); // Otetaan clock muuttujaan yksinkertaistamaan koodia
+		clock.setTime(0);
 		eventList = new EventList();
 		// Palvelupisteet luodaan simu.model-pakkauksessa Moottorin aliluokassa 
 		this.engineNumber = ++engineCount;
@@ -47,6 +48,7 @@ public abstract class Engine extends Thread implements IEngine {
 			this.controller.showEndtime(this.clock.getTime());
 		}
 		results();
+		controller.enableStartButton();
 
 	}
 	
