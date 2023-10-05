@@ -14,7 +14,9 @@ import java.util.List;
 public class Visualization extends Canvas implements IVisualizationForV, IVisualizationForM {
 
     private final GraphicsContext gc;
+    private final boolean DEBUG = true;
     double x = 0, y = 0;
+    private int width = 100, height = 100;
     private int gridSize = 128;
     private double zoomLevel = 1.0;
     private List<ServicePoint> servicePoints = new ArrayList<>();
@@ -36,6 +38,8 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public Visualization(int w, int h) {
         super(w, h);
+        this.width = w;
+        this.height = h;
         gc = this.getGraphicsContext2D();
         clearScreen();
     }
@@ -118,6 +122,9 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             } catch (ConcurrentModificationException e) {
                 System.out.println("Working as intended");
             }
+
+            if(DEBUG) drawGrid();
+
         });
     }
 
@@ -133,6 +140,23 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void drawImage(Image img, double x, double y, double w, double h) {
         gc.drawImage(img, this.x + x * zoomLevel, this.y + y * zoomLevel, w * zoomLevel, h * zoomLevel);
+    }
+
+    public void drawGrid() {
+        gc.setFill(Color.BLACK);
+        double grid = gridSize * zoomLevel;
+        int width = (int)(this.width / grid + 2);
+        int height = (int)(this.width / grid + 1);
+
+        for(int i = -1; i < width; i++) {
+            for(int j = -1; j < height; j++) {
+                double x = this.x % grid + i * grid;
+                double y = this.y % grid + j * grid;
+                gc.strokeRect(x, y, grid, grid);
+                String text = String.format("%d, %d", (int) (i - this.x / grid), (int) (j - this.y / grid));
+                gc.fillText(text, x + 2, y + grid - 2);
+            }
+        }
     }
 
     public double getX() {
