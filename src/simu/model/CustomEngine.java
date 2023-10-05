@@ -13,17 +13,6 @@ public class CustomEngine extends Engine {
 
     public CustomEngine(IControllerForM controller) {
         super(controller);
-//        servicePoints = new ServicePoint[7];
-//        servicePoints[0] = new Intersection(new Normal(50, 50), eventList, EventType.INTERSECTION);
-//        servicePoints[1] = new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, EventType.CROSSWALK);
-//        servicePoints[2] = new TrafficLights(new Normal(5, 3), new Normal(15, 1), eventList);
-//        servicePoints[3] = new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, EventType.ROUNDABOUT_BOTTOM);
-//        servicePoints[4] = new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, EventType.ROUNDABOUT_RIGHT);
-//        servicePoints[5] = new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, EventType.ROUNDABOUT_TOP);
-//        servicePoints[6] = new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, EventType.ROUNDABOUT_LEFT);
-//        arrivalProcess = new ArrivalProcess(new Normal(15, 5), eventList, EventType.ARR1);
-
-
         level1.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
         level1.add(new Road(new Normal(5, 3), eventList, "road0_0"), "crosswalk1_0");
         level1.add(new Crosswalk(new Normal(1, 2), new Normal(50, 5), eventList, "crosswalk1_0"), "road1_1");
