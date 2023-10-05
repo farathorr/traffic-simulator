@@ -117,15 +117,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 //            });
 
             setCanvasDrag(screen);
-
-
-//            screen.setOnMousePressed(event -> {
-//                System.out.println(event.getButton());
-//            });
-
-//            screen.setOnScroll(event -> {
-//            	System.out.println("Scroll started " + event.getDeltaY() + "    " + event.getX());
-//            });
+            setCanvasZoom(screen);
 
             hBox.getChildren().addAll(grid, (Canvas) screen);
 
@@ -180,23 +172,36 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         startButton.setDisable(false);
     }
 
-    private void setCanvasDrag(Canvas screen) {
+    private void setCanvasDrag(Canvas canvas) {
         AtomicReference<Double> startX = new AtomicReference<>((double) 0);
         AtomicReference<Double> startY = new AtomicReference<>((double) 0);
-        AtomicReference<Double> canvasX = new AtomicReference<>(((Visualization) screen).getX());
-        AtomicReference<Double> canvasY = new AtomicReference<>(((Visualization) screen).getY());
-        screen.setOnMousePressed(event -> {
+        AtomicReference<Double> canvasX = new AtomicReference<>(((Visualization) canvas).getX());
+        AtomicReference<Double> canvasY = new AtomicReference<>(((Visualization) canvas).getY());
+        final Visualization screen = (Visualization) canvas;
+
+        canvas.setOnMousePressed(event -> {
             startX.set(event.getX());
             startY.set(event.getY());
-            canvasX.set(((Visualization) screen).getX());
-            canvasY.set(((Visualization) screen).getY());
+            canvasX.set(screen.getX());
+            canvasY.set(screen.getY());
         });
 
-        screen.setOnMouseDragged(event -> {
+        canvas.setOnMouseDragged(event -> {
             double deltaX = event.getX() - startX.get();
             double deltaY = event.getY() - startY.get();
-            ((Visualization)screen).setX(canvasX.get() + deltaX);
-            ((Visualization)screen).setY(canvasY.get() + deltaY);
+            screen.setX(canvasX.get() + deltaX);
+            screen.setY(canvasY.get() + deltaY);
+        });
+    }
+
+    private void setCanvasZoom(Canvas canvas) {
+        final Visualization screen = (Visualization) canvas;
+        canvas.setOnScroll(event -> {
+            if (event.getDeltaY() < 0)
+                screen.setZoomLevel(Math.max(screen.getZoomLevel() * 0.9, 0.1));
+            else
+                screen.setZoomLevel(Math.min(screen.getZoomLevel() * 1.1, 10));
+//            System.out.println("Scroll started " + event.getDeltaY() + "    " + event.getX());
         });
     }
 }

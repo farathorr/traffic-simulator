@@ -102,12 +102,12 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             if (customer.isFirstInQueue()) gc.setFill(Color.web("#32a852"));
             else gc.setFill(Color.web("#eb4034"));
 
-            gc.fillOval( x + customer.getX() * gridSize + gridSize / 2, y + customer.getY() * gridSize + gridSize / 2, 10, 10);
+            gc.fillOval( x + (customer.getX() * gridSize + gridSize / 2) * zoomLevel, y + (customer.getY() * gridSize + gridSize / 2) * zoomLevel, 10 * zoomLevel, 10 * zoomLevel);
         }
     }
 
     public void drawImage(Image img, double x, double y, double w, double h) {
-        gc.drawImage(img, this.x + x, this.y + y, w, h);
+        gc.drawImage(img, this.x + x * zoomLevel, this.y + y * zoomLevel, w * zoomLevel, h * zoomLevel);
     }
 
     public double getX() {
@@ -124,5 +124,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public double getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public void setZoomLevel(double zoomLevel) {
+        this.zoomLevel = zoomLevel;
     }
 }
