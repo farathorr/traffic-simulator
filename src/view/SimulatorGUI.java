@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -35,7 +36,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private Button startButton;
     private Button slowdownButton;
     private Button speedupButton;
-    private InputElement timeInput, delayInput;
+    private InputElement timeInput, delayInput, carMean, carVariance;
     private Visualization screen;
 
     @Override
@@ -80,7 +81,12 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
             delayInput = new InputElement("Viive:", "10", "Syötä viive");
 
+            carMean = new InputElement("Keskiarvo","5", "Syötä keskiarvo");
+
+            carVariance = new InputElement("Vaihtelevuus","5","Syötä vaihtelevuus");
+
             InputElement[] inputArray = {timeInput, delayInput};
+            InputElement[] customInputArray = {carMean, carVariance};
 
             resultLabel = new Label("Kokonaisaika:");
             resultLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -92,26 +98,41 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             hBox.setPadding(new Insets(15, 12, 15, 12)); // marginaalit ylÃ¤, oikea, ala, vasen
             hBox.setSpacing(10);   // noodien välimatka 10 pikseliä
 
-            GridPane grid = new GridPane();
-            grid.setAlignment(Pos.CENTER);
-            grid.setVgap(10);
-            grid.setHgap(5);
+            VBox vBox = new VBox();
+
+            GridPane gridDefault = new GridPane();
+            gridDefault.setAlignment(Pos.CENTER);
+            gridDefault.setVgap(10);
+            gridDefault.setHgap(5);
 
             for (int y = 0; y < inputArray.length; y++) {
-                grid.add(inputArray[y].getLabel(), 0, y);   // sarake, rivi
-                grid.add(inputArray[y].getTextField(), 1, y);          // sarake, rivi
+                gridDefault.add(inputArray[y].getLabel(), 0, y);   // sarake, rivi
+                gridDefault.add(inputArray[y].getTextField(), 1, y);          // sarake, rivi
             }
 
-            grid.add(resultLabel, 0, 2);      // sarake, rivi
-            grid.add(result, 1, 2);           // sarake, rivi
-            grid.add(startButton, 0, 3);  // sarake, rivi
-            grid.add(speedupButton, 0, 4);   // sarake, rivi
-            grid.add(slowdownButton, 1, 4);   // sarake, rivi
+            gridDefault.add(resultLabel, 0, 2);      // sarake, rivi
+            gridDefault.add(result, 1, 2);           // sarake, rivi
+            gridDefault.add(startButton, 0, 3);  // sarake, rivi
+            gridDefault.add(speedupButton, 0, 4);   // sarake, rivi
+            gridDefault.add(slowdownButton, 1, 4);   // sarake, rivi
+
+            GridPane gridCustom = new GridPane();
+            gridCustom.setAlignment(Pos.TOP_CENTER);
+            gridCustom.setVgap(10);
+            gridCustom.setHgap(5);
+
+            for (int i = 0; i < customInputArray.length; i++) {
+                gridCustom.add(customInputArray[i].getLabel(), 0, i);   // sarake, rivi
+                gridCustom.add(customInputArray[i].getTextField(), 1, i);          // sarake, rivi
+            }
+
+            vBox.getChildren().addAll(gridCustom, gridDefault);
+            vBox.setSpacing(500);
 
             screen = new Visualization(1000, 800);
 
             // TÃ¤ytetÃ¤Ã¤n boxi:
-            hBox.getChildren().addAll(grid, (Canvas) screen);
+            hBox.getChildren().addAll(vBox, (Canvas) screen);
 
             Scene scene = new Scene(hBox);
             primaryStage.setScene(scene);
