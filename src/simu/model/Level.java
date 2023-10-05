@@ -57,6 +57,10 @@ public class Level {
         return nextPoints.containsKey(servicePoint);
     }
 
+    public boolean hasNextServicePoint(ServicePoint servicePoint) {
+        return nextPoints.containsKey(servicePoint);
+    }
+
     public ServicePoint getServicePoint(String key) {
         return servicePoints.get(key);
     }
@@ -75,6 +79,10 @@ public class Level {
             return servicePoints.get(nextPoints.get(servicePoint).get(r));
         }
         return servicePoints.get(nextPoints.get(servicePoint).get(0));
+    }
+
+    public boolean roundaboutHasExitPoint(Object servicePoint) {
+        return nextPoints.get(servicePoint).size() > 1;
     }
 
     public int getNextServicePointCount(String key) {
