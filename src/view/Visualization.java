@@ -41,6 +41,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         this.width = w;
         this.height = h;
         gc = this.getGraphicsContext2D();
+        gc.setImageSmoothing(false);
         clearScreen();
     }
 
@@ -146,7 +147,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         gc.setFill(Color.BLACK);
         double grid = gridSize * zoomLevel;
         int width = (int)(this.width / grid) + 2;
-        int height = (int)(this.height / grid) + 1;
+        int height = (int)(this.height / grid) + 2;
 
         for(int i = -1; i < width; i++) {
             for(int j = -1; j < height; j++) {
