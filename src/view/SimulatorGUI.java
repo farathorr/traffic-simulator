@@ -5,7 +5,6 @@ import controller.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,6 +22,7 @@ import simu.framework.Trace;
 import simu.framework.Trace.Level;
 
 import java.text.DecimalFormat;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class SimulatorGUI extends Application implements ISimulatorUI {
@@ -109,8 +109,24 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             grid.add(slowdownButton, 1, 4);   // sarake, rivi
 
             screen = new Visualization(1000, 800);
+//            screen.setOnMouseMoved(event -> {
+////                System.out.println(event.getButton());
+//                System.out.println("X: " + event.getX() + " Y: " + event.getY());
+////                screen.setMouseX(event.getX());
+////                screen.setMouseY(event.getY());
+//            });
 
-            // TÃ¤ytetÃ¤Ã¤n boxi:
+            setCanvasDrag(screen);
+
+
+//            screen.setOnMousePressed(event -> {
+//                System.out.println(event.getButton());
+//            });
+
+//            screen.setOnScroll(event -> {
+//            	System.out.println("Scroll started " + event.getDeltaY() + "    " + event.getX());
+//            });
+
             hBox.getChildren().addAll(grid, (Canvas) screen);
 
             Scene scene = new Scene(hBox);
@@ -162,5 +178,25 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     public void enableStartButton() {
         startButton.setDisable(false);
+    }
+
+    private void setCanvasDrag(Canvas screen) {
+        AtomicReference<Double> startX = new AtomicReference<>((double) 0);
+        AtomicReference<Double> startY = new AtomicReference<>((double) 0);
+        AtomicReference<Double> canvasX = new AtomicReference<>(((Visualization) screen).getX());
+        AtomicReference<Double> canvasY = new AtomicReference<>(((Visualization) screen).getY());
+        screen.setOnMousePressed(event -> {
+            startX.set(event.getX());
+            startY.set(event.getY());
+            canvasX.set(((Visualization) screen).getX());
+            canvasY.set(((Visualization) screen).getY());
+        });
+
+        screen.setOnMouseDragged(event -> {
+            double deltaX = event.getX() - startX.get();
+            double deltaY = event.getY() - startY.get();
+            ((Visualization)screen).setX(canvasX.get() + deltaX);
+            ((Visualization)screen).setY(canvasY.get() + deltaY);
+        });
     }
 }
