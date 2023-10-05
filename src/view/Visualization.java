@@ -145,15 +145,15 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     public void drawGrid() {
         gc.setFill(Color.BLACK);
         double grid = gridSize * zoomLevel;
-        int width = (int)(this.width / grid + 2);
-        int height = (int)(this.width / grid + 1);
+        int width = (int)(this.width / grid) + 2;
+        int height = (int)(this.height / grid) + 1;
 
         for(int i = -1; i < width; i++) {
             for(int j = -1; j < height; j++) {
                 double x = this.x % grid + i * grid;
                 double y = this.y % grid + j * grid;
                 gc.strokeRect(x, y, grid, grid);
-                String text = String.format("%d, %d", (int) (i - this.x / grid), (int) (j - this.y / grid));
+                String text = String.format("%d, %d", i - (int)((this.x - this.x % grid) / grid), j - (int)((this.y - this.y % grid) / grid));
                 gc.fillText(text, x + 2, y + grid - 2);
             }
         }
