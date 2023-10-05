@@ -23,12 +23,12 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image roundaboutRoad = new Image("roundabout-with-road.png");
     private Image roundaboutRoad2 = new Image("roundabout-with-road2.png");
     private Image trafficLight = new Image("trafficlight.png");
-    private Image crosswalkImageLeft = new Image("crosswalk-left.png");
-    private Image crosswalkImageBottom = new Image("crosswalk-bottom.png");
-    private Image roadImageHorizontal = new Image("road.png");
-    private Image roadImageVertical = new Image("roadVertical.png");
-    private Image tIntersectionLeft = new Image("t-intersection-left.png");
-    private Image tIntersectionBottom = new Image("t-intersection-bottom.png");
+    private Image crosswalkImage = new Image("crosswalk.png");
+    private Image crosswalkImage2 = new Image("crosswalk2.png");
+    private Image roadImage = new Image("road.png");
+    private Image roadImage2 = new Image("road2.png");
+    private Image tIntersection = new Image("t-intersection.png");
+    private Image tIntersection2 = new Image("t-intersection2.png");
 
     public Visualization(int w, int h) {
         super(w, h);
@@ -60,20 +60,20 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             servicePoints.forEach(servicePoint -> {
                 if (servicePoint.getClass() == Road.class) {
                     switch (servicePoint.getRotation()) {
-                        case "right", "left" -> drawImage(roadImageHorizontal, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "top", "bottom" -> drawImage(roadImageVertical, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "t-intersection-right" -> drawImage(tIntersectionLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "t-intersection-top" -> drawImage(tIntersectionBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "t-intersection-left" -> drawImage(tIntersectionLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "t-intersection-bottom" -> drawImage(tIntersectionBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "right", "left" -> drawImage(roadImage, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "top", "bottom" -> drawImage(roadImage2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "t-intersection-right" -> drawImage(tIntersection2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
+                        case "t-intersection-top" -> drawImage(tIntersection, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
+                        case "t-intersection-left" -> drawImage(tIntersection2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "t-intersection-bottom" -> drawImage(tIntersection, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     }
                 } 
                 else if (servicePoint.getClass() == Crosswalk.class) {
                     switch (servicePoint.getRotation()) {
-                        case "right" -> drawImage(crosswalkImageLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "left" -> drawImage(crosswalkImageLeft, (servicePoint.getX() - 1) * gridSize, (servicePoint.getY() + 1) * gridSize, -gridSize, -gridSize);
-                        case "top" -> drawImage(crosswalkImageBottom, (servicePoint.getX() + 1) * gridSize, (servicePoint.getY() + 1) * gridSize, -gridSize, -gridSize);
-                        case "bottom" -> drawImage(crosswalkImageBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "right" -> drawImage(crosswalkImage2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
+                        case "left" -> drawImage(crosswalkImage2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "top" -> drawImage(crosswalkImage, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
+                        case "bottom" -> drawImage(crosswalkImage, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     }
                 } 
                 else if (servicePoint.getClass() == Roundabout.class) {

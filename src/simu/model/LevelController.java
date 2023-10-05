@@ -18,11 +18,39 @@ public class LevelController {
 
     public Level getLevel(int num) {
         return switch (num) {
+            case -123 -> getDebugLevel();
             case 1 -> getLevel1();
             default -> null;
         };
     }
 
+    public Level getDebugLevel() {
+        Level level = new Level();
+//        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
+
+        level.add(new Road(new Normal(5, 3), eventList, "road0_0"), "road0_1");
+        level.add(new Road(new Normal(5, 3), eventList, "road0_1"), "road0_2");
+        level.add(new Road(new Normal(5, 3), eventList, "road0_2"), "road0_3");
+        level.add(new Road(new Normal(5, 3), eventList, "road0_3"), "road0_4");
+        level.add(new Road(new Normal(5, 3), eventList, "road0_4"), "crosswalk1_1");
+
+        controller.render(level, "road0_0", 0, 0, "t-intersection-right");
+        controller.render(level, "road0_1", 0, 1, "t-intersection-left");
+        controller.render(level, "road0_2", 0, 2, "t-intersection-top");
+        controller.render(level, "road0_3", 0, 3, "t-intersection-bottom");
+
+        level.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "crosswalk1_0"), "crosswalk1_1");
+        level.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "crosswalk1_1"), "crosswalk1_2");
+        level.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "crosswalk1_2"), "crosswalk1_3");
+        level.add(new Crosswalk(new Normal(5, 2), new Normal(10, 5), eventList, "crosswalk1_3"));
+
+        controller.render(level, "crosswalk1_0", 1, 0, "right");
+        controller.render(level, "crosswalk1_1", 1, 1, "left");
+        controller.render(level, "crosswalk1_2", 1, 2, "top");
+        controller.render(level, "crosswalk1_3", 1, 3, "bottom");
+
+        return level;
+    }
     public Level getLevel1() {
         Level level = new Level();
         level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
