@@ -122,7 +122,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 } else if (servicePoint.getClass() == TrafficLights.class) {
                     switch (servicePoint.getRotation()) {
                         case "bottom" ->
-                                gdrawImage(trafficLight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                                drawImage(trafficLight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
 
                     }
                 }
