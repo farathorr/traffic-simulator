@@ -145,17 +145,37 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void drawGrid() {
         gc.setFill(Color.BLACK);
-        double grid = gridSize * zoomLevel;
-        int width = (int)(this.width / grid) + 2;
-        int height = (int)(this.height / grid) + 2;
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(1.0);
+        gc.setFont(gc.getFont().font(16));
 
-        for(int i = -1; i < width; i++) {
-            for(int j = -1; j < height; j++) {
-                double x = this.x % grid + i * grid;
-                double y = this.y % grid + j * grid;
-                gc.strokeRect(x, y, grid, grid);
-                String text = String.format("%d, %d", i - (int)((this.x - this.x % grid) / grid), j - (int)((this.y - this.y % grid) / grid));
-                gc.fillText(text, x + 2, y + grid - 2);
+        double grid = gridSize * zoomLevel;
+        int width = (int)(this.width / grid) + 4;
+        int height = (int)(this.height / grid) + 4;
+
+        for(int i = -1; i < width; i+=2) {
+            double x = this.x % grid + i * grid;
+            double y = this.y % grid - grid;
+            gc.strokeRect(x, y, grid, grid * height);
+        }
+        for(int j = -1; j < height; j+=2) {
+            double x = this.x % grid - grid;
+            double y = this.y % grid + j * grid;
+            gc.strokeRect(x, y, grid * width, grid);
+        }
+
+        if (zoomLevel > 0.35) {
+            gc.setLineWidth(2.0);
+            for(int i = -1; i < width; i++) {
+                for(int j = -1; j < height; j++) {
+                    double x = this.x % grid + i * grid;
+                    double y = this.y % grid + j * grid;
+                    gc.setStroke(Color.BLACK);
+                    String text = String.format("%d, %d", i - (int)((this.x - this.x % grid) / grid), j - (int)((this.y - this.y % grid) / grid));
+                    gc.setStroke(Color.WHITE);
+                    gc.strokeText(text, x + 2, y + grid - 2);
+                    gc.fillText(text, x + 2, y + grid - 2);
+                }
             }
         }
     }
