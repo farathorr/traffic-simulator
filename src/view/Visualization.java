@@ -19,14 +19,9 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private double zoomLevel = 1.0;
     private List<ServicePoint> servicePoints = new ArrayList<>();
     private List<Customer> customers = new ArrayList<>();
-    private Image roundaboutBottom = new Image("roundabout-bottom.png");
-    private Image roundaboutRight = new Image("roundabout-right.png");
-    private Image roundaboutTop = new Image("roundabout-top.png");
-    private Image roundaboutLeft = new Image("roundabout-left.png");
-    private Image roundaboutBottomRoad = new Image("roundabout-bottom-with-road.png");
-    private Image roundaboutRightRoad = new Image("roundabout-right-with-road.png");
-    private Image roundaboutTopRoad = new Image("roundabout-top-with-road.png");
-    private Image roundaboutLeftRoad = new Image("roundabout-left-with-road.png");
+    private Image roundaboutTurn = new Image("roundabout.png");
+    private Image roundaboutRoad = new Image("roundabout-with-road.png");
+
     private Image trafficLight = new Image("trafficlight.png");
 
     private Image crosswalkImageRight = new Image("crosswalk-right.png");
@@ -88,14 +83,14 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 } 
                 else if (servicePoint.getClass() == Roundabout.class) {
                     switch (servicePoint.getRotation()) {
-                        case "right" -> drawImage(roundaboutRight, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "top" -> drawImage(roundaboutTop, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "left" -> drawImage(roundaboutLeft, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "bottom" -> drawImage(roundaboutBottom, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "right-road" -> drawImage(roundaboutRightRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "top-road" -> drawImage(roundaboutTopRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "left-road" -> drawImage(roundaboutLeftRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        case "bottom-road" -> drawImage(roundaboutBottomRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "right" -> drawImage(roundaboutTurn, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "top" -> drawImage(roundaboutTurn, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
+                        case "left" -> drawImage(roundaboutTurn, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                        case "bottom" -> drawImage(roundaboutTurn, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
+                        case "right-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "top-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
+                        case "left-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                        case "bottom-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
                     }
                 } 
                 else if (servicePoint.getClass() == TrafficLights.class) {
