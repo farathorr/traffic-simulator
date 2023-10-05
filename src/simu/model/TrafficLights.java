@@ -15,7 +15,7 @@ public class TrafficLights extends ServicePoint {
     }
 
     public double generateSampleDelay() {
-        return generator.sample();
+        return ServicePoint.getCarSpacingInterval();
     }
 
     @Override
@@ -23,8 +23,7 @@ public class TrafficLights extends ServicePoint {
         reserved = true;
         queue.peek().setFirstInQueue(true);
         Trace.out(Trace.Level.INFO, "Auto " + queue.peek().getId() + " ajaa liikennevalojen läpi.");
-        double serviceTime = generateSampleDelay();
-        eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
+        eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + ServicePoint.getCarSpacingInterval()));
     }
 
     public void switchGreenLight() {

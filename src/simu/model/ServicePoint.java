@@ -17,7 +17,7 @@ public abstract class ServicePoint {
     protected final String scheduledEventType;
     private double x = 0, y = 0;
     private String rotation;
-
+    private static double carSpacingInterval = 2.0;
     protected boolean reserved = false;
 
     public ServicePoint(ContinuousGenerator generator, EventList eventList, String type) {
@@ -45,8 +45,15 @@ public abstract class ServicePoint {
         Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
         queue.peek().setFirstInQueue(true);
         reserved = true;
-        double serviceTime = generator.sample();
-        eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
+        eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + carSpacingInterval));
+    }
+
+    public static void setCarSpacingInterval(double carSpacingInterval) {
+        ServicePoint.carSpacingInterval = carSpacingInterval;
+    }
+
+    public static double getCarSpacingInterval() {
+        return carSpacingInterval;
     }
 
     public boolean isReserved() {

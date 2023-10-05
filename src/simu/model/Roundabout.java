@@ -57,8 +57,7 @@ public class Roundabout extends ServicePoint {
         }
 
         reserved = true;
-        double serviceTime = generator.sample();
-        eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + serviceTime));
+        eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + ServicePoint.getCarSpacingInterval()));
     }
 
     @Override
