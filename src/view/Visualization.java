@@ -23,6 +23,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private List<Customer> customers = new ArrayList<>();
     private Image roundaboutTurn = new Image("roundabout.png");
     private Image roundaboutRoad = new Image("roundabout-with-road.png");
+    private Image roundaboutDouble = new Image("roundabout-double.png");
     private Image roundaboutRoad2 = new Image("roundabout-with-road2.png");
     private Image trafficLightGreen = new Image("trafficlight-green.png");
     private Image trafficLightGreen2 = new Image("trafficlight-green2.png");
@@ -32,6 +33,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image crosswalkImage2 = new Image("crosswalk2.png");
     private Image roadImage = new Image("road.png");
     private Image roadImage2 = new Image("road2.png");
+    private Image roadTurn = new Image("road-turn.png");
     private Image tIntersection = new Image("t-intersection.png");
     private Image tIntersection2 = new Image("t-intersection2.png");
 
@@ -71,6 +73,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                     switch (servicePoint.getRotation()) {
                         case "right", "left" -> drawImage(roadImage, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                         case "top", "bottom" -> drawImage(roadImage2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "right-turn" -> drawImage(roadTurn, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "top-turn" -> drawImage(roadTurn, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
+                        case "left-turn" -> drawImage(roadTurn, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                        case "bottom-turn" -> drawImage(roadTurn, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
                         case "t-intersection-right" -> drawImage(tIntersection2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
                         case "t-intersection-top" -> drawImage(tIntersection, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
                         case "t-intersection-left" -> drawImage(tIntersection2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
@@ -91,6 +97,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                         case "top" -> drawImage(roundaboutTurn, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
                         case "left" -> drawImage(roundaboutTurn, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
                         case "bottom" -> drawImage(roundaboutTurn, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
+                        case "right-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                        case "top-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
+                        case "left-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                        case "bottom-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
                         case "right-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                         case "top-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                         case "left-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
