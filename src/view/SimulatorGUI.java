@@ -202,11 +202,12 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             if (event.getDeltaY() < 0) screen.setZoomLevel(Math.max(Math.pow(screen.getZoomLevel(), 0.9) - .1, minScale));
             else screen.setZoomLevel(Math.min(Math.pow(screen.getZoomLevel(), 1.15) + .1, maxScale));
 
-            System.out.println(screen.getZoomLevel());
-
             double scale = screen.getZoomLevel() / zoomLevel;
-            screen.setX(screen.getX() * scale);
-            screen.setY(screen.getY() * scale);
+            double deltaX = (event.getX() * scale) - event.getX();
+            double deltaY = (event.getY() * scale) - event.getY();
+
+            screen.setX(screen.getX() * scale - deltaX);
+            screen.setY(screen.getY() * scale - deltaY);
         });
     }
 }
