@@ -16,7 +16,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private final GraphicsContext gc;
     private final boolean DEBUG = true;
     double x = 0, y = 0;
-    private int width = 100, height = 100;
+    private final int width, height;
     private int gridSize = 128;
     private double zoomLevel = 1.0;
     private List<ServicePoint> servicePoints = new ArrayList<>();
