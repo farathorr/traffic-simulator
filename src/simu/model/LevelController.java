@@ -20,6 +20,7 @@ public class LevelController {
         return switch (levelKey) {
             case "DEBUG world" -> getDebugLevel();
             case "Level 1" -> getLevel1();
+            case "Level 2" -> getLevel2();
             case "Level 3" -> getLevel3();
             case "Level 4" -> getLevel4();
             case "Level 5" -> getLevel5();
