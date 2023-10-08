@@ -254,7 +254,20 @@ public class LevelController {
 
         level.add(new TrafficLights(new Normal(2, 1), new Normal(50, 1), eventList, "trafficlights4_4"), "road5_4");
 
-        level.add(new Road(new Normal(5, 3), eventList, "road5_4")); //"trafficlights4_4"
+        level.add(new Road(new Normal(5, 3), eventList, "road5_4"), "crosswalk5_3");
+
+        level.add(new Crosswalk(new Normal(1, 2), new Normal(50, 5), eventList, "crosswalk5_3"), "road5_2");
+
+        level.add(new Road(new Normal(5, 3), eventList, "road5_2"), "roundabout_right5_1");
+
+        level.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "roundabout_right5_1", 3), "roundabout_top6_1");
+        level.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "roundabout_top6_1", 3), "roundabout_left6_0");
+        level.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "roundabout_left6_0", 3), "roundabout_bottom5_0");
+        level.add(new Roundabout(new Normal(5, 1), new Normal(0, 3), eventList, "roundabout_bottom5_0", 3), new String[]{"roundabout_right5_1", "road4_0"});
+
+        level.add(new Road(new Normal(5, 3), eventList, "road4_0"), "road3_0");
+
+        level.add(new Road(new Normal(5, 3), eventList, "road3_0"));
 
 
         controller.render(level, "road0_0", 0, 0, "right");
@@ -273,6 +286,15 @@ public class LevelController {
         controller.render(level, "road3_4", 3, 4, "right");
         controller.render(level, "trafficlights4_4", 4, 4, "right");
         controller.render(level, "road5_4", 5, 4, "t-intersection-top");
+        controller.render(level, "crosswalk5_3", 5, 3, "top");
+        controller.render(level, "road5_2", 5, 2, "top");
+        controller.render(level, "roundabout_right5_1", 5, 1, "right-road");
+        controller.render(level, "roundabout_top6_1", 6, 1, "top-road");
+        controller.render(level, "roundabout_left6_0", 6, 0, "left-road");
+        controller.render(level, "roundabout_bottom5_0", 5, 0, "bottom-road");
+        controller.render(level, "road4_0", 4, 0, "left");
+        controller.render(level, "road3_0", 3, 0, "t-intersection-right");
+
 
         return level;
     }
