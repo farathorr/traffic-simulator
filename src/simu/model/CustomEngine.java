@@ -8,11 +8,11 @@ public class CustomEngine extends Engine {
     private Level currentLevel;
     private LevelController levelController;
 
-    public CustomEngine(IControllerForM controller) {
+    public CustomEngine(IControllerForM controller, String levelKey) {
         super(controller);
 
         levelController = new LevelController(controller, eventList);
-        currentLevel = levelController.getLevel("Level 4");
+        currentLevel = levelController.getLevel(levelKey);
     }
 
     @Override

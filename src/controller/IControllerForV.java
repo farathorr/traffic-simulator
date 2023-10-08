@@ -11,4 +11,6 @@ public interface IControllerForV {
     public void slowdown();
 
     public Engine getEngine();
+
+    public void setLevelKey(String levelKey);
 }

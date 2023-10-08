@@ -13,17 +13,18 @@ public class Controller implements IControllerForM, IControllerForV {
 	
 	private IEngine engine;
 	private ISimulatorUI ui;
+	private String levelKey = "DEBUG world";
 	
 	public Controller(ISimulatorUI ui) {
 		this.ui = ui;
-		this.engine = new CustomEngine(this);
+		this.engine = new CustomEngine(this, levelKey);
 	}
 
 	@Override
 	public void startSimulator() {
 		ui.getVisualization().reset();
 		Customer.resetCustomerCount();
-		engine = new CustomEngine(this); // luodaan uusi moottorisäie jokaista simulointia varten
+		engine = new CustomEngine(this, levelKey); // luodaan uusi moottorisäie jokaista simulointia varten
 		engine.setSimulationTime(ui.getTime());
 		engine.setDelay(ui.getDelay());
 		((Thread) engine).start();
@@ -64,6 +65,10 @@ public class Controller implements IControllerForM, IControllerForV {
 	}
 
 	public void enableStartButton() {
-		ui.enableStartButton();
+		ui.enableSimulationSettings();
+	}
+
+	public void setLevelKey(String levelKey) {
+		this.levelKey = levelKey;
 	}
 }

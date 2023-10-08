@@ -5,13 +5,11 @@ import controller.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -20,9 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import simu.framework.Trace;
-import simu.model.Level;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,6 +32,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private Label result;
     private Label resultLabel;
     private Button startButton;
+    private ComboBox<String> levelComboBox;
     private Button slowdownButton;
     private Button speedupButton;
     private InputElement timeInput, delayInput, carMean, carVariance;
@@ -63,26 +60,25 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
             VBox headerConteiner = new VBox();
 
-            ComboBox<String> LevelComboBox = new ComboBox<>();
-            LevelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 3", "Level 4");
-            LevelComboBox.setPromptText("Please Select");
-            LevelComboBox.setOnAction(event -> {
-                String value = LevelComboBox.getValue();
+            levelComboBox = new ComboBox<>();
+            levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 3", "Level 4");
+            levelComboBox.setPromptText("Please Select");
+            levelComboBox.setOnAction(event -> {
+                String value = levelComboBox.getValue();
                 screen.reset();
-                screen.setX(0);
-                screen.setY(0);
-                screen.setZoomLevel(1);
                 controller.getEngine().getLevelController().getLevel(value);
-                System.out.println(LevelComboBox.getValue());
+                controller.setLevelKey(value);
+                System.out.println(levelComboBox.getValue());
             });
 
-            headerConteiner.getChildren().addAll(LevelComboBox);
+            headerConteiner.getChildren().addAll(levelComboBox);
 
             startButton = new Button();
             startButton.setText("Käynnistä simulointi");
             startButton.setOnAction(event -> {
                 controller.startSimulator();
                 startButton.setDisable(true);
+                levelComboBox.setDisable(true);
             });
 
             slowdownButton = new Button();
@@ -204,8 +200,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     	return (Controller) controller;
     }
 
-    public void enableStartButton() {
+    public void enableSimulationSettings() {
         startButton.setDisable(false);
+        levelComboBox.setDisable(false);
     }
 
     private void setCanvasDrag(Canvas canvas) {
