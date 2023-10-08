@@ -118,7 +118,7 @@ public class LevelController {
         level.add(new Roundabout(0, 3, eventList, "roundabout_top5_2", 3), "roundabout_left5_1");
         level.add(new Roundabout(0, 3, eventList, "roundabout_left5_1", 3), "roundabout_bottom4_1");
         level.add(new Roundabout(0, 3, eventList, "roundabout_bottom4_1", 3), new String[]{"roundabout_right4_2", "road3_1"});
-        level.add(new Road(eventList, "road3_1"));
+        level.add(new Goal(eventList, "goal3_1"));
 
         controller.render(level, "road0_0", 0, 0, "right");
         controller.render(level, "crosswalk1_0", 1, 0, "right");
@@ -133,7 +133,7 @@ public class LevelController {
         controller.render(level, "roundabout_top5_2", 5, 2, "top-road");
         controller.render(level, "roundabout_left5_1", 5, 1, "left-road");
         controller.render(level, "roundabout_bottom4_1", 4, 1, "bottom-road");
-        controller.render(level, "road3_1", 3, 1, "left");
+        controller.render(level, "goal3_1", 3, 1, "goal");
 
         return level;
     }
@@ -160,7 +160,7 @@ public class LevelController {
         level.add(new Road(eventList, "road4_5"), "roundabout4_4");
         level.add(new Roundabout(0, 3, eventList, "roundabout4_3", 3), new String[]{"roundabout3_3", "road4_2"});
         level.add(new Road(eventList, "road4_2"), "road4_1");
-        level.add(new Road(eventList, "road4_1"));
+        level.add(new Goal(eventList, "goal4_1"));
 
         controller.render(level, "road0_0", 0, 0, "bottom");
         controller.render(level, "road0_1", 0, 1, "bottom");
@@ -181,7 +181,7 @@ public class LevelController {
         controller.render(level, "road4_5", 4, 5, "right-turn");
         controller.render(level, "roundabout4_3", 4, 3, "left-road");
         controller.render(level, "road4_2", 4, 2, "top");
-        controller.render(level, "road4_1", 4, 1, "top");
+        controller.render(level, "goal4_1", 4, 1, "goal");
 
 
         return level;
@@ -203,7 +203,7 @@ public class LevelController {
         level.add(new Road(eventList, "road4_5"), "roundabout4_4");
         level.add(new Roundabout(0, 3, eventList, "roundabout4_3", 3), new String[]{"roundabout3_3", "road4_2"});
         level.add(new Road(eventList, "road4_2"), "road4_1");
-        level.add(new Road(eventList, "road4_1"));
+        level.add(new Goal(eventList, "goal4_1"));
 
         controller.render(level, "road1_3", 1, 3, "right");
         controller.render(level, "road2_3", 2, 3, "right");
@@ -218,7 +218,7 @@ public class LevelController {
         controller.render(level, "road4_5", 4, 5, "right-turn");
         controller.render(level, "roundabout4_3", 4, 3, "left-road");
         controller.render(level, "road4_2", 4, 2, "top");
-        controller.render(level, "road4_1", 4, 1, "top");
+        controller.render(level, "goal4_1", 4, 1, "goal");
 
 
         return level;
@@ -274,7 +274,7 @@ public class LevelController {
 
         level.add(new Crosswalk(50, 5, eventList, "crosswalk2_-1"), "road1_-1");
 
-        level.add(new Road(eventList, "road1_-1"));
+        level.add(new Goal(eventList, "goal1_-1"));
 
 
         controller.render(level, "road0_0", 0, 0, "right");
@@ -303,7 +303,7 @@ public class LevelController {
         controller.render(level, "road3_0", 3, 0, "right-turn");
         controller.render(level, "road3_-1", 3, -1, "left-turn");
         controller.render(level, "crosswalk2_-1", 2, -1, "right");
-        controller.render(level, "road1_-1", 1, -1, "right");
+        controller.render(level, "goal1_-1", 1, -1, "goal");
 
         return level;
     }
@@ -331,11 +331,11 @@ public class LevelController {
 
         level.add(new Road(eventList,"road6_0"),"crosswalk7_0");
         level.add(new Crosswalk(50,5, eventList, "crosswalk7_0"),"goal8_0");
-        level.add(new Goal(new Normal (5, 3), eventList,"goal8_0"));
+        level.add(new Goal(eventList,"goal8_0"));
 
         level.add(new Road(eventList,"road5_-2"),"trafficlights5_-3");
         level.add(new TrafficLights(50,1, eventList, "trafficlights5_-3"),"goal5_-4");
-        level.add(new Goal(new Normal (5, 3), eventList,"goal5_-4"));
+        level.add(new Goal(eventList,"goal5_-4"));
 
 
         controller.render(level, "road0_0", 0, 0, "right");

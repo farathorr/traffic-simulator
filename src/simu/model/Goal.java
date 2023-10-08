@@ -6,7 +6,7 @@ import simu.framework.Event;
 import simu.framework.EventList;
 
 public class Goal extends ServicePoint {
-    public Goal(ContinuousGenerator generator, EventList eventList, String type) {
+    public Goal(EventList eventList, String type) {
         super(eventList, type);
     }
 
