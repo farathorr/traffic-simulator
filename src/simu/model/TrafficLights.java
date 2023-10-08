@@ -1,6 +1,7 @@
 package simu.model;
 
 import eduni.distributions.ContinuousGenerator;
+import eduni.distributions.Normal;
 import simu.framework.*;
 
 public class TrafficLights extends ServicePoint {
@@ -9,9 +10,13 @@ public class TrafficLights extends ServicePoint {
     private Event nextLightSwitchEvent = null;
     private ContinuousGenerator lightSwitchFrequencyGenerator;
 
-    public TrafficLights(ContinuousGenerator generator, ContinuousGenerator lightSwitchFrequencyGenerator, EventList eventList, String type) {
-        super(generator, eventList, type);
-        this.lightSwitchFrequencyGenerator = lightSwitchFrequencyGenerator;
+    private double mean, variance;
+
+    public TrafficLights(double mean, double variance, EventList eventList, String type) {
+        super(eventList, type);
+        this.mean = mean;
+        this.variance = variance;
+        this.lightSwitchFrequencyGenerator = new Normal(mean, variance);
     }
 
     public void init() {
@@ -43,4 +48,6 @@ public class TrafficLights extends ServicePoint {
     public boolean isGreenLight() {
         return greenLight;
     }
+
+
 }

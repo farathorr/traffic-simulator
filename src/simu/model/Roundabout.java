@@ -1,6 +1,7 @@
 package simu.model;
 
 import eduni.distributions.ContinuousGenerator;
+import eduni.distributions.Normal;
 import simu.framework.Clock;
 import simu.framework.Event;
 import simu.framework.EventList;
@@ -12,12 +13,14 @@ public class Roundabout extends ServicePoint {
 
     private ContinuousGenerator exitGenerator;
     private int maxRotations;
-
+    private double mean, variance;
     private PriorityQueue<Customer> queue = new PriorityQueue<>();
 
-    public Roundabout(ContinuousGenerator generator, ContinuousGenerator exitGenerator, EventList eventList, String type, int maxRotations) {
-        super(generator, eventList, type);
-        this.exitGenerator = exitGenerator;
+    public Roundabout(double mean, double variance, EventList eventList, String type, int maxRotations) {
+        super(eventList, type);
+        this.mean = mean;
+        this.variance = variance;
+        this.exitGenerator = new Normal(mean, variance);
         this.maxRotations = maxRotations;
     }
 

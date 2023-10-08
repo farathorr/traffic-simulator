@@ -7,7 +7,7 @@ import simu.framework.EventList;
 
 public class Goal extends ServicePoint {
     public Goal(ContinuousGenerator generator, EventList eventList, String type) {
-        super(generator, eventList, type);
+        super(eventList, type);
     }
 
     @Override

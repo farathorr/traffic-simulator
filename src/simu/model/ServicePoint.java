@@ -5,13 +5,11 @@ import simu.framework.*;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-import eduni.distributions.ContinuousGenerator;
 
 // TODO:
 // Palvelupistekohtaiset toiminnallisuudet, laskutoimitukset (+ tarvittavat muuttujat) ja raportointi koodattava
 public abstract class ServicePoint {
     protected final LinkedList<Customer> queue = new LinkedList<>(); // Tietorakennetoteutus
-    protected final ContinuousGenerator generator;
     protected final EventList eventList;
     private Level level;
     protected final String scheduledEventType;
@@ -20,9 +18,8 @@ public abstract class ServicePoint {
     private static double carSpacingInterval = 2.0;
     protected boolean reserved = false;
 
-    public ServicePoint(ContinuousGenerator generator, EventList eventList, String type) {
+    public ServicePoint(EventList eventList, String type) {
         this.eventList = eventList;
-        this.generator = generator;
         this.scheduledEventType = type;
     }
 

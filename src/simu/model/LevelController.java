@@ -32,13 +32,13 @@ public class LevelController {
         Level level = new Level("DEBUG world");
 //        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
 
-        level.add(new Road(new Normal(5, 3), eventList, "road-intersection0_0"));
-        level.add(new Road(new Normal(5, 3), eventList, "road-intersection0_2"));
-        level.add(new Road(new Normal(5, 3), eventList, "road-intersection0_4"));
-        level.add(new Road(new Normal(5, 3), eventList, "road-intersection0_6"));
-        level.add(new Road(new Normal(5, 3), eventList, "road2_0"));
-        level.add(new Road(new Normal(5, 3), eventList, "road2_2"));
-        level.add(new Road(new Normal(5, 3), eventList, "road2_4"));
+        level.add(new Road(eventList, "road-intersection0_0"));
+        level.add(new Road(eventList, "road-intersection0_2"));
+        level.add(new Road(eventList, "road-intersection0_4"));
+        level.add(new Road( eventList, "road-intersection0_6"));
+        level.add(new Road (eventList, "road2_0"));
+        level.add(new Road(eventList, "road2_2"));
+        level.add(new Road(eventList, "road2_4"));
         level.add(new Road(new Normal(5, 3), eventList, "road2_6"));
         level.add(new Road(new Normal(5, 3), eventList, "road-turn4_0"));
         level.add(new Road(new Normal(5, 3), eventList, "road-turn4_2"));
