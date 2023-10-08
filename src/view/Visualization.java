@@ -38,6 +38,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image roadTurn = new Image("road-turn.png");
     private Image tIntersection = new Image("t-intersection.png");
     private Image tIntersection2 = new Image("t-intersection2.png");
+    private Image goal = new Image("goal.png");
 
 
     public Visualization(int w, int h) {
@@ -96,8 +97,14 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 case "t-intersection-top" -> drawImage(tIntersection, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
                 case "t-intersection-left" -> drawImage(tIntersection2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                 case "t-intersection-bottom" -> drawImage(tIntersection, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+
             }
-        } else if (servicePoint.getClass() == Crosswalk.class) {
+        }else if (servicePoint.getClass() == Goal.class) {
+            switch(servicePoint.getRotation()){
+                case "goal" -> drawImage(goal, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+            }
+        }
+        else if (servicePoint.getClass() == Crosswalk.class) {
                 if (((Crosswalk) servicePoint).isCrossable()) {
                     switch (servicePoint.getRotation()) {
                         case "right" -> drawImage(crosswalkImage, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
