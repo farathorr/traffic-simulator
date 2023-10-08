@@ -35,8 +35,8 @@ public class LevelController {
         level.add(new Road(eventList, "road-intersection0_0"));
         level.add(new Road(eventList, "road-intersection0_2"));
         level.add(new Road(eventList, "road-intersection0_4"));
-        level.add(new Road( eventList, "road-intersection0_6"));
-        level.add(new Road (eventList, "road2_0"));
+        level.add(new Road(eventList, "road-intersection0_6"));
+        level.add(new Road(eventList, "road2_0"));
         level.add(new Road(eventList, "road2_2"));
         level.add(new Road(eventList, "road2_4"));
         level.add(new Road(eventList, "road2_6"));
