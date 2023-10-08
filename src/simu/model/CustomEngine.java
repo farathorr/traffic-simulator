@@ -62,6 +62,7 @@ public class CustomEngine extends Engine {
     @Override
     protected void tryCEvents() {
         for (ServicePoint servicePoint : currentLevel.getServicePoints()) {
+            try{
             if (servicePoint.isReserved() || !servicePoint.queueNotEmpty()) continue;
 
             if(servicePoint.getClass() != Roundabout.class && currentLevel.hasNextServicePoint(servicePoint) && currentLevel.getNextServicePoint(servicePoint).getClass() == Roundabout.class) {
@@ -82,7 +83,11 @@ public class CustomEngine extends Engine {
                 }
             }
 
-            else servicePoint.startService();
+            else servicePoint.startService();}
+            catch (Exception e) {
+                System.out.println("ServicePoint: "+servicePoint.getScheduledEventType()+" next servicePoint unknown.");
+                throw e;
+            }
         }
     }
 
