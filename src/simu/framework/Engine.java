@@ -1,6 +1,7 @@
 package simu.framework;
 
 import controller.IControllerForM;
+import simu.model.CustomEngine;
 
 public abstract class Engine extends Thread implements IEngine {
 	private double simulationTime = 0;
@@ -48,9 +49,8 @@ public abstract class Engine extends Thread implements IEngine {
 			this.controller.showEndtime(this.clock.getTime());
 		}
 		results();
-
+		controller.uploadResults(((CustomEngine) controller.getEngine()).getCurrentLevel());
 		controller.enableStartButton();
-
 	}
 	
 	private void executeBEvents() {

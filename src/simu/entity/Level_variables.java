@@ -1,16 +1,17 @@
 package simu.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "level_variables")
 public class Level_variables {
     @Id
-    private int levelId;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
+    @ManyToOne
+    @JoinColumn(name = "levelId")
+    private Results levelId;
     @Column(name = "servicePointName")
     private String servicePointName;
     @Column(name = "eventInterval")
@@ -18,7 +19,7 @@ public class Level_variables {
     @Column(name = "leadTime")
     private double leadTime;
 
-    public Level_variables(int levelId, String servicePointName, double eventInterval, double leadTime) {
+    public Level_variables(Results levelId, String servicePointName, double eventInterval, double leadTime) {
         this.levelId = levelId;
         this.servicePointName = servicePointName;
         this.eventInterval = eventInterval;
@@ -28,11 +29,11 @@ public class Level_variables {
     public Level_variables() {
     }
 
-    public int getLevelId() {
+    public Results getLevelId() {
         return levelId;
     }
 
-    public void setLevelId(int levelId) {
+    public void setLevelId(Results levelId) {
         this.levelId = levelId;
     }
 

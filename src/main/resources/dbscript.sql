@@ -12,11 +12,12 @@ CREATE TABLE results(
     PRIMARY KEY(id)
 );
 CREATE TABLE level_variables(
+    id INT NOT NULL AUTO_INCREMENT,
     levelId INT,
-    servicePointName VARCHAR(20) NOT NULL,
+    servicePointName VARCHAR(50) NOT NULL,
     eventInterval DECIMAL(4,2) NOT NULL,
     leadTime DECIMAL(4,2) NOT NULL,
-    PRIMARY KEY (servicePointName),
+    PRIMARY KEY (id),
     FOREIGN KEY (levelId) REFERENCES results(id)
 );
 DROP USER IF EXISTS 'appuser'@'localhost';

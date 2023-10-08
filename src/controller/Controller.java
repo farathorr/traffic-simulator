@@ -1,6 +1,10 @@
 package controller;
 
 import javafx.application.Platform;
+import simu.dao.Level_variableDao;
+import simu.dao.ResultsDao;
+import simu.entity.Level_variables;
+import simu.entity.Results;
 import simu.framework.Engine;
 import simu.framework.IEngine;
 import simu.model.*;
@@ -11,6 +15,10 @@ public class Controller implements IControllerForM, IControllerForV {
 	private IEngine engine;
 	private ISimulatorUI ui;
 	private String levelKey = "DEBUG world";
+
+	private Level_variableDao levelvariableDao = new Level_variableDao();
+
+	private ResultsDao resultsDao = new ResultsDao();
 	
 	public Controller(ISimulatorUI ui) {
 		this.ui = ui;
@@ -26,7 +34,16 @@ public class Controller implements IControllerForM, IControllerForV {
 		engine.setDelay(ui.getDelay());
 		((Thread) engine).start();
 	}
-	
+
+	public void uploadResults(Level level) {
+		Results results = new Results(5, 0.5, 0.5, level.getLevelName());
+		resultsDao.persist(results);
+		for (ServicePoint servicePoint : level.getServicePoints()) {
+			Level_variables levelVariables = new Level_variables(results, servicePoint.getScheduledEventType(), 0.5, 0.5);
+			levelvariableDao.persist(levelVariables);
+		}
+	}
+
 	@Override
 	public void slowdown() { // hidastetaan moottorisäiettä
 		engine.setDelay((long)(engine.getDelay()*1.5));

@@ -1,5 +1,6 @@
 package controller;
 
+import simu.framework.Engine;
 import simu.model.Customer;
 import simu.model.Level;
 
@@ -14,4 +15,8 @@ public interface IControllerForM {
     public void enableStartButton();
 
     public void addCustomerToRendererQueue(Customer customer);
+
+    public void uploadResults(Level level);
+
+    public Engine getEngine();
 }

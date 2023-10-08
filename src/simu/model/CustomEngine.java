@@ -100,4 +100,8 @@ public class CustomEngine extends Engine {
     public LevelController getLevelController() {
         return levelController;
     }
+
+    public Level getCurrentLevel() {
+        return currentLevel;
+    }
 }
