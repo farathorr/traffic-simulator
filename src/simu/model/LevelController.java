@@ -64,6 +64,7 @@ public class LevelController {
         level.add(new Crosswalk(50, 5, eventList, "crosswalk8_2"));
         level.add(new Crosswalk(50, 5, eventList, "crosswalk8_4"));
         level.add(new Crosswalk(50, 5, eventList, "crosswalk8_6"));
+        level.add(new Goal(eventList, "goal6_8"));
 
 
         controller.render(level, "road-intersection0_0", 0, 0, "t-intersection-right");
@@ -98,6 +99,7 @@ public class LevelController {
         controller.render(level, "crosswalk8_2", 8, 2, "left");
         controller.render(level, "crosswalk8_4", 8, 4, "top");
         controller.render(level, "crosswalk8_6", 8, 6, "bottom");
+        controller.render(level, "goal6_8",6,8,"goal");
 
         return level;
     }
