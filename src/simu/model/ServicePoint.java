@@ -104,4 +104,8 @@ public abstract class ServicePoint {
     public LinkedList<Customer> getQueue() {
     	return queue;
     }
+
+    public String toString() {
+        return String.format("%s (%.0f, %.0f) ", this.getClass().getSimpleName(), x, y);
+    }
 }
