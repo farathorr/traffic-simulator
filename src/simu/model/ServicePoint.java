@@ -26,6 +26,10 @@ public abstract class ServicePoint {
         this.scheduledEventType = type;
     }
 
+    public void init() {
+
+    }
+
     public Customer takeFromQueue() {  // Poistetaan palvelussa ollut
         reserved = false;
         Customer selectedCustomer = queue.poll();

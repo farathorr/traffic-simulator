@@ -15,6 +15,7 @@ public class Level {
     public void add(ServicePoint point) {
         servicePoints.put(point.getScheduledEventType(), point);
         point.setLevel(this);
+        point.init();
     }
 
     public void add(ServicePoint point, String nextPoint) {
@@ -28,14 +29,11 @@ public class Level {
         nextPoints.addAll(Arrays.asList(nextPoint));
         this.nextPoints.put(point, nextPoints);
         point.setLevel(this);
+        point.init();
     }
 
     public void arrival(ArrivalProcess arrivalProcess, String nextPoint) {
-        arrivalProcesses.put(arrivalProcess.getScheduledEventType(), arrivalProcess);
-
-        ArrayList<String> nextPoints = new ArrayList<>();
-        nextPoints.add(nextPoint);
-        this.nextPoints.put(arrivalProcess, nextPoints);
+        arrival(arrivalProcess, new String[]{nextPoint});
     }
 
     public void arrival(ArrivalProcess arrivalProcess, String[] nextPoint) {
