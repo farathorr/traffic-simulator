@@ -11,7 +11,7 @@ public class CustomEngine extends Engine {
         super(controller);
 
         LevelController levelController = new LevelController(controller, eventList);
-        currentLevel = levelController.getLevel(-123);
+        currentLevel = levelController.getLevel(1);
     }
 
     @Override
