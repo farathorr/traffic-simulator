@@ -20,7 +20,6 @@ public class InputElement{
         textField.setPromptText(promptText);
         textField.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         textField.setPrefWidth(150);
-
     }
 
     public Label getLabel() {
@@ -29,5 +28,10 @@ public class InputElement{
 
     public TextField getTextField() {
         return textField;
+    }
+
+    public void setVisible(boolean visible) {
+        label.setVisible(visible);
+        textField.setVisible(visible);
     }
 }

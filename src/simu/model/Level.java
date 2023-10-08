@@ -11,10 +11,17 @@ public class Level {
     private Map<String, ServicePoint> servicePoints = new HashMap<>();
     private Map<String, ArrivalProcess> arrivalProcesses = new HashMap<>();
     private Map<Object, ArrayList<String>> nextPoints = new HashMap<>();
+    private String levelName;
+    private LevelSettings settings = LevelSettings.getInstance();
+
+    public Level(String levelName) {
+        this.levelName = levelName;
+    }
 
     public void add(ServicePoint point) {
         servicePoints.put(point.getScheduledEventType(), point);
         point.setLevel(this);
+        point.init();
     }
 
     public void add(ServicePoint point, String nextPoint) {
@@ -28,14 +35,11 @@ public class Level {
         nextPoints.addAll(Arrays.asList(nextPoint));
         this.nextPoints.put(point, nextPoints);
         point.setLevel(this);
+        point.init();
     }
 
     public void arrival(ArrivalProcess arrivalProcess, String nextPoint) {
-        arrivalProcesses.put(arrivalProcess.getScheduledEventType(), arrivalProcess);
-
-        ArrayList<String> nextPoints = new ArrayList<>();
-        nextPoints.add(nextPoint);
-        this.nextPoints.put(arrivalProcess, nextPoints);
+        arrival(arrivalProcess, new String[]{nextPoint});
     }
 
     public void arrival(ArrivalProcess arrivalProcess, String[] nextPoint) {
@@ -97,5 +101,25 @@ public class Level {
 
     public ArrayList<ServicePoint> getServicePoints() {
         return new ArrayList<>(servicePoints.values());
+    }
+
+    public boolean hasGenerator1(String key) {
+        return settings.has(levelName + key + "generator1");
+    }
+
+    public boolean hasGenerator2(String key) {
+        return settings.has(levelName + key + "generator2");
+    }
+
+    public double getGenerator1(String key) {
+        return settings.get(levelName + key + "generator1");
+    }
+
+    public double getGenerator2(String key) {
+        return settings.get(levelName + key + "generator2");
+    }
+
+    public String getLevelName() {
+        return levelName;
     }
 }

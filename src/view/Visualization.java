@@ -53,6 +53,9 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     public void reset() {
         servicePoints.clear();
         customers.clear();
+        x = 0;
+        y = 0;
+        zoomLevel = 1;
         clearScreen();
     }
 
