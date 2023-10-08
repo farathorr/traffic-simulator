@@ -119,7 +119,7 @@ public class LevelController {
         level.add(new Roundabout(0, 3, eventList, "roundabout_right4_2", 3), "roundabout_top5_2");
         level.add(new Roundabout(0, 3, eventList, "roundabout_top5_2", 3), "roundabout_left5_1");
         level.add(new Roundabout(0, 3, eventList, "roundabout_left5_1", 3), "roundabout_bottom4_1");
-        level.add(new Roundabout(0, 3, eventList, "roundabout_bottom4_1", 3), new String[]{"roundabout_right4_2", "road3_1"});
+        level.add(new Roundabout(0, 3, eventList, "roundabout_bottom4_1", 3), new String[]{"roundabout_right4_2", "goal3_1"});
         level.add(new Goal(eventList, "goal3_1"));
 
         controller.render(level, "road0_0", 0, 0, "right");
@@ -161,7 +161,7 @@ public class LevelController {
         level.add(new Road(eventList, "road5_5"), "road4_5");
         level.add(new Road(eventList, "road4_5"), "roundabout4_4");
         level.add(new Roundabout(0, 3, eventList, "roundabout4_3", 3), new String[]{"roundabout3_3", "road4_2"});
-        level.add(new Road(eventList, "road4_2"), "road4_1");
+        level.add(new Road(eventList, "road4_2"), "goal4_1");
         level.add(new Goal(eventList, "goal4_1"));
 
         controller.render(level, "road0_0", 0, 0, "bottom");
@@ -204,7 +204,7 @@ public class LevelController {
         level.add(new Road(eventList, "road5_5"), "road4_5");
         level.add(new Road(eventList, "road4_5"), "roundabout4_4");
         level.add(new Roundabout(0, 3, eventList, "roundabout4_3", 3), new String[]{"roundabout3_3", "road4_2"});
-        level.add(new Road(eventList, "road4_2"), "road4_1");
+        level.add(new Road(eventList, "road4_2"), "goal4_1");
         level.add(new Goal(eventList, "goal4_1"));
 
         controller.render(level, "road1_3", 1, 3, "right");
@@ -274,7 +274,7 @@ public class LevelController {
 
         level.add(new Road(eventList, "road3_-1"), "crosswalk2_-1");
 
-        level.add(new Crosswalk(50, 5, eventList, "crosswalk2_-1"), "road1_-1");
+        level.add(new Crosswalk(50, 5, eventList, "crosswalk2_-1"), "goal1_-1");
 
         level.add(new Goal(eventList, "goal1_-1"));
 
