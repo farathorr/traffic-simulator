@@ -48,6 +48,7 @@ public abstract class Engine extends Thread implements IEngine {
 			this.controller.showEndtime(this.clock.getTime());
 		}
 		results();
+
 		controller.enableStartButton();
 
 	}

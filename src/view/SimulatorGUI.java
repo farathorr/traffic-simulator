@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -127,6 +128,29 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         result.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         result.setPrefWidth(150);
 
+        Button helpButton = new Button();
+        helpButton.setText("Ohjeet");
+        helpButton.setOnAction(e -> {
+            Stage helpWindow = new Stage();
+            helpWindow.setTitle("Ohjeet");
+            Label helpLabel = new Label();
+            helpLabel.setText("""
+                    Valitse simulaattorin vasemmasta yläkulmasta haluamasi taso.
+                    Tasovalikon alle syntyy lista tason eri palvelupisteistä, joiden arvoja voit muuttaa palvelupistelistan alla olevista kentistä.
+                    Simulointiaika-kentästä voit muuttaa simulaation kokonaisaikaa.
+                    Viive-kentästä voit muuttaa simulaation visuaalisen esityksen nopeutta.
+                    Nopeuta- ja hidasta-napeilla voit vaihtaa simulaation nopeutta sen pyöriessä.
+                    Kun olet valinnut haluamasi tason ja vaihtanut haluamasi arvoja, voit käynnistää simulaation Käynnistä simulaatio-napista.
+                    Tulokset-napista voit tutkia simulaation tuloksia sen suorituksen jälkeen.
+                    """);
+            HBox container = new HBox(helpLabel);
+            container.setSpacing(10);
+            container.setPadding(new Insets(15));
+            container.setAlignment(Pos.CENTER);
+            helpWindow.setScene(new Scene(container));
+            helpWindow.show();
+        });
+
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(15, 12, 15, 12)); // marginaalit ylÃ¤, oikea, ala, vasen
         hBox.setSpacing(10);   // noodien välimatka 10 pikseliä
@@ -148,6 +172,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         footerGrid.add(startButton, 0, 3);  // sarake, rivi
         footerGrid.add(speedupButton, 0, 4);   // sarake, rivi
         footerGrid.add(slowdownButton, 1, 4);   // sarake, rivi
+        footerGrid.add(helpButton, 0, 7);   // sarake, rivi
 
         GridPane gridCustom = new GridPane();
         gridCustom.setAlignment(Pos.TOP_CENTER);
