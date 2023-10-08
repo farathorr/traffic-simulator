@@ -66,6 +66,17 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         levelComboBox = new ComboBox<>();
         servicePointListView = new ListView<>();
+        carMean = new InputElement("Keskiarvo","5", "Syötä keskiarvo");
+        carVariance = new InputElement("Vaihtelevuus","5","Syötä vaihtelevuus");
+
+        InputElement[] customInputArray = {carMean, carVariance};
+
+        servicePointListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            for (InputElement inputElement : customInputArray) {
+                inputElement.setVisible(true);
+            }
+            System.out.println(newValue);
+        });
 
         levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 3", "Level 4");
         levelComboBox.setPromptText("Please Select");
@@ -99,12 +110,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         delayInput = new InputElement("Viive:", "10", "Syötä viive");
 
-        carMean = new InputElement("Keskiarvo","5", "Syötä keskiarvo");
-
-        carVariance = new InputElement("Vaihtelevuus","5","Syötä vaihtelevuus");
-
         InputElement[] inputArray = {timeInput, delayInput};
-        InputElement[] customInputArray = {carMean, carVariance};
 
         resultLabel = new Label("Kokonaisaika:");
         resultLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -140,6 +146,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         gridCustom.setHgap(5);
 
         for (int i = 0; i < customInputArray.length; i++) {
+            customInputArray[i].setVisible(false);
             gridCustom.add(customInputArray[i].getLabel(), 0, i);   // sarake, rivi
             gridCustom.add(customInputArray[i].getTextField(), 1, i);          // sarake, rivi
         }
