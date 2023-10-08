@@ -141,7 +141,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                     case "right" -> drawImage(trafficLightGreen, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize , gridSize, gridSize);
                 }
             }
-            else{
+            else {
                 switch (servicePoint.getRotation()) {
                     case "bottom" -> drawImage(trafficLightRed2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                     case "top" -> drawImage(trafficLightRed2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
@@ -149,7 +149,6 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                     case "right" -> drawImage(trafficLightRed, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                 }
             }
-
         }
     };
 

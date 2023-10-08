@@ -25,9 +25,8 @@ public class Roundabout extends ServicePoint {
     public void addToQueue(Customer customer) { // Override to use the PriorityQueue
         queue.add(customer);
         customer.setFirstInQueue(false);
-        if (!customer.cameFromRoundabout()) return; // Render waiting queue on the road next to the roundabout
 
-        customer.addDestination(this.getX() + (Math.random() - 0.5)/3, this.getY() + (Math.random() - 0.5)/3);
+        customer.addDestination(this.getX() + (Math.random() - 0.5)/5, this.getY() + (Math.random() - 0.5)/5);
     }
 
     @Override

@@ -124,7 +124,7 @@ public class Customer implements Comparable<Customer> {
         this.x += deltaX / speed;
         this.y += deltaY / speed;
 
-        if (this.destinationX - this.x < 0.05 && this.destinationY - this.y < 0.05) {
+        if ((this.destinationX - this.x) + (this.destinationY - this.y) < 0.025) {
             if (destinations.size() > 1) {
                 destinations.remove(0);
                 this.destinationX = destinations.get(0)[0];
