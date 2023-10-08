@@ -1,6 +1,7 @@
 package simu.model;
 
 import eduni.distributions.ContinuousGenerator;
+import eduni.distributions.Normal;
 import simu.framework.*;
 
 public class Crosswalk extends ServicePoint {
@@ -15,6 +16,9 @@ public class Crosswalk extends ServicePoint {
     }
 
     public void init() {
+        if (getLevel().hasGenerator2(this.getScheduledEventType())) {
+            crossingFrequencyGenerator = new Normal(getLevel().getGenerator2(this.getScheduledEventType()), 2);
+        }
         crosswalk = new ArrivalProcess(crossingFrequencyGenerator, eventList, this.getScheduledEventType() + " Road Crossing");
         nextCrossingEvent = crosswalk.generateNext();
     }
