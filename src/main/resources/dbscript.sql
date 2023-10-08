@@ -1,10 +1,10 @@
 DROP
-DATABASE IF EXISTS simulationResults;
+DATABASE IF EXISTS simulation;
 CREATE
-DATABASE simulationResults;
-USE simulationResults;
+DATABASE simulation;
+USE simulation;
 CREATE TABLE results(
-    id NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     carCount    INT(3)  NOT NULL,
     averageTime DECIMAL(3, 2)   NOT NULL,
     simulationTime DECIMAL (3, 2) NOT NULL,
@@ -21,4 +21,5 @@ CREATE TABLE level_variables(
 );
 DROP USER IF EXISTS 'appuser'@'localhost';
 CREATE USER 'appuser'@'localhost' IDENTIFIED BY '123';
-GRANT SELECT, INSERT ON simulationResults TO 'appuser'@'localhost';
+GRANT SELECT, INSERT ON simulation.results TO 'appuser'@'localhost';
+GRANT SELECT, INSERT ON simulation.level_variables TO 'appuser'@'localhost';
