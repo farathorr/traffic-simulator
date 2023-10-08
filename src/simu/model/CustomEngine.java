@@ -6,12 +6,13 @@ import eduni.distributions.Normal;
 
 public class CustomEngine extends Engine {
     private Level currentLevel;
+    private LevelController levelController;
 
-    public CustomEngine(IControllerForM controller) {
+    public CustomEngine(IControllerForM controller, String levelKey) {
         super(controller);
 
-        LevelController levelController = new LevelController(controller, eventList);
-        currentLevel = levelController.getLevel(4);
+        levelController = new LevelController(controller, eventList);
+        currentLevel = levelController.getLevel(levelKey);
     }
 
     @Override
@@ -61,6 +62,7 @@ public class CustomEngine extends Engine {
     @Override
     protected void tryCEvents() {
         for (ServicePoint servicePoint : currentLevel.getServicePoints()) {
+            try{
             if (servicePoint.isReserved() || !servicePoint.queueNotEmpty()) continue;
 
             if(servicePoint.getClass() != Roundabout.class && currentLevel.hasNextServicePoint(servicePoint) && currentLevel.getNextServicePoint(servicePoint).getClass() == Roundabout.class) {
@@ -81,7 +83,11 @@ public class CustomEngine extends Engine {
                 }
             }
 
-            else servicePoint.startService();
+            else servicePoint.startService();}
+            catch (Exception e) {
+                System.out.println("ServicePoint: "+servicePoint.getScheduledEventType()+" next servicePoint unknown.");
+                throw e;
+            }
         }
     }
 
@@ -89,5 +95,9 @@ public class CustomEngine extends Engine {
     protected void results() {
         System.out.println("Simulointi päättyi kello " + Clock.getInstance().getTime());
         System.out.println("Tulokset ... puuttuvat vielä");
+    }
+
+    public LevelController getLevelController() {
+        return levelController;
     }
 }

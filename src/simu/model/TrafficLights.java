@@ -7,10 +7,15 @@ public class TrafficLights extends ServicePoint {
     private ArrivalProcess trafficLight;
     private boolean greenLight = true;
     private Event nextLightSwitchEvent = null;
+    private ContinuousGenerator lightSwitchFrequencyGenerator;
 
     public TrafficLights(ContinuousGenerator generator, ContinuousGenerator lightSwitchFrequencyGenerator, EventList eventList, String type) {
         super(generator, eventList, type);
-        trafficLight = new ArrivalProcess(lightSwitchFrequencyGenerator, eventList, type + " Light Switch");
+        this.lightSwitchFrequencyGenerator = lightSwitchFrequencyGenerator;
+    }
+
+    public void init() {
+        trafficLight = new ArrivalProcess(lightSwitchFrequencyGenerator, eventList, this.getScheduledEventType() + " Light Switch");
         nextLightSwitchEvent = trafficLight.generateNext();
     }
 
