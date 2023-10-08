@@ -16,12 +16,12 @@ public class LevelController {
         this.eventList = eventList;
     }
 
-    public Level getLevel(int num) {
-        return switch (num) {
-            case -123 -> getDebugLevel();
-            case 1 -> getLevel1();
-            case 3 -> getLevel3();
-            case 4 -> getLevel4();
+    public Level getLevel(String levelKey) {
+        return switch (levelKey) {
+            case "DEBUG world" -> getDebugLevel();
+            case "Level 1" -> getLevel1();
+            case "Level 3" -> getLevel3();
+            case "Level 4" -> getLevel4();
             default -> null;
         };
     }

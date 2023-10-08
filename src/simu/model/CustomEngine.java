@@ -6,12 +6,13 @@ import eduni.distributions.Normal;
 
 public class CustomEngine extends Engine {
     private Level currentLevel;
+    private LevelController levelController;
 
     public CustomEngine(IControllerForM controller) {
         super(controller);
 
-        LevelController levelController = new LevelController(controller, eventList);
-        currentLevel = levelController.getLevel(4);
+        levelController = new LevelController(controller, eventList);
+        currentLevel = levelController.getLevel("Level 4");
     }
 
     @Override
@@ -89,5 +90,9 @@ public class CustomEngine extends Engine {
     protected void results() {
         System.out.println("Simulointi päättyi kello " + Clock.getInstance().getTime());
         System.out.println("Tulokset ... puuttuvat vielä");
+    }
+
+    public LevelController getLevelController() {
+        return levelController;
     }
 }

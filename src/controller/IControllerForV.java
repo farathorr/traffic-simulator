@@ -1,5 +1,7 @@
 package controller;
 
+import simu.framework.Engine;
+
 public interface IControllerForV {
 
     // Rajapinta, joka tarjotaan  käyttöliittymälle:
@@ -7,4 +9,6 @@ public interface IControllerForV {
     public void startSimulator();
     public void speedup();
     public void slowdown();
+
+    public Engine getEngine();
 }

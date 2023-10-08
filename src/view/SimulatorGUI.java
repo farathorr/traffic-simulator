@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -20,7 +22,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import simu.framework.Trace;
-import simu.framework.Trace.Level;
+import simu.model.Level;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicReference;
@@ -37,12 +39,12 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private Button slowdownButton;
     private Button speedupButton;
     private InputElement timeInput, delayInput, carMean, carVariance;
-    private Visualization screen;
+    private Visualization screen = new Visualization(1000, 800);
 
     @Override
     public void init() {
 
-        Trace.setTraceLevel(Level.ERR);
+        Trace.setTraceLevel(Trace.Level.ERR);
 
         controller = new Controller(this);
     }
@@ -52,15 +54,29 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         // Käyttöliittymän rakentaminen
         try {
 
-            primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent t) {
-                    Platform.exit();
-                    System.exit(0);
-                }
+            primaryStage.setOnCloseRequest(event -> {
+                Platform.exit();
+                System.exit(0);
             });
 
             primaryStage.setTitle("Simulaattori");
+
+            VBox headerConteiner = new VBox();
+
+            ComboBox<String> LevelComboBox = new ComboBox<>();
+            LevelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 3", "Level 4");
+            LevelComboBox.setPromptText("Please Select");
+            LevelComboBox.setOnAction(event -> {
+                String value = LevelComboBox.getValue();
+                screen.reset();
+                screen.setX(0);
+                screen.setY(0);
+                screen.setZoomLevel(1);
+                controller.getEngine().getLevelController().getLevel(value);
+                System.out.println(LevelComboBox.getValue());
+            });
+
+            headerConteiner.getChildren().addAll(LevelComboBox);
 
             startButton = new Button();
             startButton.setText("Käynnistä simulointi");
@@ -100,21 +116,21 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
             VBox vBox = new VBox();
 
-            GridPane gridDefault = new GridPane();
-            gridDefault.setAlignment(Pos.CENTER);
-            gridDefault.setVgap(10);
-            gridDefault.setHgap(5);
+            GridPane footerGrid = new GridPane();
+            footerGrid.setAlignment(Pos.CENTER);
+            footerGrid.setVgap(10);
+            footerGrid.setHgap(5);
 
             for (int y = 0; y < inputArray.length; y++) {
-                gridDefault.add(inputArray[y].getLabel(), 0, y);   // sarake, rivi
-                gridDefault.add(inputArray[y].getTextField(), 1, y);          // sarake, rivi
+                footerGrid.add(inputArray[y].getLabel(), 0, y);   // sarake, rivi
+                footerGrid.add(inputArray[y].getTextField(), 1, y);          // sarake, rivi
             }
 
-            gridDefault.add(resultLabel, 0, 2);      // sarake, rivi
-            gridDefault.add(result, 1, 2);           // sarake, rivi
-            gridDefault.add(startButton, 0, 3);  // sarake, rivi
-            gridDefault.add(speedupButton, 0, 4);   // sarake, rivi
-            gridDefault.add(slowdownButton, 1, 4);   // sarake, rivi
+            footerGrid.add(resultLabel, 0, 2);      // sarake, rivi
+            footerGrid.add(result, 1, 2);           // sarake, rivi
+            footerGrid.add(startButton, 0, 3);  // sarake, rivi
+            footerGrid.add(speedupButton, 0, 4);   // sarake, rivi
+            footerGrid.add(slowdownButton, 1, 4);   // sarake, rivi
 
             GridPane gridCustom = new GridPane();
             gridCustom.setAlignment(Pos.TOP_CENTER);
@@ -126,10 +142,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 gridCustom.add(customInputArray[i].getTextField(), 1, i);          // sarake, rivi
             }
 
-            vBox.getChildren().addAll(gridCustom, gridDefault);
-            vBox.setSpacing(500);
+            vBox.getChildren().addAll(headerConteiner, gridCustom, footerGrid);
 
-            screen = new Visualization(1000, 800);
+
 //            screen.setOnMouseMoved(event -> {
 ////                System.out.println(event.getButton());
 //                System.out.println("X: " + event.getX() + " Y: " + event.getY());

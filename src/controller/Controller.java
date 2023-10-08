@@ -16,6 +16,7 @@ public class Controller implements IControllerForM, IControllerForV {
 	
 	public Controller(ISimulatorUI ui) {
 		this.ui = ui;
+		this.engine = new CustomEngine(this);
 	}
 
 	@Override
