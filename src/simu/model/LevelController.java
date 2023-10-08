@@ -267,25 +267,31 @@ public class LevelController {
 
         level.add(new Road(new Normal(5, 3), eventList, "road4_0"), "road3_0");
 
-        level.add(new Road(new Normal(5, 3), eventList, "road3_0"));
+        level.add(new Road(new Normal(5, 3), eventList, "road3_0"), "road3_-1");
+
+        level.add(new Road(new Normal(5, 3), eventList, "road3_-1"), "crosswalk2_-1");
+
+        level.add(new Crosswalk(new Normal(1, 2), new Normal(50, 5), eventList, "crosswalk2_-1"), "road1_-1");
+
+        level.add(new Road(new Normal(5, 3), eventList, "road1_-1"));
 
 
         controller.render(level, "road0_0", 0, 0, "right");
         controller.render(level, "crosswalk1_0", 1, 0, "right");
-        controller.render(level, "road2_0", 2, 0, "t-intersection-left");
+        controller.render(level, "road2_0", 2, 0, "left-turn");
         controller.render(level, "trafficlights2_1", 2, 1, "bottom");
-        controller.render(level, "road2_2", 2, 2, "t-intersection-top");
+        controller.render(level, "road2_2", 2, 2, "top-turn");
         controller.render(level, "crosswalk1_2", 1, 2, "left");
-        controller.render(level, "road0_2", 0, 2, "t-intersection-right");
+        controller.render(level, "road0_2", 0, 2, "bottom-turn");
         controller.render(level, "trafficlights0_3", 0, 3, "bottom");
-        controller.render(level, "road0_4", 0, 4, "t-intersection-top");
+        controller.render(level, "road0_4", 0, 4, "right-turn");
         controller.render(level, "roundabout_bottom1_4", 1, 4, "bottom-road");
         controller.render(level, "roundabout_right1_5", 1, 5, "right-road");
         controller.render(level, "roundabout_top2_5", 2, 5, "top-road");
         controller.render(level, "roundabout_left2_4", 2, 4, "left-road");
         controller.render(level, "road3_4", 3, 4, "right");
         controller.render(level, "trafficlights4_4", 4, 4, "right");
-        controller.render(level, "road5_4", 5, 4, "t-intersection-top");
+        controller.render(level, "road5_4", 5, 4, "top-turn");
         controller.render(level, "crosswalk5_3", 5, 3, "top");
         controller.render(level, "road5_2", 5, 2, "top");
         controller.render(level, "roundabout_right5_1", 5, 1, "right-road");
@@ -293,7 +299,10 @@ public class LevelController {
         controller.render(level, "roundabout_left6_0", 6, 0, "left-road");
         controller.render(level, "roundabout_bottom5_0", 5, 0, "bottom-road");
         controller.render(level, "road4_0", 4, 0, "left");
-        controller.render(level, "road3_0", 3, 0, "t-intersection-right");
+        controller.render(level, "road3_0", 3, 0, "right-turn");
+        controller.render(level, "road3_-1", 3, -1, "left-turn");
+        controller.render(level, "crosswalk2_-1", 2, -1, "right");
+        controller.render(level, "road1_-1", 1, -1, "right");
 
 
         return level;
