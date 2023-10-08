@@ -1,6 +1,7 @@
 package controller;
 
 import simu.framework.Engine;
+import simu.model.LevelSettings;
 
 public interface IControllerForV {
 
@@ -13,4 +14,6 @@ public interface IControllerForV {
     public Engine getEngine();
 
     public void setLevelKey(String levelKey);
+
+    public LevelSettings getLevelSettings();
 }

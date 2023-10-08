@@ -27,7 +27,7 @@ public class LevelController {
     }
 
     public Level getDebugLevel() {
-        Level level = new Level();
+        Level level = new Level("DEBUG world");
 //        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
 
         level.add(new Road(new Normal(5, 3), eventList, "road-intersection0_0"));
@@ -100,7 +100,7 @@ public class LevelController {
         return level;
     }
     public Level getLevel1() {
-        Level level = new Level();
+        Level level = new Level("Level 1");
         level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
         level.add(new Road(new Normal(5, 3), eventList, "road0_0"), "crosswalk1_0");
         level.add(new Crosswalk(new Normal(1, 2), new Normal(50, 5), eventList, "crosswalk1_0"), "road1_1");
@@ -137,7 +137,7 @@ public class LevelController {
     }
 
     public Level getLevel3() {
-        Level level = new Level();
+        Level level = new Level("Level 3");
         level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
         level.add(new Road(new Normal(5, 3), eventList, "road0_0"), "road0_1");
         level.add(new Road(new Normal(5, 3), eventList, "road0_1"), "road0_2");
@@ -186,7 +186,7 @@ public class LevelController {
     }
 
     public Level getLevel4() {
-        Level level = new Level();
+        Level level = new Level("Level 4");
         level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 1, 3), "road1_3");
         level.add(new Road(new Normal(5, 3), eventList, "road1_3"), "road2_3");
         level.add(new Road(new Normal(5, 3), eventList, "road2_3"), "roundabout3_3");

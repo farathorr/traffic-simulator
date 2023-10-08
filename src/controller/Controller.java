@@ -3,10 +3,7 @@ package controller;
 import javafx.application.Platform;
 import simu.framework.Engine;
 import simu.framework.IEngine;
-import simu.model.CustomEngine;
-import simu.model.Customer;
-import simu.model.Level;
-import simu.model.ServicePoint;
+import simu.model.*;
 import view.ISimulatorUI;
 
 public class Controller implements IControllerForM, IControllerForV {
@@ -70,5 +67,9 @@ public class Controller implements IControllerForM, IControllerForV {
 
 	public void setLevelKey(String levelKey) {
 		this.levelKey = levelKey;
+	}
+
+	public LevelSettings getLevelSettings() {
+		return LevelSettings.getInstance();
 	}
 }

@@ -20,10 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import simu.framework.Trace;
-import simu.model.Crosswalk;
-import simu.model.Level;
-import simu.model.ServicePoint;
-import simu.model.TrafficLights;
+import simu.model.*;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicReference;
@@ -43,7 +40,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private InputElement timeInput, delayInput, carMean, carVariance;
     private Visualization screen = new Visualization(1000, 800);
     private Level selectedLevel;
+    private ServicePoint selectedServicePoint;
     ListView<ServicePoint> servicePointListView;
+    private LevelSettings levelSettings;
 
     @Override
     public void init() {
@@ -51,6 +50,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         Trace.setTraceLevel(Trace.Level.ERR);
 
         controller = new Controller(this);
+        levelSettings = controller.getLevelSettings();
     }
 
     @Override
@@ -72,10 +72,16 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         InputElement[] customInputArray = {carMean, carVariance};
 
         servicePointListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            for (InputElement inputElement : customInputArray) {
-                inputElement.setVisible(true);
-            }
-            System.out.println(newValue);
+            for (InputElement inputElement : customInputArray) inputElement.setVisible(true);
+
+
+            selectedServicePoint = newValue;
+        });
+
+        carVariance.getTextField().setOnKeyTyped(event -> {
+            String key = selectedLevel.getLevelName() + selectedServicePoint.getScheduledEventType() + "generator2";
+            levelSettings.add(key, Double.parseDouble(carVariance.getTextField().getText()));
+            System.out.println("Vaihtelevuus: " + levelSettings.get(key));
         });
 
         levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 3", "Level 4");
