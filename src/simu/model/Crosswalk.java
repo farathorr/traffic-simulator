@@ -9,10 +9,13 @@ public class Crosswalk extends ServicePoint {
     private boolean crossable = true;
     private Event nextCrossingEvent = null;
     private ContinuousGenerator crossingFrequencyGenerator;
+    private double mean, variance;
 
-    public Crosswalk(ContinuousGenerator crossingTimeGenerator, ContinuousGenerator crossingFrequencyGenerator, EventList eventList, String type) {
-        super(crossingTimeGenerator, eventList, type);
-        this.crossingFrequencyGenerator = crossingFrequencyGenerator;
+    public Crosswalk(double mean, double variance, EventList eventList, String type) {
+        super( eventList, type);
+        this.mean = mean;
+        this.variance = variance;
+        this.crossingFrequencyGenerator = new Normal(mean, variance);
     }
 
     public void init() {
@@ -46,5 +49,21 @@ public class Crosswalk extends ServicePoint {
 
     public Event getNextCrossingEvent() {
         return nextCrossingEvent;
+    }
+
+    public double getMean() {
+        return mean;
+    }
+
+    public void setMean(double mean) {
+        this.mean = mean;
+    }
+
+    public double getVariance() {
+        return variance;
+    }
+
+    public void setVariance(double variance) {
+        this.variance = variance;
     }
 }

@@ -6,8 +6,8 @@ import simu.framework.Event;
 import simu.framework.EventList;
 
 public class Road extends ServicePoint {
-    public Road(ContinuousGenerator generator, EventList eventList, String type) {
-        super(generator, eventList, type);
+    public Road(EventList eventList, String type) {
+        super(eventList, type);
     }
 
     @Override

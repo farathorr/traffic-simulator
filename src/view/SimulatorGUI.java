@@ -89,6 +89,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         levelComboBox.setOnAction(event -> {
             String value = levelComboBox.getValue();
             screen.reset();
+            screen.setX(0);
+            screen.setY(0);
+            screen.setZoomLevel(1);
             selectedLevel = controller.getEngine().getLevelController().getLevel(value); // Also renders the level
             controller.setLevelKey(value);
             updateServicePointSettingsList();
@@ -235,7 +238,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     private void setCanvasZoom(Canvas canvas) {
         final Visualization screen = (Visualization) canvas;
-        final double minScale = .1, maxScale = 150.0;
+        final double minScale = .05, maxScale = 150.0;
         canvas.setOnScroll(event -> {
             double zoomLevel = screen.getZoomLevel();
             if (event.getDeltaY() < 0) screen.setZoomLevel(Math.max(Math.pow(screen.getZoomLevel(), 0.9) - .1, minScale));
