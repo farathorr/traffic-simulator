@@ -40,6 +40,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image tIntersection = new Image("t-intersection.png");
     private Image tIntersection2 = new Image("t-intersection2.png");
     private Image goal = new Image("goal.png");
+    private Level level;
 
 
     public Visualization(int w, int h) {
@@ -49,6 +50,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         gc = this.getGraphicsContext2D();
         gc.setImageSmoothing(false);
         clearScreen();
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 
     public void reset() {
@@ -250,14 +255,16 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         System.out.println(rotation);
         for(int i = 0; i < servicePoints.size(); i++) {
             if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
-                ServicePoint road = generateNewServicePoint(x, y, tileType, rotation);
-                servicePoints.set(i, road);
+                ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
+                level.add(servicePoint);
+                servicePoints.set(i, servicePoint);
                 return;
             }
         }
 
-        ServicePoint road = generateNewServicePoint(x, y, tileType, rotation);
-        servicePoints.add(road);
+        ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
+        level.add(servicePoint);
+        servicePoints.add(servicePoint);
     }
 
     private ServicePoint generateNewServicePoint(int x, int y, String tileType, String rotation) {

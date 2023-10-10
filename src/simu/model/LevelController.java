@@ -17,15 +17,19 @@ public class LevelController {
     }
 
     public Level getLevel(String levelKey) {
-        return switch (levelKey) {
+        Level level = switch (levelKey) {
             case "DEBUG world" -> getDebugLevel();
             case "Level 1" -> getLevel1();
             case "Level 2" -> getLevel2();
             case "Level 3" -> getLevel3();
             case "Level 4" -> getLevel4();
             case "Level 5" -> getLevel5();
+            case "Level 6" -> getLevel6();
             default -> null;
         };
+
+        controller.setToCurrentLevel(level);
+        return level;
     }
 
     public Level getDebugLevel() {
@@ -368,6 +372,91 @@ public class LevelController {
         controller.render(level, "goal5_-4", 5, -4, "goal");
 
 
+
+        return level;
+    }
+
+    public Level getLevel6() {
+        Level level = new Level("Level 6");
+
+        level.add(new Road(eventList, "road-turn9_0"));
+        controller.render(level, "road-turn9_0", 9, 0, "left-turn");
+        level.add(new Road(eventList, "road-turn9_3"));
+        controller.render(level, "road-turn9_3", 9, 3, "top-turn");
+        level.add(new Road(eventList, "road-turn5_3"));
+        controller.render(level, "road-turn5_3", 5, 3, "right-turn");
+        level.add(new Road(eventList, "road-turn5_2"));
+        controller.render(level, "road-turn5_2", 5, 2, "left-turn");
+        level.add(new Road(eventList, "road-turn1_2"));
+        controller.render(level, "road-turn1_2", 1, 2, "bottom-turn");
+        level.add(new Road(eventList, "road-turn1_6"));
+        controller.render(level, "road-turn1_6", 1, 6, "right-turn");
+        level.add(new Road(eventList, "road-turn9_6"));
+        controller.render(level, "road-turn9_6", 9, 6, "left-turn");
+        level.add(new Road(eventList, "road-turn9_9"));
+        controller.render(level, "road-turn9_9", 9, 9, "top-turn");
+        level.add(new Road(eventList, "road8_0"));
+        controller.render(level, "road8_0", 8, 0, "right");
+        level.add(new Road(eventList, "road7_0"));
+        controller.render(level, "road7_0", 7, 0, "right");
+        level.add(new Road(eventList, "road5_0"));
+        controller.render(level, "road5_0", 5, 0, "right");
+        level.add(new Road(eventList, "road4_0"));
+        controller.render(level, "road4_0", 4, 0, "right");
+        level.add(new Road(eventList, "road3_0"));
+        controller.render(level, "road3_0", 3, 0, "right");
+        level.add(new Road(eventList, "road2_2"));
+        controller.render(level, "road2_2", 2, 2, "right");
+        level.add(new Road(eventList, "road3_2"));
+        controller.render(level, "road3_2", 3, 2, "right");
+        level.add(new Road(eventList, "road4_2"));
+        controller.render(level, "road4_2", 4, 2, "right");
+        level.add(new Road(eventList, "road2_6"));
+        controller.render(level, "road2_6", 2, 6, "right");
+        level.add(new Road(eventList, "road3_6"));
+        controller.render(level, "road3_6", 3, 6, "right");
+        level.add(new Road(eventList, "road5_6"));
+        controller.render(level, "road5_6", 5, 6, "right");
+        level.add(new Road(eventList, "road6_6"));
+        controller.render(level, "road6_6", 6, 6, "right");
+        level.add(new Road(eventList, "road7_6"));
+        controller.render(level, "road7_6", 7, 6, "right");
+        level.add(new Road(eventList, "road8_6"));
+        controller.render(level, "road8_6", 8, 6, "right");
+        level.add(new Road(eventList, "road4_6"));
+        controller.render(level, "road4_6", 4, 6, "right");
+        level.add(new Road(eventList, "road1_5"));
+        controller.render(level, "road1_5", 1, 5, "bottom");
+        level.add(new Road(eventList, "road1_4"));
+        controller.render(level, "road1_4", 1, 4, "bottom");
+        level.add(new Road(eventList, "road1_3"));
+        controller.render(level, "road1_3", 1, 3, "bottom");
+        level.add(new Road(eventList, "road9_2"));
+        controller.render(level, "road9_2", 9, 2, "bottom");
+        level.add(new Road(eventList, "road9_1"));
+        controller.render(level, "road9_1", 9, 1, "bottom");
+        level.add(new Road(eventList, "road9_8"));
+        controller.render(level, "road9_8", 9, 8, "bottom");
+        level.add(new Road(eventList, "road9_7"));
+        controller.render(level, "road9_7", 9, 7, "bottom");
+        level.add(new Road(eventList, "road6_0"));
+        controller.render(level, "road6_0", 6, 0, "left");
+        level.add(new Road(eventList, "road6_3"));
+        controller.render(level, "road6_3", 6, 3, "left");
+        level.add(new Road(eventList, "road7_3"));
+        controller.render(level, "road7_3", 7, 3, "left");
+        level.add(new Road(eventList, "road8_3"));
+        controller.render(level, "road8_3", 8, 3, "left");
+        level.add(new Road(eventList, "road8_9"));
+        controller.render(level, "road8_9", 8, 9, "left");
+        level.add(new Road(eventList, "road7_9"));
+        controller.render(level, "road7_9", 7, 9, "left");
+        level.add(new Road(eventList, "road6_9"));
+        controller.render(level, "road6_9", 6, 9, "left");
+        level.add(new Road(eventList, "road5_9"));
+        controller.render(level, "road5_9", 5, 9, "left");
+        level.add(new Goal(eventList, "goal4_9"));
+        controller.render(level, "goal4_9", 4, 9, "goal");
 
         return level;
     }

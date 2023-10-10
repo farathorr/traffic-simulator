@@ -6,6 +6,7 @@ import simu.framework.Clock;
 import simu.framework.Event;
 import simu.framework.EventList;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
@@ -93,7 +94,12 @@ public class Roundabout extends ServicePoint {
     public void displayClass() {
         String text = null;
         if(this.getLevel().hasNextServicePoint(this)) {
-            text = String.format("level.add(new %s(eventList, %s), %s);", this.getClass().getSimpleName(), this.scheduledEventType, this.getLevel().getNextRoundaboutServicePoint(this, false).getScheduledEventType());
+            ArrayList<String> points = this.getLevel().getAllNextServicePoints(this);
+            if (points.size() == 1) {
+                text = String.format("level.add(new %s(eventList, \"%s\"), \"%s\");", this.getClass().getSimpleName(), this.scheduledEventType, points.get(0));
+            } else {
+                text = String.format("level.add(new %s(eventList, \"%s\"), new String[]{\"%s\"});", this.getClass().getSimpleName(), this.scheduledEventType, String.join("\", \"", points));
+            }
         } else {
             text = String.format("level.add(new %s(eventList, %s));", this.getClass().getSimpleName(), this.scheduledEventType);
         }

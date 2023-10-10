@@ -77,6 +77,10 @@ public class Level {
         return servicePoints.get(nextPoints.get(servicePoint).get(r));
     }
 
+    public ArrayList<String> getAllNextServicePoints(Object servicePoint) {
+        return nextPoints.get(servicePoint);
+    }
+
     public ServicePoint getNextRoundaboutServicePoint(Object servicePoint, boolean isExiting) {
         if (isExiting) {
             int r = (int) Math.ceil(Math.random() * nextPoints.get(servicePoint).size() - 2) + 1;
