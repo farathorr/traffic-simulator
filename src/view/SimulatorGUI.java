@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -173,8 +174,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             levelsChoicebox.getItems().addAll(levels);
             ChoiceBox<Integer> simulationsChoicebox = new ChoiceBox<>();
             ArrayList<Level_variables> variablesList = new ArrayList<>();
-            ObservableList<Level_variables> variablesObservableList = FXCollections.observableArrayList(variablesList);
-            TableView<Level_variables> variableTable = new TableView<>(variablesObservableList);
+            TableView<Level_variables> variableTable = new TableView<>();
+            variableTable.setPrefWidth(400);
+
 
             levelsChoicebox.setOnAction(ae -> {
                 simulationsChoicebox.getItems().clear();
@@ -196,12 +198,17 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                             variablesList.add(level_variable);
                         }
                     }
+                    ObservableList<Level_variables> variablesObservableList = FXCollections.observableArrayList(variablesList);
+                    variableTable.setItems(variablesObservableList);
+
                     TableColumn<Level_variables, String> servicePointNameCol = new TableColumn<>("Service Point");
-                    TableColumn<Level_variables, String> eventIntervalsCol = new TableColumn<>("Event Interval");
-                    TableColumn<Level_variables, String> leadTimeCol = new TableColumn<>("Lead time");
-                    servicePointNameCol.setCellValueFactory(new PropertyValueFactory<>((variablesList.get(0).getServicePointName())));
-                    eventIntervalsCol.setCellValueFactory(new PropertyValueFactory<>(Double.toString(variablesList.get(0).getEventInterval())));
-                    leadTimeCol.setCellValueFactory(new PropertyValueFactory<>(Double.toString(variablesList.get(0).getLeadTime())));
+                    TableColumn<Level_variables, Double> eventIntervalsCol = new TableColumn<>("Event Interval");
+                    TableColumn<Level_variables, Double> leadTimeCol = new TableColumn<>("Lead time");
+
+                    servicePointNameCol.setCellValueFactory( data -> new SimpleStringProperty(data.getValue().getServicePointName()));
+                    eventIntervalsCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getEventInterval()).asObject());
+                    leadTimeCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getLeadTime()).asObject());
+
                     variableTable.getColumns().setAll(servicePointNameCol, eventIntervalsCol, leadTimeCol);
                 }
             });
