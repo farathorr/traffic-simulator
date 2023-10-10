@@ -320,7 +320,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
 
         if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
-        screen.createNewServicePoint(scaleX, scaleY, placeTileType, placeRotation);
+        if (placeTileType.equals("arrow")) {
+            screen.createServicePointConnection(scaleX, scaleY, placeRotation);
+        } else screen.createNewServicePoint(scaleX, scaleY, placeTileType, placeRotation);
         lastPlaced[0] = scaleX;
         lastPlaced[1] = scaleY;
     }

@@ -24,6 +24,10 @@ public class Level {
         point.init();
     }
 
+    public Map<Object, ArrayList<String>> getNextPoints() {
+        return nextPoints;
+    }
+
     public void add(ServicePoint point, String nextPoint) {
         add(point, new String[]{nextPoint});
     }

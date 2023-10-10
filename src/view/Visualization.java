@@ -106,6 +106,11 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                             else if(point.getY() - nextPoint.getY() < 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
                         });
                     });
+
+                    if(placeRotation.equals("right")) drawImage(arrow, previewX * gridSize + gridSize, previewY * gridSize, -gridSize, gridSize);
+                    else if(placeRotation.equals("left")) drawImage(arrow, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
+                    else if(placeRotation.equals("top")) drawImage(arrow2, previewX * gridSize, previewY * gridSize + gridSize, gridSize, -gridSize);
+                    else if(placeRotation.equals("bottom")) drawImage(arrow2, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
                 }
             }
         });
@@ -262,6 +267,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     }
 
     public void drawPreviewServicePoint() {
+        if (placeTileType.equals("arrow")) return;
         ServicePoint servicePoint = generateNewServicePoint(previewX, previewY, placeTileType, placeRotation);
         renderServicePoint(servicePoint);
     }
@@ -280,6 +286,28 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
         level.add(servicePoint);
         servicePoints.add(servicePoint);
+    }
+
+    public void createServicePointConnection(int x, int y, String rotate) {
+        ServicePoint servicePoint = getServicePointByCordinates(x, y);
+        ServicePoint nextServicePoint = getServicePointByCordinates(x + (rotate.equals("right") ? 1 : rotate.equals("left") ? -1 : 0), y + (rotate.equals("top") ? -1 : rotate.equals("bottom") ? 1 : 0));
+        if(servicePoint != null && nextServicePoint != null) {
+            ArrayList<String> points = new ArrayList<>();
+            if (level.hasNextServicePoint(servicePoint)) {
+                points = level.getAllNextServicePoints(servicePoint);
+            } else points.add(nextServicePoint.getScheduledEventType());
+
+            level.getNextPoints().put(servicePoint, points);
+        }
+    }
+
+    public ServicePoint getServicePointByCordinates(int x, int y) {
+        for(int i = 0; i < servicePoints.size(); i++) {
+            if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
+                return servicePoints.get(i);
+            }
+        }
+        return null;
     }
 
     private ServicePoint generateNewServicePoint(int x, int y, String tileType, String rotation) {
