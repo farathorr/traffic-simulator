@@ -205,13 +205,14 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             switch (event.getCode()) {
                 case DIGIT0 -> placeTileType = "road";
                 case DIGIT1 -> placeTileType = "roundabout";
-                case DIGIT2 -> placeTileType = "trafficlights";
+                case DIGIT2 -> placeTileType = "trafficlights"; //wtf
                 case DIGIT3 -> placeTileType = "crosswalk";
                 case DIGIT4 -> placeTileType = "goal";
                 case DIGIT5 -> placeTileType = "turn";
                 case DIGIT6 -> placeTileType = "t-intersection";
                 case DIGIT7 -> placeTileType = "double";
                 case DIGIT8 -> placeTileType = "r-road";
+                case DIGIT9 -> placeTileType = "arrow";
                 case R -> {
                     switch (placeRotation) {
                         case "right" -> placeRotation = "bottom";

@@ -40,6 +40,8 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image tIntersection = new Image("t-intersection.png");
     private Image tIntersection2 = new Image("t-intersection2.png");
     private Image goal = new Image("goal.png");
+    private Image arrow = new Image("arrow.png");
+    private Image arrow2 = new Image("arrow2.png");
     private Level level;
 
 
@@ -92,6 +94,19 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             if(Debug.getInstance().isDebug()) {
                 drawPreviewServicePoint();
                 drawGrid();
+                if (placeTileType.equals("arrow")) {
+                    servicePoints.forEach((ServicePoint point) -> {
+                        if (!level.hasNextServicePoint(point)) return;
+                        ArrayList<String> nextPoints = level.getAllNextServicePoints(point);
+                        nextPoints.forEach((String key) -> {
+                            ServicePoint nextPoint = level.getServicePoint(key);
+                            if(point.getX() - nextPoint.getX() < 0) drawImage(arrow, point.getX() * gridSize + gridSize, point.getY() * gridSize, -gridSize, gridSize);
+                            else if(point.getX() - nextPoint.getX() > 0) drawImage(arrow, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
+                            else if(point.getY() - nextPoint.getY() > 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize + gridSize, gridSize, -gridSize);
+                            else if(point.getY() - nextPoint.getY() < 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
+                        });
+                    });
+                }
             }
         });
     }
