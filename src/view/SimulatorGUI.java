@@ -195,13 +195,11 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             });
 
             findButton.setOnAction(ae -> {
-                System.out.println(simulationsChoicebox.getValue());
                 if (!(simulationsChoicebox.getValue() == null)) {
                     int selectedSimulation = simulationsChoicebox.getValue();
                     List<Level_variables> list = controller.getLevelVariables();
                     for (Level_variables level_variable : list) {
                         if (level_variable.getLevelId().getId() == selectedSimulation) {
-                            System.out.println(level_variable.getServicePointName());
                             variablesList.add(level_variable);
                         }
                     }
