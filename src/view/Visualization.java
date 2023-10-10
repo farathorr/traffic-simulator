@@ -295,6 +295,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             ArrayList<String> points = new ArrayList<>();
             if (level.hasNextServicePoint(servicePoint)) {
                 points = level.getAllNextServicePoints(servicePoint);
+                points.add(nextServicePoint.getScheduledEventType());
             } else points.add(nextServicePoint.getScheduledEventType());
 
             level.getNextPoints().put(servicePoint, points);
