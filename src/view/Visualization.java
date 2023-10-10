@@ -17,7 +17,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private final boolean DEBUG = true;
     double x = 0, y = 0;
     private final int width, height;
-    private int gridSize = 128;
+    private final int gridSize = 128;
     private double zoomLevel = 1.0;
     private List<ServicePoint> servicePoints = new ArrayList<>();
     private List<Customer> customers = new ArrayList<>();
@@ -54,6 +54,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         servicePoints.clear();
         customers.clear();
         clearScreen();
+    }
+
+    public int getGridSize() {
+        return gridSize;
     }
 
     public void clearScreen() {

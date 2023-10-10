@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -247,17 +248,31 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         final Visualization screen = (Visualization) canvas;
 
         canvas.setOnMousePressed(event -> {
-            startX.set(event.getX());
-            startY.set(event.getY());
-            canvasX.set(screen.getX());
-            canvasY.set(screen.getY());
+            if (event.getButton() == MouseButton.PRIMARY) {
+                startX.set(event.getX());
+                startY.set(event.getY());
+                canvasX.set(screen.getX());
+                canvasY.set(screen.getY());
+            } else if(event.getButton() == MouseButton.SECONDARY) {
+                double gridSize = screen.getGridSize() * screen.getZoomLevel();
+                int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
+                int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
+                System.out.println(scaleX + " " + scaleY);
+            }
         });
 
         canvas.setOnMouseDragged(event -> {
-            double deltaX = event.getX() - startX.get();
-            double deltaY = event.getY() - startY.get();
-            screen.setX(canvasX.get() + deltaX);
-            screen.setY(canvasY.get() + deltaY);
+            if (event.getButton() == MouseButton.PRIMARY) {
+                double deltaX = event.getX() - startX.get();
+                double deltaY = event.getY() - startY.get();
+                screen.setX(canvasX.get() + deltaX);
+                screen.setY(canvasY.get() + deltaY);
+            } else if(event.getButton() == MouseButton.SECONDARY) {
+                double gridSize = screen.getGridSize() * screen.getZoomLevel();
+                int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
+                int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
+                System.out.println(scaleX + " " + scaleY);
+            }
         });
     }
 
