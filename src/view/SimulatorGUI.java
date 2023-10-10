@@ -162,21 +162,23 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             Stage resultsWindow = new Stage();
             resultsWindow.setTitle("Tulokset");
             GridPane resultsGrid = new GridPane();
+            Label levelsLabel = new Label("Tasot");
+            Label simulationsLabel = new Label("Simulaatiot");
             List<Results> resultsList = controller.getResults();
+            Button findButton = new Button("Etsi tuloksia");
+            ChoiceBox<String> levelsChoicebox = new ChoiceBox<>();
+            ChoiceBox<Integer> simulationsChoicebox = new ChoiceBox<>();
+            ArrayList<Level_variables> variablesList = new ArrayList<>();
+            TableView<Level_variables> variableTable = new TableView<>();
+            variableTable.setPrefWidth(400);
+
             List<String> levels = new ArrayList<>();
             for (Results selectedResult : resultsList) {
                 if (!levels.contains(selectedResult.getSimulationLevel())) {
                     levels.add(selectedResult.getSimulationLevel());
                 }
             }
-            Button findButton = new Button("Etsi tuloksia");
-            ChoiceBox<String> levelsChoicebox = new ChoiceBox<>();
             levelsChoicebox.getItems().addAll(levels);
-            ChoiceBox<Integer> simulationsChoicebox = new ChoiceBox<>();
-            ArrayList<Level_variables> variablesList = new ArrayList<>();
-            TableView<Level_variables> variableTable = new TableView<>();
-            variableTable.setPrefWidth(400);
-
 
             levelsChoicebox.setOnAction(ae -> {
                 simulationsChoicebox.getItems().clear();
@@ -217,11 +219,12 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             Insets insets = new Insets(15);
             variableTable.setPadding(insets);
 
-
-            resultsGrid.add(levelsChoicebox, 0, 0);
-            resultsGrid.add(simulationsChoicebox, 1, 0);
-            resultsGrid.add(findButton, 2, 0);
-            resultsGrid.add(variableTable, 0, 1);
+            resultsGrid.add(levelsLabel, 0, 0);
+            resultsGrid.add(simulationsLabel, 1, 0);
+            resultsGrid.add(levelsChoicebox, 0, 1);
+            resultsGrid.add(simulationsChoicebox, 1, 1);
+            resultsGrid.add(findButton, 2, 1);
+            resultsGrid.add(variableTable, 0, 2);
             resultsGrid.setPadding(insets);
             resultsGrid.setAlignment(Pos.CENTER);
             resultsWindow.setScene(new Scene(resultsGrid));
