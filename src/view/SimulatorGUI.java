@@ -161,9 +161,21 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                     levels.add(selectedResult.getSimulationLevel());
                 }
             }
+            Button findButton = new Button("Etsi tuloksia");
             ChoiceBox<String> levelsChoicebox = new ChoiceBox<>();
+            ChoiceBox<Integer> simulationsChoicebox = new ChoiceBox<>();
+            levelsChoicebox.setOnAction(ae -> {
+                simulationsChoicebox.getItems().clear();
+                for(Results selectedResult : resultsList){
+                    if(selectedResult.getSimulationLevel().equals(levelsChoicebox.getValue())) {
+                        simulationsChoicebox.getItems().add(selectedResult.getId());
+                    }
+                }
+            });
             levelsChoicebox.getItems().addAll(levels);
             resultsGrid.add(levelsChoicebox, 0, 0);
+            resultsGrid.add(simulationsChoicebox, 1, 0);
+            resultsGrid.add(findButton, 0, 1);
             resultsGrid.setPadding(new Insets(15));
             resultsGrid.setAlignment(Pos.CENTER);
             resultsWindow.setScene(new Scene(resultsGrid));
@@ -176,7 +188,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         hBox.setSpacing(10);   // noodien välimatka 10 pikseliä
 
         VBox vBox = new VBox();
-        
+
         GridPane footerGrid = new GridPane();
         footerGrid.setAlignment(Pos.CENTER);
         footerGrid.setVgap(10);

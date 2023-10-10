@@ -1,5 +1,6 @@
 package controller;
 
+import simu.entity.Level_variables;
 import simu.entity.Results;
 import simu.framework.Engine;
 import simu.model.LevelSettings;
@@ -21,4 +22,6 @@ public interface IControllerForV {
     public LevelSettings getLevelSettings();
 
     public List<Results> getResults();
+
+    public List<Level_variables> getLevelVariables();
 }

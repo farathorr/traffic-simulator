@@ -96,4 +96,9 @@ public class Controller implements IControllerForM, IControllerForV {
 	public List<Results> getResults(){
 		return resultsDao.getAll();
 	}
+
+	@Override
+	public List<Level_variables> getLevelVariables(){
+		return levelvariableDao.getAll();
+	}
 }
