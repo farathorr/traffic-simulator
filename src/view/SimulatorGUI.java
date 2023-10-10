@@ -218,6 +218,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                     }
                 }
             }
+
+            screen.setPlaceRotation(placeRotation);
+            screen.setPlaceTileType(placeTileType);
         });
 
         AnimationTimer timer = new AnimationTimer() {
