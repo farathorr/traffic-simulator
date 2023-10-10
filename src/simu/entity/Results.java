@@ -3,18 +3,13 @@ package simu.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "results")
 public class Results {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
-    @Column(name = "carCount")
     private int carCount;
-    @Column(name = "averageTime")
     private double averageTime;
-    @Column(name = "simulationTime")
     private double simulationTime;
-    @Column(name = "simulationLevel")
     private String simulationLevel;
 
     public Results(int carCount, double averageTime, double simulationTime, String simulationLevel) {

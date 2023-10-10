@@ -4,19 +4,14 @@ package simu.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "level_variables")
 public class Level_variables {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     @ManyToOne
-    @JoinColumn(name = "levelId")
     private Results levelId;
-    @Column(name = "servicePointName")
     private String servicePointName;
-    @Column(name = "eventInterval")
     private double eventInterval;
-    @Column(name = "leadTime")
     private double leadTime;
 
     public Level_variables(Results levelId, String servicePointName, double eventInterval, double leadTime) {
@@ -59,5 +54,13 @@ public class Level_variables {
 
     public void setLeadTime(double leadTime) {
         this.leadTime = leadTime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

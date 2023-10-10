@@ -22,5 +22,4 @@ CREATE TABLE level_variables(
 );
 DROP USER IF EXISTS 'appuser'@'localhost';
 CREATE USER 'appuser'@'localhost' IDENTIFIED BY '123';
-GRANT SELECT, INSERT ON simulation.results TO 'appuser'@'localhost';
-GRANT SELECT, INSERT ON simulation.level_variables TO 'appuser'@'localhost';
+GRANT SELECT, INSERT, DROP, UPDATE, DELETE, CREATE ON simulation.* TO 'appuser'@'localhost';
