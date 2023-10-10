@@ -288,6 +288,16 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 road.render(x, y, rotation);
                 yield road;
             }
+            case "t-intersection" -> {
+                Road road = new Road(null, "t-intersection" + x + "_" +y);
+                road.render(x, y, "t-intersection-"+rotation);
+                yield road;
+            }
+            case "turn" -> {
+                Road road = new Road(null, "turn" + x + "_" +y);
+                road.render(x,y,rotation+"-turn");
+                yield road;
+            }
             default -> {
                 Road road = new Road(null, "road" + x + "_" + y);
                 road.render(x, y, rotation);
