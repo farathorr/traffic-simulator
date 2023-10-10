@@ -15,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -218,6 +217,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                         case "left" -> placeRotation = "top";
                         case "top" -> placeRotation = "right";
                     }
+                }
+                case E -> {
+                    screen.exportSelectedLevel();
                 }
             }
 

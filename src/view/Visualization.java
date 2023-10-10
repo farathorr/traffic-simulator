@@ -5,7 +5,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import org.hibernate.annotations.CreationTimestamp;
 import simu.model.*;
 
 import java.util.ArrayList;
@@ -328,5 +327,12 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void setPreviewY(int previewY) {
         this.previewY = previewY;
+    }
+
+    public void exportSelectedLevel() {
+        servicePoints.forEach((ServicePoint p) -> {
+            if (p.getClass() == Roundabout.class) ((Roundabout)p).displayClass();
+            else p.displayClass();
+        });
     }
 }

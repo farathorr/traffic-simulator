@@ -89,4 +89,16 @@ public class Roundabout extends ServicePoint {
     public void setVariance(double variance) {
         this.variance = variance;
     }
+
+    public void displayClass() {
+        String text = null;
+        if(this.getLevel().hasNextServicePoint(this)) {
+            text = String.format("level.add(new %s(eventList, %s), %s);", this.getClass().getSimpleName(), this.scheduledEventType, this.getLevel().getNextRoundaboutServicePoint(this, false).getScheduledEventType());
+        } else {
+            text = String.format("level.add(new %s(eventList, %s));", this.getClass().getSimpleName(), this.scheduledEventType);
+        }
+
+        System.out.println(text);
+        this.displayClassRender();
+    }
 }

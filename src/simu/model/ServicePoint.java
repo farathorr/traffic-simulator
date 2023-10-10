@@ -105,4 +105,20 @@ public abstract class ServicePoint {
     public String toString() {
         return String.format("%s (%.0f, %.0f) ", this.getClass().getSimpleName(), x, y);
     }
+
+    public void displayClass() {
+        String text = null;
+        if(this.getLevel().hasNextServicePoint(this)) {
+            text = String.format("level.add(new %s(eventList, %s), %s);", this.getClass().getSimpleName(), this.scheduledEventType, this.getLevel().getNextServicePoint(this).getScheduledEventType());
+        } else {
+            text = String.format("level.add(new %s(eventList, %s));", this.getClass().getSimpleName(), this.scheduledEventType);
+        }
+
+        System.out.println(text);
+        displayClassRender();
+    }
+
+    public void displayClassRender() {
+        System.out.printf("level.render(level, \"%s\", %.0f, %.0f, %s)\n", this.scheduledEventType, this.x, this.y, this.rotation);
+    }
 }
