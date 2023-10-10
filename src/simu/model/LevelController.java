@@ -87,10 +87,10 @@ public class LevelController {
         controller.render(level, "roundabout-double2_10", 2, 10, "left-double");
         controller.render(level, "roundabout-double2_12", 2, 12, "top-double");
         controller.render(level, "roundabout-double2_14", 2, 14, "bottom-double");
-        controller.render(level, "roundabout-road4_8", 4, 8, "right-road");
-        controller.render(level, "roundabout-road4_10", 4, 10, "left-road");
-        controller.render(level, "roundabout-road4_12", 4, 12, "top-road");
-        controller.render(level, "roundabout-road4_14", 4, 14, "bottom-road");
+        controller.render(level, "roundabout-road4_8", 4, 8, "right-r-road");
+        controller.render(level, "roundabout-road4_10", 4, 10, "left-r-road");
+        controller.render(level, "roundabout-road4_12", 4, 12, "top-r-road");
+        controller.render(level, "roundabout-road4_14", 4, 14, "bottom-r-road");
         controller.render(level, "traffic-lights6_0", 6, 0, "right");
         controller.render(level, "traffic-lights6_2", 6, 2, "left");
         controller.render(level, "traffic-lights6_4", 6, 4, "top");
@@ -131,10 +131,10 @@ public class LevelController {
         controller.render(level, "road1_4", 1, 4, "bottom");
         controller.render(level, "crosswalk3_3", 3, 3, "right");
         controller.render(level, "road4_3", 4, 3, "right");
-        controller.render(level, "roundabout_right4_2", 4, 2, "right-road");
-        controller.render(level, "roundabout_top5_2", 5, 2, "top-road");
-        controller.render(level, "roundabout_left5_1", 5, 1, "left-road");
-        controller.render(level, "roundabout_bottom4_1", 4, 1, "bottom-road");
+        controller.render(level, "roundabout_right4_2", 4, 2, "right-r-road");
+        controller.render(level, "roundabout_top5_2", 5, 2, "top-r-road");
+        controller.render(level, "roundabout_left5_1", 5, 1, "left-r-road");
+        controller.render(level, "roundabout_bottom4_1", 4, 1, "bottom-r-road");
         controller.render(level, "goal3_1", 3, 1, "goal");
 
         return level;
@@ -172,7 +172,7 @@ public class LevelController {
         controller.render(level, "road0_5", 0, 5, "bottom");
         controller.render(level, "road1_3", 1, 3, "right");
         controller.render(level, "road2_3", 2, 3, "right");
-        controller.render(level, "roundabout3_3", 3, 3, "bottom-road");
+        controller.render(level, "roundabout3_3", 3, 3, "bottom-r-road");
         controller.render(level, "roundabout3_4", 3, 4, "right-double");
         controller.render(level, "road3_5", 3, 5, "top-turn");
         controller.render(level, "road2_5", 2, 5, "right-turn");
@@ -181,7 +181,7 @@ public class LevelController {
         controller.render(level, "road5_4", 5, 4, "left-turn");
         controller.render(level, "road5_5", 5, 5, "top-turn");
         controller.render(level, "road4_5", 4, 5, "right-turn");
-        controller.render(level, "roundabout4_3", 4, 3, "left-road");
+        controller.render(level, "roundabout4_3", 4, 3, "left-r-road");
         controller.render(level, "road4_2", 4, 2, "top");
         controller.render(level, "goal4_1", 4, 1, "goal");
 
@@ -209,7 +209,7 @@ public class LevelController {
 
         controller.render(level, "road1_3", 1, 3, "right");
         controller.render(level, "road2_3", 2, 3, "right");
-        controller.render(level, "roundabout3_3", 3, 3, "bottom-road");
+        controller.render(level, "roundabout3_3", 3, 3, "bottom-r-road");
         controller.render(level, "roundabout3_4", 3, 4, "right-double");
         controller.render(level, "road3_5", 3, 5, "top-turn");
         controller.render(level, "road2_5", 2, 5, "right-turn");
@@ -218,7 +218,7 @@ public class LevelController {
         controller.render(level, "road5_4", 5, 4, "left-turn");
         controller.render(level, "road5_5", 5, 5, "top-turn");
         controller.render(level, "road4_5", 4, 5, "right-turn");
-        controller.render(level, "roundabout4_3", 4, 3, "left-road");
+        controller.render(level, "roundabout4_3", 4, 3, "left-r-road");
         controller.render(level, "road4_2", 4, 2, "top");
         controller.render(level, "goal4_1", 4, 1, "goal");
 
@@ -288,19 +288,19 @@ public class LevelController {
         controller.render(level, "road0_2", 0, 2, "bottom-turn");
         controller.render(level, "trafficlights0_3", 0, 3, "bottom");
         controller.render(level, "road0_4", 0, 4, "right-turn");
-        controller.render(level, "roundabout_bottom1_4", 1, 4, "bottom-road");
-        controller.render(level, "roundabout_right1_5", 1, 5, "right-road");
-        controller.render(level, "roundabout_top2_5", 2, 5, "top-road");
-        controller.render(level, "roundabout_left2_4", 2, 4, "left-road");
+        controller.render(level, "roundabout_bottom1_4", 1, 4, "bottom-r-road");
+        controller.render(level, "roundabout_right1_5", 1, 5, "right-r-road");
+        controller.render(level, "roundabout_top2_5", 2, 5, "top-r-road");
+        controller.render(level, "roundabout_left2_4", 2, 4, "left-r-road");
         controller.render(level, "road3_4", 3, 4, "right");
         controller.render(level, "trafficlights4_4", 4, 4, "right");
         controller.render(level, "road5_4", 5, 4, "top-turn");
         controller.render(level, "crosswalk5_3", 5, 3, "top");
         controller.render(level, "road5_2", 5, 2, "top");
-        controller.render(level, "roundabout_right5_1", 5, 1, "right-road");
-        controller.render(level, "roundabout_top6_1", 6, 1, "top-road");
-        controller.render(level, "roundabout_left6_0", 6, 0, "left-road");
-        controller.render(level, "roundabout_bottom5_0", 5, 0, "bottom-road");
+        controller.render(level, "roundabout_right5_1", 5, 1, "right-r-road");
+        controller.render(level, "roundabout_top6_1", 6, 1, "top-r-road");
+        controller.render(level, "roundabout_left6_0", 6, 0, "left-r-road");
+        controller.render(level, "roundabout_bottom5_0", 5, 0, "bottom-r-road");
         controller.render(level, "road4_0", 4, 0, "left");
         controller.render(level, "road3_0", 3, 0, "right-turn");
         controller.render(level, "road3_-1", 3, -1, "left-turn");
@@ -354,10 +354,10 @@ public class LevelController {
         controller.render(level, "road3_1",3,1,"right");
         controller.render(level, "road4_1",4,1,"top-turn");
 
-        controller.render(level, "roundabout_right4_0", 4, 0, "right-road");
-        controller.render(level, "roundabout_top5_0", 5, 0, "top-road");
-        controller.render(level, "roundabout_left5_-1", 5, -1, "left-road");
-        controller.render(level, "roundabout_bottom4_-1", 4, -1, "bottom-road");
+        controller.render(level, "roundabout_right4_0", 4, 0, "right-r-road");
+        controller.render(level, "roundabout_top5_0", 5, 0, "top-r-road");
+        controller.render(level, "roundabout_left5_-1", 5, -1, "left-r-road");
+        controller.render(level, "roundabout_bottom4_-1", 4, -1, "bottom-r-road");
 
         controller.render(level, "road6_0", 6, 0, "right");
         controller.render(level, "crosswalk7_0", 7, 0, "right");

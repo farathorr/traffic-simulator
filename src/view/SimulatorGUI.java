@@ -210,6 +210,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 case DIGIT4 -> placeTileType = "goal";
                 case DIGIT5 -> placeTileType = "turn";
                 case DIGIT6 -> placeTileType = "t-intersection";
+                case DIGIT7 -> placeTileType = "double";
+                case DIGIT8 -> placeTileType = "r-road";
                 case R -> {
                     switch (placeRotation) {
                         case "right" -> placeRotation = "bottom";
