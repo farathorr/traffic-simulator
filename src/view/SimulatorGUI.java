@@ -5,11 +5,17 @@ import controller.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -17,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import simu.entity.Level_variables;
 import simu.entity.Results;
 import simu.framework.Trace;
 import simu.model.*;
@@ -66,8 +73,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         levelComboBox = new ComboBox<>();
         servicePointListView = new ListView<>();
-        carMean = new InputElement("Keskiarvo","5", "Syötä keskiarvo");
-        carVariance = new InputElement("Vaihtelevuus","5","Syötä vaihtelevuus");
+        carMean = new InputElement("Keskiarvo", "5", "Syötä keskiarvo");
+        carVariance = new InputElement("Vaihtelevuus", "5", "Syötä vaihtelevuus");
 
         InputElement[] customInputArray = {carMean, carVariance};
 
@@ -154,10 +161,10 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             Stage resultsWindow = new Stage();
             resultsWindow.setTitle("Tulokset");
             GridPane resultsGrid = new GridPane();
-            List<Results> resultsList =  controller.getResults();
+            List<Results> resultsList = controller.getResults();
             List<String> levels = new ArrayList<>();
-            for(Results selectedResult : resultsList){
-                if(!levels.contains(selectedResult.getSimulationLevel())) {
+            for (Results selectedResult : resultsList) {
+                if (!levels.contains(selectedResult.getSimulationLevel())) {
                     levels.add(selectedResult.getSimulationLevel());
                 }
             }
@@ -165,30 +172,49 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             ChoiceBox<String> levelsChoicebox = new ChoiceBox<>();
             levelsChoicebox.getItems().addAll(levels);
             ChoiceBox<Integer> simulationsChoicebox = new ChoiceBox<>();
-
-
+            ArrayList<Level_variables> variablesList = new ArrayList<>();
+            ObservableList<Level_variables> variablesObservableList = FXCollections.observableArrayList(variablesList);
+            TableView<Level_variables> variableTable = new TableView<>(variablesObservableList);
 
             levelsChoicebox.setOnAction(ae -> {
                 simulationsChoicebox.getItems().clear();
-                for(Results selectedResult : resultsList){
-                    if(selectedResult.getSimulationLevel().equals(levelsChoicebox.getValue())) {
+                for (Results selectedResult : resultsList) {
+                    if (selectedResult.getSimulationLevel().equals(levelsChoicebox.getValue())) {
                         simulationsChoicebox.getItems().add(selectedResult.getId());
                     }
                 }
             });
 
             findButton.setOnAction(ae -> {
-                int selectedSimulation = simulationsChoicebox.getValue();
-
+                System.out.println(simulationsChoicebox.getValue());
+                if (!(simulationsChoicebox.getValue() == null)) {
+                    int selectedSimulation = simulationsChoicebox.getValue();
+                    List<Level_variables> list = controller.getLevelVariables();
+                    for (Level_variables level_variable : list) {
+                        if (level_variable.getLevelId().getId() == selectedSimulation) {
+                            System.out.println(level_variable.getServicePointName());
+                            variablesList.add(level_variable);
+                        }
+                    }
+                    TableColumn<Level_variables, String> servicePointNameCol = new TableColumn<>("Service Point");
+                    TableColumn<Level_variables, String> eventIntervalsCol = new TableColumn<>("Event Interval");
+                    TableColumn<Level_variables, String> leadTimeCol = new TableColumn<>("Lead time");
+                    servicePointNameCol.setCellValueFactory(new PropertyValueFactory<>((variablesList.get(0).getServicePointName())));
+                    eventIntervalsCol.setCellValueFactory(new PropertyValueFactory<>(Double.toString(variablesList.get(0).getEventInterval())));
+                    leadTimeCol.setCellValueFactory(new PropertyValueFactory<>(Double.toString(variablesList.get(0).getLeadTime())));
+                    variableTable.getColumns().setAll(servicePointNameCol, eventIntervalsCol, leadTimeCol);
+                }
             });
 
-            Insets insets = new Insets(15);
 
+            Insets insets = new Insets(15);
+            variableTable.setPadding(insets);
 
 
             resultsGrid.add(levelsChoicebox, 0, 0);
             resultsGrid.add(simulationsChoicebox, 1, 0);
             resultsGrid.add(findButton, 2, 0);
+            resultsGrid.add(variableTable, 0, 1);
             resultsGrid.setPadding(insets);
             resultsGrid.setAlignment(Pos.CENTER);
             resultsWindow.setScene(new Scene(resultsGrid));
@@ -277,7 +303,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     }
 
     public Controller getController() {
-    	return (Controller) controller;
+        return (Controller) controller;
     }
 
     public void enableSimulationSettings() {
@@ -312,7 +338,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         final double minScale = .05, maxScale = 150.0;
         canvas.setOnScroll(event -> {
             double zoomLevel = screen.getZoomLevel();
-            if (event.getDeltaY() < 0) screen.setZoomLevel(Math.max(Math.pow(screen.getZoomLevel(), 0.9) - .1, minScale));
+            if (event.getDeltaY() < 0)
+                screen.setZoomLevel(Math.max(Math.pow(screen.getZoomLevel(), 0.9) - .1, minScale));
             else screen.setZoomLevel(Math.min(Math.pow(screen.getZoomLevel(), 1.15) + .1, maxScale));
 
             double scale = screen.getZoomLevel() / zoomLevel;
@@ -326,7 +353,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     private void updateServicePointSettingsList() {
         servicePointListView.getItems().clear();
-        for(ServicePoint servicePoint : selectedLevel.getServicePoints()) {
+        for (ServicePoint servicePoint : selectedLevel.getServicePoints()) {
             if (servicePoint.getClass() == TrafficLights.class || servicePoint.getClass() == Crosswalk.class) {
                 servicePointListView.getItems().add(servicePoint);
             }
