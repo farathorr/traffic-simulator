@@ -141,10 +141,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 case "top-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
                 case "left-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
                 case "bottom-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
-                case "right-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                case "top-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                case "left-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
-                case "bottom-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                case "right-r-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                case "top-r-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                case "left-r-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                case "bottom-r-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
             }
         }
         else if (servicePoint.getClass() == TrafficLights.class) {
@@ -280,7 +280,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             }
             case "goal" -> {
                 Goal goal = new Goal(null, "goal" + x + "_" + y);
-                goal.render(x, y, rotation);
+                goal.render(x, y, "goal");
                 yield goal;
             }
             case "road" -> {
@@ -294,9 +294,19 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 yield road;
             }
             case "turn" -> {
-                Road road = new Road(null, "turn" + x + "_" +y);
+                Road road = new Road(null, "road-turn" + x + "_" +y);
                 road.render(x,y,rotation+"-turn");
                 yield road;
+            }
+            case "double" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-double" + x + "_" + y, 3);
+                roundabout.render(x,y,rotation+"-double");
+                yield roundabout;
+            }
+            case "r-road" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-r-road" + x + "_" + y, 3);
+                roundabout.render(x,y,rotation+"-r-road");
+                yield roundabout;
             }
             default -> {
                 Road road = new Road(null, "road" + x + "_" + y);
