@@ -72,12 +72,12 @@ public class TrafficLights extends ServicePoint {
         if(this.getLevel().hasNextServicePoint(this)) {
             ArrayList<String> points = this.getLevel().getAllNextServicePoints(this);
             if (points.size() == 1) {
-                text = String.format("level.add(new %s(%f, %f, eventList, \"%s\"), \"%s\");", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType, points.get(0));
+                text = String.format("level.add(new %s(%.0f, %.0f, eventList, \"%s\"), \"%s\");", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType, points.get(0));
             } else {
-                text = String.format("level.add(new %s(%f, %f, eventList, \"%s\"), new String[]{\"%s\"});", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType, String.join("\", \"", points));
+                text = String.format("level.add(new %s(%.0f, %.0f, eventList, \"%s\"), new String[]{\"%s\"});", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType, String.join("\", \"", points));
             }
         } else {
-            text = String.format("level.add(new %s(%f, %f, eventList, \"%s\"));", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType);
+            text = String.format("level.add(new %s(%.0f, %.0f, eventList, \"%s\"));", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType);
         }
 
         System.out.println(text);
