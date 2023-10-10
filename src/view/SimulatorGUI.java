@@ -247,6 +247,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         AtomicReference<Double> canvasY = new AtomicReference<>(((Visualization) canvas).getY());
         final Visualization screen = (Visualization) canvas;
 
+        final int[] lastPlaced = { -9999, -9999 };
+
         canvas.setOnMousePressed(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 startX.set(event.getX());
@@ -257,7 +259,10 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 double gridSize = screen.getGridSize() * screen.getZoomLevel();
                 int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
                 int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
-                System.out.println(scaleX + " " + scaleY);
+                if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
+                screen.createNewServicePoint(scaleX, scaleY, "right");
+                lastPlaced[0] = scaleX;
+                lastPlaced[1] = scaleY;
             }
         });
 
@@ -271,7 +276,11 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 double gridSize = screen.getGridSize() * screen.getZoomLevel();
                 int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
                 int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
-                System.out.println(scaleX + " " + scaleY);
+
+                if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
+                screen.createNewServicePoint(scaleX, scaleY, "right");
+                lastPlaced[0] = scaleX;
+                lastPlaced[1] = scaleY;
             }
         });
     }

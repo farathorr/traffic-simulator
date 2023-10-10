@@ -237,4 +237,19 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     public void setZoomLevel(double zoomLevel) {
         this.zoomLevel = zoomLevel;
     }
+
+    public void createNewServicePoint(int x, int y, String rotation) {
+        for(int i = 0; i < servicePoints.size(); i++) {
+            if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
+                Road road = new Road(null, "road" + x + "_" + y);
+                road.render(x, y, rotation);
+                servicePoints.set(i, road);
+                return;
+            }
+        }
+
+        Road road = new Road(null, "road" + x + "_" + y);
+        servicePoints.add(road);
+        road.render(x, y, rotation);
+    }
 }
