@@ -347,9 +347,8 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     }
 
     public void exportSelectedLevel() {
-        servicePoints.forEach((ServicePoint p) -> {
-            if (p.getClass() == Roundabout.class) ((Roundabout)p).displayClass();
-            else p.displayClass();
-        });
+        servicePoints.forEach(ServicePoint::displayClass);
+        System.out.println();
+        servicePoints.forEach(ServicePoint::displayClassRender);
     }
 }

@@ -83,6 +83,5 @@ public class Crosswalk extends ServicePoint {
         }
 
         System.out.println(text);
-        this.displayClassRender();
     }
 }

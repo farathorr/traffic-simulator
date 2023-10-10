@@ -121,7 +121,6 @@ public abstract class ServicePoint {
         }
 
         System.out.println(text);
-        displayClassRender();
     }
 
     public void displayClassRender() {

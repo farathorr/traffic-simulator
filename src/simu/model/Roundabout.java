@@ -105,6 +105,5 @@ public class Roundabout extends ServicePoint {
         }
 
         System.out.println(text);
-        this.displayClassRender();
     }
 }
