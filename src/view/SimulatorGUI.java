@@ -193,6 +193,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         setCanvasDrag(screen);
         setCanvasZoom(screen);
+        setCanvasDrawPreview(screen);
 
         hBox.getChildren().addAll(vBox, (Canvas) screen);
 
@@ -209,13 +210,14 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 case DIGIT3 -> placeTileType = "crosswalk";
                 case DIGIT4 -> placeTileType = "goal";
                 case R -> {
-                    if (placeRotation.equals("right")) placeRotation = "bottom";
-                    else if (placeRotation.equals("bottom")) placeRotation = "left";
-                    else if (placeRotation.equals("left")) placeRotation = "top";
-                    else if (placeRotation.equals("top")) placeRotation = "right";
+                    switch (placeRotation) {
+                        case "right" -> placeRotation = "bottom";
+                        case "bottom" -> placeRotation = "left";
+                        case "left" -> placeRotation = "top";
+                        case "top" -> placeRotation = "right";
+                    }
                 }
             }
-            System.out.println("asdasasd");
         });
 
         AnimationTimer timer = new AnimationTimer() {
@@ -284,6 +286,20 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 screen.setX(canvasX.get() + deltaX);
                 screen.setY(canvasY.get() + deltaY);
             } else if(event.getButton() == MouseButton.SECONDARY) placeTilesOnCanvas(event);
+        });
+    }
+
+    private void setCanvasDrawPreview(Canvas canvas) {
+        final Visualization screen = (Visualization) canvas;
+        canvas.setOnMouseMoved(event -> {
+            if(!Debug.getInstance().isDebug()) return;
+            double gridSize = screen.getGridSize() * screen.getZoomLevel();
+            int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
+            int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
+            screen.setPlaceRotation(placeRotation);
+            screen.setPlaceTileType(placeTileType);
+            screen.setPreviewX(scaleX);
+            screen.setPreviewY(scaleY);
         });
     }
 

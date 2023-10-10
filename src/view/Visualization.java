@@ -16,6 +16,8 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     private final GraphicsContext gc;
     double x = 0, y = 0;
+    private int previewX = 0, previewY = 0;
+    private String placeTileType = "road", placeRotation = "right";
     private final int width, height;
     private final int gridSize = 128;
     private double zoomLevel = 1.0;
@@ -83,7 +85,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 System.out.println("Working as intended");
             }
 
-            if(Debug.getInstance().isDebug()) drawGrid();
+            if(Debug.getInstance().isDebug()) {
+                drawPreviewServicePoint();
+                drawGrid();
+            }
         });
     }
 
@@ -237,6 +242,11 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         this.zoomLevel = zoomLevel;
     }
 
+    public void drawPreviewServicePoint() {
+        ServicePoint servicePoint = generateNewServicePoint(previewX, previewY, placeTileType, placeRotation);
+        renderServicePoint(servicePoint);
+    }
+
     public void createNewServicePoint(int x, int y, String tileType, String rotation) {
         System.out.println(rotation);
         for(int i = 0; i < servicePoints.size(); i++) {
@@ -284,5 +294,29 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 yield road;
             }
         };
+    }
+
+    public String getPlaceTileType() {
+        return placeTileType;
+    }
+
+    public void setPlaceTileType(String placeTileType) {
+        this.placeTileType = placeTileType;
+    }
+
+    public String getPlaceRotation() {
+        return placeRotation;
+    }
+
+    public void setPlaceRotation(String placeRotation) {
+        this.placeRotation = placeRotation;
+    }
+
+    public void setPreviewX(int previewX) {
+        this.previewX = previewX;
+    }
+
+    public void setPreviewY(int previewY) {
+        this.previewY = previewY;
     }
 }
