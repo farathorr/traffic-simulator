@@ -200,6 +200,24 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        scene.setOnKeyPressed(event -> {
+            System.out.println(event.getCode());
+            switch (event.getCode()) {
+                case DIGIT0 -> placeTileType = "road";
+                case DIGIT1 -> placeTileType = "roundabout";
+                case DIGIT2 -> placeTileType = "trafficlights";
+                case DIGIT3 -> placeTileType = "crosswalk";
+                case DIGIT4 -> placeTileType = "goal";
+                case R -> {
+                    if (placeRotation.equals("right")) placeRotation = "bottom";
+                    else if (placeRotation.equals("bottom")) placeRotation = "left";
+                    else if (placeRotation.equals("left")) placeRotation = "top";
+                    else if (placeRotation.equals("top")) placeRotation = "right";
+                }
+            }
+            System.out.println("asdasasd");
+        });
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -276,7 +294,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
 
         if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
-        screen.createNewServicePoint(scaleX, scaleY, "right");
+        screen.createNewServicePoint(scaleX, scaleY, placeTileType, placeRotation);
         lastPlaced[0] = scaleX;
         lastPlaced[1] = scaleY;
     }

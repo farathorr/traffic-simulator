@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import org.hibernate.annotations.CreationTimestamp;
 import simu.model.*;
 
 import java.util.ArrayList;
@@ -236,18 +237,52 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         this.zoomLevel = zoomLevel;
     }
 
-    public void createNewServicePoint(int x, int y, String rotation) {
+    public void createNewServicePoint(int x, int y, String tileType, String rotation) {
+        System.out.println(rotation);
         for(int i = 0; i < servicePoints.size(); i++) {
             if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
-                Road road = new Road(null, "road" + x + "_" + y);
-                road.render(x, y, rotation);
+                ServicePoint road = generateNewServicePoint(x, y, tileType, rotation);
                 servicePoints.set(i, road);
                 return;
             }
         }
 
-        Road road = new Road(null, "road" + x + "_" + y);
+        ServicePoint road = generateNewServicePoint(x, y, tileType, rotation);
         servicePoints.add(road);
-        road.render(x, y, rotation);
+    }
+
+    private ServicePoint generateNewServicePoint(int x, int y, String tileType, String rotation) {
+        return switch(tileType) {
+            case "roundabout" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null, "roundabout" + x + "_" + y, 3);
+                roundabout.render(x, y, rotation);
+                yield roundabout;
+            }
+            case "trafficlight" -> {
+                TrafficLights trafficLights = new TrafficLights(5, 5,null, "trafficlight" + x + "_" + y);
+                trafficLights.render(x, y, rotation);
+                yield trafficLights;
+            }
+            case "crosswalk" -> {
+                Crosswalk crosswalk = new Crosswalk(5, 5, null, "crosswalk" + x + "_" + y);
+                crosswalk.render(x, y, rotation);
+                yield crosswalk;
+            }
+            case "goal" -> {
+                Goal goal = new Goal(null, "goal" + x + "_" + y);
+                goal.render(x, y, rotation);
+                yield goal;
+            }
+            case "road" -> {
+                Road road = new Road(null, "road" + x + "_" + y);
+                road.render(x, y, rotation);
+                yield road;
+            }
+            default -> {
+                Road road = new Road(null, "road" + x + "_" + y);
+                road.render(x, y, rotation);
+                yield road;
+            }
+        };
     }
 }
