@@ -13,7 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,6 +45,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private ServicePoint selectedServicePoint;
     ListView<ServicePoint> servicePointListView;
     private LevelSettings levelSettings;
+    private String placeTileType = "road", placeRotation = "right";
+    private final int[] lastPlaced = { -9999, -9999 };
 
     @Override
     public void init() {
@@ -85,7 +88,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             System.out.println("Vaihtelevuus: " + levelSettings.get(key));
         });
 
-        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5");
+        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6");
         levelComboBox.setPromptText("Please Select");
         levelComboBox.setOnAction(event -> {
             String value = levelComboBox.getValue();
@@ -189,12 +192,43 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         setCanvasDrag(screen);
         setCanvasZoom(screen);
+        setCanvasDrawPreview(screen);
 
         hBox.getChildren().addAll(vBox, (Canvas) screen);
 
         Scene scene = new Scene(hBox);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        scene.setOnKeyPressed(event -> {
+            System.out.println(event.getCode());
+            switch (event.getCode()) {
+                case DIGIT0 -> placeTileType = "road";
+                case DIGIT1 -> placeTileType = "roundabout";
+                case DIGIT2 -> placeTileType = "trafficlights"; //wtf
+                case DIGIT3 -> placeTileType = "crosswalk";
+                case DIGIT4 -> placeTileType = "goal";
+                case DIGIT5 -> placeTileType = "turn";
+                case DIGIT6 -> placeTileType = "t-intersection";
+                case DIGIT7 -> placeTileType = "double";
+                case DIGIT8 -> placeTileType = "r-road";
+                case DIGIT9 -> placeTileType = "arrow";
+                case R -> {
+                    switch (placeRotation) {
+                        case "right" -> placeRotation = "bottom";
+                        case "bottom" -> placeRotation = "left";
+                        case "left" -> placeRotation = "top";
+                        case "top" -> placeRotation = "right";
+                    }
+                }
+                case E -> {
+                    screen.exportSelectedLevel();
+                }
+            }
+
+            screen.setPlaceRotation(placeRotation);
+            screen.setPlaceTileType(placeTileType);
+        });
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -247,18 +281,50 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         final Visualization screen = (Visualization) canvas;
 
         canvas.setOnMousePressed(event -> {
-            startX.set(event.getX());
-            startY.set(event.getY());
-            canvasX.set(screen.getX());
-            canvasY.set(screen.getY());
+            if (event.getButton() == MouseButton.PRIMARY) {
+                startX.set(event.getX());
+                startY.set(event.getY());
+                canvasX.set(screen.getX());
+                canvasY.set(screen.getY());
+            } else if(event.getButton() == MouseButton.SECONDARY) placeTilesOnCanvas(event);
         });
 
         canvas.setOnMouseDragged(event -> {
-            double deltaX = event.getX() - startX.get();
-            double deltaY = event.getY() - startY.get();
-            screen.setX(canvasX.get() + deltaX);
-            screen.setY(canvasY.get() + deltaY);
+            if (event.getButton() == MouseButton.PRIMARY) {
+                double deltaX = event.getX() - startX.get();
+                double deltaY = event.getY() - startY.get();
+                screen.setX(canvasX.get() + deltaX);
+                screen.setY(canvasY.get() + deltaY);
+            } else if(event.getButton() == MouseButton.SECONDARY) placeTilesOnCanvas(event);
         });
+    }
+
+    private void setCanvasDrawPreview(Canvas canvas) {
+        final Visualization screen = (Visualization) canvas;
+        canvas.setOnMouseMoved(event -> {
+            if(!Debug.getInstance().isDebug()) return;
+            double gridSize = screen.getGridSize() * screen.getZoomLevel();
+            int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
+            int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
+            screen.setPlaceRotation(placeRotation);
+            screen.setPlaceTileType(placeTileType);
+            screen.setPreviewX(scaleX);
+            screen.setPreviewY(scaleY);
+        });
+    }
+
+    private void placeTilesOnCanvas(MouseEvent event) {
+        if(!Debug.getInstance().isDebug()) return;
+        double gridSize = screen.getGridSize() * screen.getZoomLevel();
+        int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
+        int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
+
+        if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
+        if (placeTileType.equals("arrow")) {
+            screen.createServicePointConnection(scaleX, scaleY, placeRotation);
+        } else screen.createNewServicePoint(scaleX, scaleY, placeTileType, placeRotation);
+        lastPlaced[0] = scaleX;
+        lastPlaced[1] = scaleY;
     }
 
     private void setCanvasZoom(Canvas canvas) {

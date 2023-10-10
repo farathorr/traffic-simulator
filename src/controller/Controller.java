@@ -69,6 +69,10 @@ public class Controller implements IControllerForM, IControllerForV {
 		ui.getVisualization().addToRenderQueue(servicePoint);
 	}
 
+	public void setToCurrentLevel(Level level) {
+		ui.getVisualization().setLevel(level);
+	}
+
 	@Override
 	public void addCustomerToRendererQueue(Customer customer) {
 		ui.getVisualization().addToCustomerQueue(customer);

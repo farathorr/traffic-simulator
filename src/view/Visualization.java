@@ -14,10 +14,11 @@ import java.util.List;
 public class Visualization extends Canvas implements IVisualizationForV, IVisualizationForM {
 
     private final GraphicsContext gc;
-    private final boolean DEBUG = true;
     double x = 0, y = 0;
+    private int previewX = 0, previewY = 0;
+    private String placeTileType = "road", placeRotation = "right";
     private final int width, height;
-    private int gridSize = 128;
+    private final int gridSize = 128;
     private double zoomLevel = 1.0;
     private List<ServicePoint> servicePoints = new ArrayList<>();
     private List<Customer> customers = new ArrayList<>();
@@ -39,6 +40,9 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image tIntersection = new Image("t-intersection.png");
     private Image tIntersection2 = new Image("t-intersection2.png");
     private Image goal = new Image("goal.png");
+    private Image arrow = new Image("arrow.png");
+    private Image arrow2 = new Image("arrow2.png");
+    private Level level;
 
 
     public Visualization(int w, int h) {
@@ -50,10 +54,18 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         clearScreen();
     }
 
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
     public void reset() {
         servicePoints.clear();
         customers.clear();
         clearScreen();
+    }
+
+    public int getGridSize() {
+        return gridSize;
     }
 
     public void clearScreen() {
@@ -79,8 +91,28 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 System.out.println("Working as intended");
             }
 
-            if(DEBUG) drawGrid();
+            if(Debug.getInstance().isDebug()) {
+                drawPreviewServicePoint();
+                drawGrid();
+                if (placeTileType.equals("arrow")) {
+                    servicePoints.forEach((ServicePoint point) -> {
+                        if (!level.hasNextServicePoint(point)) return;
+                        ArrayList<String> nextPoints = level.getAllNextServicePoints(point);
+                        nextPoints.forEach((String key) -> {
+                            ServicePoint nextPoint = level.getServicePoint(key);
+                            if(point.getX() - nextPoint.getX() < 0) drawImage(arrow, point.getX() * gridSize + gridSize, point.getY() * gridSize, -gridSize, gridSize);
+                            else if(point.getX() - nextPoint.getX() > 0) drawImage(arrow, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
+                            else if(point.getY() - nextPoint.getY() > 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize + gridSize, gridSize, -gridSize);
+                            else if(point.getY() - nextPoint.getY() < 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
+                        });
+                    });
 
+                    if(placeRotation.equals("right")) drawImage(arrow, previewX * gridSize + gridSize, previewY * gridSize, -gridSize, gridSize);
+                    else if(placeRotation.equals("left")) drawImage(arrow, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
+                    else if(placeRotation.equals("top")) drawImage(arrow2, previewX * gridSize, previewY * gridSize + gridSize, gridSize, -gridSize);
+                    else if(placeRotation.equals("bottom")) drawImage(arrow2, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
+                }
+            }
         });
     }
 
@@ -133,10 +165,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 case "top-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize, -gridSize, gridSize);
                 case "left-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
                 case "bottom-double" -> drawImage(roundaboutDouble, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
-                case "right-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                case "top-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                case "left-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
-                case "bottom-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                case "right-r-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                case "top-r-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                case "left-r-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                case "bottom-r-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
             }
         }
         else if (servicePoint.getClass() == TrafficLights.class) {
@@ -232,5 +264,135 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void setZoomLevel(double zoomLevel) {
         this.zoomLevel = zoomLevel;
+    }
+
+    public void drawPreviewServicePoint() {
+        if (placeTileType.equals("arrow")) return;
+        ServicePoint servicePoint = generateNewServicePoint(previewX, previewY, placeTileType, placeRotation);
+        renderServicePoint(servicePoint);
+    }
+
+    public void createNewServicePoint(int x, int y, String tileType, String rotation) {
+        System.out.println(rotation);
+        for(int i = 0; i < servicePoints.size(); i++) {
+            if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
+                ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
+                level.add(servicePoint);
+                servicePoints.set(i, servicePoint);
+                return;
+            }
+        }
+
+        ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
+        level.add(servicePoint);
+        servicePoints.add(servicePoint);
+    }
+
+    public void createServicePointConnection(int x, int y, String rotate) {
+        ServicePoint servicePoint = getServicePointByCordinates(x, y);
+        ServicePoint nextServicePoint = getServicePointByCordinates(x + (rotate.equals("right") ? 1 : rotate.equals("left") ? -1 : 0), y + (rotate.equals("top") ? -1 : rotate.equals("bottom") ? 1 : 0));
+        if(servicePoint != null && nextServicePoint != null) {
+            ArrayList<String> points = new ArrayList<>();
+            if (level.hasNextServicePoint(servicePoint)) {
+                points = level.getAllNextServicePoints(servicePoint);
+                points.add(nextServicePoint.getScheduledEventType());
+            } else points.add(nextServicePoint.getScheduledEventType());
+
+            level.getNextPoints().put(servicePoint, points);
+        }
+    }
+
+    public ServicePoint getServicePointByCordinates(int x, int y) {
+        for(int i = 0; i < servicePoints.size(); i++) {
+            if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
+                return servicePoints.get(i);
+            }
+        }
+        return null;
+    }
+
+    private ServicePoint generateNewServicePoint(int x, int y, String tileType, String rotation) {
+        return switch(tileType) {
+            case "roundabout" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null, "roundabout" + x + "_" + y, 3);
+                roundabout.render(x, y, rotation);
+                yield roundabout;
+            }
+            case "trafficlight" -> {
+                TrafficLights trafficLights = new TrafficLights(5, 5,null, "trafficlight" + x + "_" + y);
+                trafficLights.render(x, y, rotation);
+                yield trafficLights;
+            }
+            case "crosswalk" -> {
+                Crosswalk crosswalk = new Crosswalk(5, 5, null, "crosswalk" + x + "_" + y);
+                crosswalk.render(x, y, rotation);
+                yield crosswalk;
+            }
+            case "goal" -> {
+                Goal goal = new Goal(null, "goal" + x + "_" + y);
+                goal.render(x, y, "goal");
+                yield goal;
+            }
+            case "road" -> {
+                Road road = new Road(null, "road" + x + "_" + y);
+                road.render(x, y, rotation);
+                yield road;
+            }
+            case "t-intersection" -> {
+                Road road = new Road(null, "t-intersection" + x + "_" +y);
+                road.render(x, y, "t-intersection-"+rotation);
+                yield road;
+            }
+            case "turn" -> {
+                Road road = new Road(null, "road-turn" + x + "_" +y);
+                road.render(x,y,rotation+"-turn");
+                yield road;
+            }
+            case "double" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-double" + x + "_" + y, 3);
+                roundabout.render(x,y,rotation+"-double");
+                yield roundabout;
+            }
+            case "r-road" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-r-road" + x + "_" + y, 3);
+                roundabout.render(x,y,rotation+"-r-road");
+                yield roundabout;
+            }
+            default -> {
+                Road road = new Road(null, "road" + x + "_" + y);
+                road.render(x, y, rotation);
+                yield road;
+            }
+        };
+    }
+
+    public String getPlaceTileType() {
+        return placeTileType;
+    }
+
+    public void setPlaceTileType(String placeTileType) {
+        this.placeTileType = placeTileType;
+    }
+
+    public String getPlaceRotation() {
+        return placeRotation;
+    }
+
+    public void setPlaceRotation(String placeRotation) {
+        this.placeRotation = placeRotation;
+    }
+
+    public void setPreviewX(int previewX) {
+        this.previewX = previewX;
+    }
+
+    public void setPreviewY(int previewY) {
+        this.previewY = previewY;
+    }
+
+    public void exportSelectedLevel() {
+        servicePoints.forEach(ServicePoint::displayClass);
+        System.out.println();
+        servicePoints.forEach(ServicePoint::displayClassRender);
     }
 }

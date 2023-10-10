@@ -2,6 +2,7 @@ package simu.model;
 
 import simu.framework.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
@@ -104,5 +105,25 @@ public abstract class ServicePoint {
 
     public String toString() {
         return String.format("%s (%.0f, %.0f) ", this.getClass().getSimpleName(), x, y);
+    }
+
+    public void displayClass() {
+        String text = null;
+        if(this.getLevel().hasNextServicePoint(this)) {
+            ArrayList<String> points = this.getLevel().getAllNextServicePoints(this);
+            if (points.size() == 1) {
+                text = String.format("level.add(new %s(eventList, \"%s\"), \"%s\");", this.getClass().getSimpleName(), this.scheduledEventType, points.get(0));
+            } else {
+                text = String.format("level.add(new %s(eventList, \"%s\"), new String[]{\"%s\"});", this.getClass().getSimpleName(), this.scheduledEventType, String.join("\", \"", points));
+            }
+        } else {
+            text = String.format("level.add(new %s(eventList, \"%s\"));", this.getClass().getSimpleName(), this.scheduledEventType);
+        }
+
+        System.out.println(text);
+    }
+
+    public void displayClassRender() {
+        System.out.printf("controller.render(level, \"%s\", %.0f, %.0f, \"%s\");\n", this.scheduledEventType, this.x, this.y, this.rotation);
     }
 }

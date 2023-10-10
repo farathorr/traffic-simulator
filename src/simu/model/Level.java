@@ -24,6 +24,10 @@ public class Level {
         point.init();
     }
 
+    public Map<Object, ArrayList<String>> getNextPoints() {
+        return nextPoints;
+    }
+
     public void add(ServicePoint point, String nextPoint) {
         add(point, new String[]{nextPoint});
     }
@@ -75,6 +79,10 @@ public class Level {
     public ServicePoint getNextServicePoint(Object servicePoint) {
         int r = (int) Math.floor(Math.random() * nextPoints.get(servicePoint).size());
         return servicePoints.get(nextPoints.get(servicePoint).get(r));
+    }
+
+    public ArrayList<String> getAllNextServicePoints(Object servicePoint) {
+        return nextPoints.get(servicePoint);
     }
 
     public ServicePoint getNextRoundaboutServicePoint(Object servicePoint, boolean isExiting) {
