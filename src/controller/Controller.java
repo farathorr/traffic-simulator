@@ -10,6 +10,8 @@ import simu.framework.IEngine;
 import simu.model.*;
 import view.ISimulatorUI;
 
+import java.util.List;
+
 public class Controller implements IControllerForM, IControllerForV {
 	
 	private IEngine engine;
@@ -88,5 +90,10 @@ public class Controller implements IControllerForM, IControllerForV {
 
 	public LevelSettings getLevelSettings() {
 		return LevelSettings.getInstance();
+	}
+
+	@Override
+	public List<Results> getResults(){
+		return resultsDao.getAll();
 	}
 }

@@ -9,10 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -20,10 +17,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import simu.entity.Results;
 import simu.framework.Trace;
 import simu.model.*;
 
 import java.text.DecimalFormat;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -128,8 +127,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         result.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         result.setPrefWidth(150);
 
-        Button helpButton = new Button();
-        helpButton.setText("Ohjeet");
+        Button helpButton = new Button("Ohjeet");
         helpButton.setOnAction(e -> {
             Stage helpWindow = new Stage();
             helpWindow.setTitle("Ohjeet");
@@ -151,12 +149,34 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             helpWindow.show();
         });
 
+        Button resultsButton = new Button("Tulokset");
+        resultsButton.setOnAction(e -> {
+            Stage resultsWindow = new Stage();
+            resultsWindow.setTitle("Tulokset");
+            GridPane resultsGrid = new GridPane();
+            List<Results> resultsList =  controller.getResults();
+            List<String> levels = new ArrayList<>();
+            for(Results selectedResult : resultsList){
+                if(!levels.contains(selectedResult.getSimulationLevel())) {
+                    levels.add(selectedResult.getSimulationLevel());
+                }
+            }
+            ChoiceBox<String> levelsChoicebox = new ChoiceBox<>();
+            levelsChoicebox.getItems().addAll(levels);
+            resultsGrid.add(levelsChoicebox, 0, 0);
+            resultsGrid.setPadding(new Insets(15));
+            resultsGrid.setAlignment(Pos.CENTER);
+            resultsWindow.setScene(new Scene(resultsGrid));
+            resultsWindow.show();
+        });
+
+
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(15, 12, 15, 12)); // marginaalit ylÃ¤, oikea, ala, vasen
         hBox.setSpacing(10);   // noodien välimatka 10 pikseliä
 
         VBox vBox = new VBox();
-
+        
         GridPane footerGrid = new GridPane();
         footerGrid.setAlignment(Pos.CENTER);
         footerGrid.setVgap(10);
@@ -173,6 +193,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         footerGrid.add(speedupButton, 0, 4);   // sarake, rivi
         footerGrid.add(slowdownButton, 1, 4);   // sarake, rivi
         footerGrid.add(helpButton, 0, 7);   // sarake, rivi
+        footerGrid.add(resultsButton, 1, 7);   // sarake, rivi
 
         GridPane gridCustom = new GridPane();
         gridCustom.setAlignment(Pos.TOP_CENTER);
