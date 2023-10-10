@@ -163,7 +163,16 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             }
             Button findButton = new Button("Etsi tuloksia");
             ChoiceBox<String> levelsChoicebox = new ChoiceBox<>();
+            levelsChoicebox.getItems().addAll(levels);
             ChoiceBox<Integer> simulationsChoicebox = new ChoiceBox<>();
+            Label servicePointName = new Label("Service Point Name");
+            Label eventInterval = new Label("Event Interval");
+            Label leadTime = new Label("Lead Time");
+
+            VBox servicePoints = new VBox(servicePointName);
+            VBox events = new VBox(eventInterval);
+            VBox times = new VBox(leadTime);
+
             levelsChoicebox.setOnAction(ae -> {
                 simulationsChoicebox.getItems().clear();
                 for(Results selectedResult : resultsList){
@@ -172,11 +181,25 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                     }
                 }
             });
-            levelsChoicebox.getItems().addAll(levels);
+
+            findButton.setOnAction(ae -> {
+                int selectedSimulation = simulationsChoicebox.getValue();
+
+            });
+
+            Insets insets = new Insets(15);
+            servicePoints.setPadding(insets);
+            events.setPadding(insets);
+            times.setPadding(insets);
+
+
             resultsGrid.add(levelsChoicebox, 0, 0);
             resultsGrid.add(simulationsChoicebox, 1, 0);
-            resultsGrid.add(findButton, 0, 1);
-            resultsGrid.setPadding(new Insets(15));
+            resultsGrid.add(findButton, 2, 0);
+            resultsGrid.add(servicePoints, 0,2);
+            resultsGrid.add(events,1,2);
+            resultsGrid.add(times, 2,2);
+            resultsGrid.setPadding(insets);
             resultsGrid.setAlignment(Pos.CENTER);
             resultsWindow.setScene(new Scene(resultsGrid));
             resultsWindow.show();
