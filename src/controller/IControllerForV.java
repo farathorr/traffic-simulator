@@ -1,7 +1,11 @@
 package controller;
 
+import simu.entity.Level_variables;
+import simu.entity.Results;
 import simu.framework.Engine;
 import simu.model.LevelSettings;
+
+import java.util.List;
 
 public interface IControllerForV {
 
@@ -16,4 +20,8 @@ public interface IControllerForV {
     public void setLevelKey(String levelKey);
 
     public LevelSettings getLevelSettings();
+
+    public List<Results> getResults();
+
+    public List<Level_variables> getLevelVariables();
 }

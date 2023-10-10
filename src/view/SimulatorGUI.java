@@ -5,26 +5,38 @@ import controller.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import simu.entity.Level_variables;
+import simu.entity.Results;
 import simu.framework.Trace;
 import simu.model.*;
 
 import java.text.DecimalFormat;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -70,8 +82,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         levelComboBox = new ComboBox<>();
         servicePointListView = new ListView<>();
-        carMean = new InputElement("Keskiarvo","5", "Syötä keskiarvo");
-        carVariance = new InputElement("Vaihtelevuus","5","Syötä vaihtelevuus");
+        carMean = new InputElement("Keskiarvo", "5", "Syötä keskiarvo");
+        carVariance = new InputElement("Vaihtelevuus", "5", "Syötä vaihtelevuus");
 
         InputElement[] customInputArray = {carMean, carVariance};
 
@@ -131,8 +143,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         result.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         result.setPrefWidth(150);
 
-        Button helpButton = new Button();
-        helpButton.setText("Ohjeet");
+        Button helpButton = new Button("Ohjeet");
         helpButton.setOnAction(e -> {
             Stage helpWindow = new Stage();
             helpWindow.setTitle("Ohjeet");
@@ -153,6 +164,81 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             helpWindow.setScene(new Scene(container));
             helpWindow.show();
         });
+
+        Button resultsButton = new Button("Tulokset");
+        resultsButton.setOnAction(e -> {
+            Stage resultsWindow = new Stage();
+            resultsWindow.setTitle("Tulokset");
+            GridPane resultsGrid = new GridPane();
+            Label levelsLabel = new Label("Tasot");
+            Label simulationsLabel = new Label("Simulaatiot");
+            List<Results> resultsList = controller.getResults();
+            Button findButton = new Button("Etsi tuloksia");
+            ChoiceBox<String> levelsChoicebox = new ChoiceBox<>();
+            ChoiceBox<Integer> simulationsChoicebox = new ChoiceBox<>();
+            ArrayList<Level_variables> variablesList = new ArrayList<>();
+            TableView<Level_variables> variableTable = new TableView<>();
+            variableTable.setPrefWidth(400);
+
+            List<String> levels = new ArrayList<>();
+            for (Results selectedResult : resultsList) {
+                if (!levels.contains(selectedResult.getSimulationLevel())) {
+                    levels.add(selectedResult.getSimulationLevel());
+                }
+            }
+            levelsChoicebox.getItems().addAll(levels);
+
+            levelsChoicebox.setOnAction(ae -> {
+                simulationsChoicebox.getItems().clear();
+                for (Results selectedResult : resultsList) {
+                    if (selectedResult.getSimulationLevel().equals(levelsChoicebox.getValue())) {
+                        simulationsChoicebox.getItems().add(selectedResult.getId());
+                    }
+                }
+            });
+
+            findButton.setOnAction(ae -> {
+                System.out.println(simulationsChoicebox.getValue());
+                if (!(simulationsChoicebox.getValue() == null)) {
+                    int selectedSimulation = simulationsChoicebox.getValue();
+                    List<Level_variables> list = controller.getLevelVariables();
+                    for (Level_variables level_variable : list) {
+                        if (level_variable.getLevelId().getId() == selectedSimulation) {
+                            System.out.println(level_variable.getServicePointName());
+                            variablesList.add(level_variable);
+                        }
+                    }
+                    ObservableList<Level_variables> variablesObservableList = FXCollections.observableArrayList(variablesList);
+                    variableTable.setItems(variablesObservableList);
+
+                    TableColumn<Level_variables, String> servicePointNameCol = new TableColumn<>("Service Point");
+                    TableColumn<Level_variables, Double> eventIntervalsCol = new TableColumn<>("Event Interval");
+                    TableColumn<Level_variables, Double> leadTimeCol = new TableColumn<>("Lead time");
+
+                    servicePointNameCol.setCellValueFactory( data -> new SimpleStringProperty(data.getValue().getServicePointName()));
+                    eventIntervalsCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getEventInterval()).asObject());
+                    leadTimeCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getLeadTime()).asObject());
+
+                    variableTable.getColumns().setAll(servicePointNameCol, eventIntervalsCol, leadTimeCol);
+                }
+            });
+
+
+            Insets insets = new Insets(15);
+            variableTable.setPadding(insets);
+
+            resultsGrid.add(levelsLabel, 0, 0);
+            resultsGrid.add(simulationsLabel, 1, 0);
+            resultsGrid.add(levelsChoicebox, 0, 1);
+            resultsGrid.add(simulationsChoicebox, 1, 1);
+            resultsGrid.add(findButton, 2, 1);
+            resultsGrid.add(variableTable, 0, 2);
+            resultsGrid.setPadding(insets);
+            resultsGrid.setAlignment(Pos.CENTER);
+            resultsWindow.setScene(new Scene(resultsGrid));
+            resultsWindow.show();
+        });
+
 
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(15, 12, 15, 12)); // marginaalit ylÃ¤, oikea, ala, vasen
@@ -176,6 +262,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         footerGrid.add(speedupButton, 0, 4);   // sarake, rivi
         footerGrid.add(slowdownButton, 1, 4);   // sarake, rivi
         footerGrid.add(helpButton, 0, 7);   // sarake, rivi
+        footerGrid.add(resultsButton, 1, 7);   // sarake, rivi
 
         GridPane gridCustom = new GridPane();
         gridCustom.setAlignment(Pos.TOP_CENTER);
@@ -265,7 +352,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     }
 
     public Controller getController() {
-    	return (Controller) controller;
+        return (Controller) controller;
     }
 
     public void enableSimulationSettings() {
@@ -332,7 +419,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         final double minScale = .05, maxScale = 150.0;
         canvas.setOnScroll(event -> {
             double zoomLevel = screen.getZoomLevel();
-            if (event.getDeltaY() < 0) screen.setZoomLevel(Math.max(Math.pow(screen.getZoomLevel(), 0.9) - .1, minScale));
+            if (event.getDeltaY() < 0)
+                screen.setZoomLevel(Math.max(Math.pow(screen.getZoomLevel(), 0.9) - .1, minScale));
             else screen.setZoomLevel(Math.min(Math.pow(screen.getZoomLevel(), 1.15) + .1, maxScale));
 
             double scale = screen.getZoomLevel() / zoomLevel;
@@ -346,7 +434,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     private void updateServicePointSettingsList() {
         servicePointListView.getItems().clear();
-        for(ServicePoint servicePoint : selectedLevel.getServicePoints()) {
+        for (ServicePoint servicePoint : selectedLevel.getServicePoints()) {
             if (servicePoint.getClass() == TrafficLights.class || servicePoint.getClass() == Crosswalk.class) {
                 servicePointListView.getItems().add(servicePoint);
             }
