@@ -14,7 +14,6 @@ import java.util.List;
 public class Visualization extends Canvas implements IVisualizationForV, IVisualizationForM {
 
     private final GraphicsContext gc;
-    private final boolean DEBUG = true;
     double x = 0, y = 0;
     private final int width, height;
     private final int gridSize = 128;
@@ -83,8 +82,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 System.out.println("Working as intended");
             }
 
-            if(DEBUG) drawGrid();
-
+            if(Debug.getInstance().isDebug()) drawGrid();
         });
     }
 

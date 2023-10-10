@@ -14,6 +14,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -45,6 +46,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private ServicePoint selectedServicePoint;
     ListView<ServicePoint> servicePointListView;
     private LevelSettings levelSettings;
+    private String placeTileType = "road", placeRotation = "right";
+    private final int[] lastPlaced = { -9999, -9999 };
 
     @Override
     public void init() {
@@ -247,23 +250,13 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         AtomicReference<Double> canvasY = new AtomicReference<>(((Visualization) canvas).getY());
         final Visualization screen = (Visualization) canvas;
 
-        final int[] lastPlaced = { -9999, -9999 };
-
         canvas.setOnMousePressed(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 startX.set(event.getX());
                 startY.set(event.getY());
                 canvasX.set(screen.getX());
                 canvasY.set(screen.getY());
-            } else if(event.getButton() == MouseButton.SECONDARY) {
-                double gridSize = screen.getGridSize() * screen.getZoomLevel();
-                int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
-                int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
-                if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
-                screen.createNewServicePoint(scaleX, scaleY, "right");
-                lastPlaced[0] = scaleX;
-                lastPlaced[1] = scaleY;
-            }
+            } else if(event.getButton() == MouseButton.SECONDARY) placeTilesOnCanvas(event);
         });
 
         canvas.setOnMouseDragged(event -> {
@@ -272,17 +265,20 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 double deltaY = event.getY() - startY.get();
                 screen.setX(canvasX.get() + deltaX);
                 screen.setY(canvasY.get() + deltaY);
-            } else if(event.getButton() == MouseButton.SECONDARY) {
-                double gridSize = screen.getGridSize() * screen.getZoomLevel();
-                int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
-                int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
-
-                if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
-                screen.createNewServicePoint(scaleX, scaleY, "right");
-                lastPlaced[0] = scaleX;
-                lastPlaced[1] = scaleY;
-            }
+            } else if(event.getButton() == MouseButton.SECONDARY) placeTilesOnCanvas(event);
         });
+    }
+
+    private void placeTilesOnCanvas(MouseEvent event) {
+        if(!Debug.getInstance().isDebug()) return;
+        double gridSize = screen.getGridSize() * screen.getZoomLevel();
+        int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
+        int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
+
+        if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
+        screen.createNewServicePoint(scaleX, scaleY, "right");
+        lastPlaced[0] = scaleX;
+        lastPlaced[1] = scaleY;
     }
 
     private void setCanvasZoom(Canvas canvas) {
