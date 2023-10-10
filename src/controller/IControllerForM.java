@@ -19,4 +19,6 @@ public interface IControllerForM {
     public void uploadResults(Level level);
 
     public Engine getEngine();
+
+    public void setToCurrentLevel(Level level);
 }

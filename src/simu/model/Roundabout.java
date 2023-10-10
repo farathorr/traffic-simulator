@@ -6,6 +6,7 @@ import simu.framework.Clock;
 import simu.framework.Event;
 import simu.framework.EventList;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
@@ -88,5 +89,21 @@ public class Roundabout extends ServicePoint {
 
     public void setVariance(double variance) {
         this.variance = variance;
+    }
+
+    public void displayClass() {
+        String text = null;
+        if(this.getLevel().hasNextServicePoint(this)) {
+            ArrayList<String> points = this.getLevel().getAllNextServicePoints(this);
+            if (points.size() == 1) {
+                text = String.format("level.add(new %s(%.0f, %.0f, eventList, \"%s\", 3), \"%s\");", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType, points.get(0));
+            } else {
+                text = String.format("level.add(new %s(%.0f, %.0f, eventList, \"%s\", 3), new String[]{\"%s\"});", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType, String.join("\", \"", points));
+            }
+        } else {
+            text = String.format("level.add(new %s(%.0f, %.0f, eventList, \"%s\", 3));", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType);
+        }
+
+        System.out.println(text);
     }
 }
