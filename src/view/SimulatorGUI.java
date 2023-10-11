@@ -8,6 +8,8 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -33,6 +35,9 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS;
+import static javafx.scene.control.TableView.UNCONSTRAINED_RESIZE_POLICY;
 
 
 public class SimulatorGUI extends Application implements ISimulatorUI {
@@ -177,6 +182,23 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         InputElement[] inputArray = {timeInput, delayInput};
 
+        timeInput.getTextField().textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if (!t1.matches("\\d*")) {
+                    timeInput.getTextField().setText(t1.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        delayInput.getTextField().textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if (!t1.matches("\\d*")) {
+                    delayInput.getTextField().setText(t1.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+
         resultLabel = new Label("Kokonaisaika:");
         result = new Label();
         result.setPrefWidth(150);
@@ -222,8 +244,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             List<Results> resultsList = controller.getResults();
             List<String> levels = new ArrayList<>();
             TableView<Results> simulationsTable = new TableView<>();
-            variableTable.setPrefWidth(400);
-            simulationsTable.setPrefWidth(300);
+            variableTable.setPrefWidth(600);
+            goalTable.setPrefWidth(500);
 
             for (Results selectedResult : resultsList) {
                 if (!levels.contains(selectedResult.getSimulationLevel())) {
@@ -294,6 +316,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
                 }});
 
+            variableTable.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+            goalTable.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+            simulationsTable.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
             Insets insets = new Insets(15);
             resultsGrid.setHgap(10);
