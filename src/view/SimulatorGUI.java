@@ -223,6 +223,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             List<String> levels = new ArrayList<>();
             TableView<Results> simulationsTable = new TableView<>();
             variableTable.setPrefWidth(400);
+            simulationsTable.setPrefWidth(300);
 
             for (Results selectedResult : resultsList) {
                 if (!levels.contains(selectedResult.getSimulationLevel())) {
@@ -252,45 +253,46 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             });
 
             simulationsTable.getSelectionModel().selectedItemProperty().addListener(ae -> {
-                servicePointsList.clear();
-                goalsList.clear();
-                int selectedSimulation = simulationsTable.getSelectionModel().getSelectedItem().getId();
-                List<Level_variables> list = controller.getLevelVariables();
-                for (Level_variables level_variable : list) {
-                    if (level_variable.getLevelId().getId() == selectedSimulation) {
-                        if (level_variable.getServicePointName().contains("goal")) goalsList.add(level_variable);
-                        else servicePointsList.add(level_variable);
+                if(simulationsTable.getSelectionModel().getSelectedItem() != null) {
+                    servicePointsList.clear();
+                    goalsList.clear();
+                    int selectedSimulation = simulationsTable.getSelectionModel().getSelectedItem().getId();
+                    List<Level_variables> list = controller.getLevelVariables();
+                    for (Level_variables level_variable : list) {
+                        if (level_variable.getLevelId().getId() == selectedSimulation) {
+                            if (level_variable.getServicePointName().contains("goal")) goalsList.add(level_variable);
+                            else servicePointsList.add(level_variable);
+                        }
                     }
-                }
-                ObservableList<Level_variables> servicePointsObservableList = FXCollections.observableArrayList(servicePointsList);
-                ObservableList<Level_variables> goalsObservableList = FXCollections.observableArrayList(goalsList);
-                variableTable.setItems(servicePointsObservableList);
-                goalTable.setItems(goalsObservableList);
+                    ObservableList<Level_variables> servicePointsObservableList = FXCollections.observableArrayList(servicePointsList);
+                    ObservableList<Level_variables> goalsObservableList = FXCollections.observableArrayList(goalsList);
+                    variableTable.setItems(servicePointsObservableList);
+                    goalTable.setItems(goalsObservableList);
 
-                TableColumn<Level_variables, String> servicePointNameCol = new TableColumn<>("Nimi");
-                TableColumn<Level_variables, String> goalNameCol = new TableColumn<>("Nimi");
-                TableColumn<Level_variables, Double> mean1Col = new TableColumn<>("Keskiarvo1");
-                TableColumn<Level_variables, Double> mean2Col = new TableColumn<>("Keskiarvo2");
-                TableColumn<Level_variables, Double> variance1Col = new TableColumn<>("Vaihtelevuus1");
-                TableColumn<Level_variables, Double> variance2Col = new TableColumn<>("Vaihtelevuus2");
-                TableColumn<Level_variables, Integer> goalCarCountCol = new TableColumn<>("Autojen määrä");
-                TableColumn<Level_variables, Double> averageTimeCol = new TableColumn<>("Keskimääräinen aika");
+                    TableColumn<Level_variables, String> servicePointNameCol = new TableColumn<>("Nimi");
+                    TableColumn<Level_variables, String> goalNameCol = new TableColumn<>("Nimi");
+                    TableColumn<Level_variables, Double> mean1Col = new TableColumn<>("Keskiarvo1");
+                    TableColumn<Level_variables, Double> mean2Col = new TableColumn<>("Keskiarvo2");
+                    TableColumn<Level_variables, Double> variance1Col = new TableColumn<>("Vaihtelevuus1");
+                    TableColumn<Level_variables, Double> variance2Col = new TableColumn<>("Vaihtelevuus2");
+                    TableColumn<Level_variables, Integer> goalCarCountCol = new TableColumn<>("Autojen määrä");
+                    TableColumn<Level_variables, Double> averageTimeCol = new TableColumn<>("Keskimääräinen aika");
 
-                servicePointNameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getServicePointName()));
+                    servicePointNameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getServicePointName()));
 
-                goalNameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getServicePointName()));
-                mean1Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getMean1()).asObject());
-                mean2Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getMean2()).asObject());
-                variance1Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getVariance1()).asObject());
-                variance2Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getVariance2()).asObject());
+                    goalNameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getServicePointName()));
+                    mean1Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getMean1()).asObject());
+                    mean2Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getMean2()).asObject());
+                    variance1Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getVariance1()).asObject());
+                    variance2Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getVariance2()).asObject());
 
-                goalCarCountCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getCarCount()).asObject());
-                averageTimeCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getAverageTime()).asObject());
+                    goalCarCountCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getCarCount()).asObject());
+                    averageTimeCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getAverageTime()).asObject());
 
-                variableTable.getColumns().setAll(servicePointNameCol, mean1Col, mean2Col, variance1Col, variance2Col);
-                goalTable.getColumns().setAll(goalNameCol, goalCarCountCol, averageTimeCol);
+                    variableTable.getColumns().setAll(servicePointNameCol, mean1Col, mean2Col, variance1Col, variance2Col);
+                    goalTable.getColumns().setAll(goalNameCol, goalCarCountCol, averageTimeCol);
 
-            });
+                }});
 
 
             Insets insets = new Insets(15);
@@ -453,6 +455,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
     @Override
     public long getDelay() {
+        if(delayInput.getTextField().getText().equals("")) return 0;
         return Long.parseLong(delayInput.getTextField().getText());
     }
 
