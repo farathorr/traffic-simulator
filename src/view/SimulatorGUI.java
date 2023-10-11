@@ -79,7 +79,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         servicePointListView = new ListView<>();
         servicePointListView.setMaxHeight(200);
 
-        sePointMean = new InputElement("Vihree valo", "5", "Arvo", "mean");
+        sePointMean = new InputElement("Vihreä valo", "5", "Arvo", "mean");
         sePointVariance = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance");
         sePointMean2 = new InputElement("Punainen valo", "5", "Arvo", "mean2");
         sePointVariance2 = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance2");
@@ -122,7 +122,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 sePointMean2.getLabel().setText("Punaisen valon kesto");
             } else if (newSePoint.getClass() == Crosswalk.class) {
                 sePointMean.getLabel().setText("Tien ylityksen kesto");
-                sePointMean2.getLabel().setText("Tien ylitys tahti");
+                sePointMean2.getLabel().setText("Tien ylitystahti");
             }
         });
 
@@ -139,7 +139,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         }
 
 
-        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8");
+
+        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8", "Level 9");
         levelComboBox.setPromptText("Please Select");
         levelComboBox.setOnAction(event -> {
             String value = levelComboBox.getValue();
