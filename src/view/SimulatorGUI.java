@@ -78,7 +78,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         servicePointListView = new ListView<>();
         servicePointListView.setMaxHeight(200);
 
-        sePointMean = new InputElement("Vihree valo", "5", "Arvo", "mean");
+        sePointMean = new InputElement("Vihreä valo", "5", "Arvo", "mean");
         sePointVariance = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance");
         sePointMean2 = new InputElement("Punainen valo", "5", "Arvo", "mean2");
         sePointVariance2 = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance2");
@@ -120,8 +120,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 sePointMean.getLabel().setText("Vihreän valon kesto");
                 sePointMean2.getLabel().setText("Punaisen valon kesto");
             } else if (newSePoint.getClass() == Crosswalk.class) {
-                sePointMean.getLabel().setText("Tien ylityksen kesto");
-                sePointMean2.getLabel().setText("Tien ylitys tahti");
+                sePointMean.getLabel().setText("Tienylityksen kesto");
+                sePointMean2.getLabel().setText("Tienylitys tahti");
             }
         });
 
