@@ -4,15 +4,19 @@ import javafx.beans.property.*;
 
 public class LevelVariablesModel {
     private final StringProperty servicePointName = new SimpleStringProperty();
-    private final DoubleProperty eventInterval = new SimpleDoubleProperty();
-    private final DoubleProperty leadTime = new SimpleDoubleProperty();
+    private final DoubleProperty mean1 = new SimpleDoubleProperty();
+    private final DoubleProperty mean2 = new SimpleDoubleProperty();
+    private final DoubleProperty variance1 = new SimpleDoubleProperty();
+    private final DoubleProperty variance2 = new SimpleDoubleProperty();
     private final IntegerProperty  carCount = new SimpleIntegerProperty();
     private final DoubleProperty averageTime = new SimpleDoubleProperty();
 
     public LevelVariablesModel(Level_variables levelVariables) {
         this.servicePointName.set(levelVariables.getServicePointName());
-        this.eventInterval.set(levelVariables.getMean());
-        this.leadTime.set(levelVariables.getVariance());
+        this.mean1.set(levelVariables.getMean1());
+        this.mean2.set(levelVariables.getMean2());
+        this.variance1.set(levelVariables.getVariance1());
+        this.variance2.set(levelVariables.getVariance2());
         this.carCount.set(levelVariables.getCarCount());
         this.averageTime.set(levelVariables.getAverageTime());
     }
@@ -31,28 +35,28 @@ public class LevelVariablesModel {
         this.servicePointName.set(servicePointName);
     }
 
-    public double getEventInterval() {
-        return eventInterval.get();
+    public double getMean1() {
+        return mean1.get();
     }
 
-    public DoubleProperty eventIntervalProperty() {
-        return eventInterval;
+    public DoubleProperty mean1Property() {
+        return mean1;
     }
 
-    public void setEventInterval(double eventInterval) {
-        this.eventInterval.set(eventInterval);
+    public void setMean1(double mean1) {
+        this.mean1.set(mean1);
     }
 
-    public double getLeadTime() {
-        return leadTime.get();
+    public double getVariance1() {
+        return variance1.get();
     }
 
-    public DoubleProperty leadTimeProperty() {
-        return leadTime;
+    public DoubleProperty variance1Property() {
+        return variance1;
     }
 
-    public void setLeadTime(double leadTime) {
-        this.leadTime.set(leadTime);
+    public void setVariance1(double variance1) {
+        this.variance1.set(variance1);
     }
 
     public int getCarCount() {
@@ -77,5 +81,29 @@ public class LevelVariablesModel {
 
     public void setAverageTime(double averageTime) {
         this.averageTime.set(averageTime);
+    }
+
+    public double getMean2() {
+        return mean2.get();
+    }
+
+    public DoubleProperty mean2Property() {
+        return mean2;
+    }
+
+    public void setMean2(double mean2) {
+        this.mean2.set(mean2);
+    }
+
+    public double getVariance2() {
+        return variance2.get();
+    }
+
+    public DoubleProperty variance2Property() {
+        return variance2;
+    }
+
+    public void setVariance2(double variance2) {
+        this.variance2.set(variance2);
     }
 }

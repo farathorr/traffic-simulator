@@ -163,4 +163,8 @@ public abstract class ServicePoint {
     public double getVariance2() {
         return 0.0;
     }
+
+    public int getCarCount() {
+    	return 0;
+    }
 }

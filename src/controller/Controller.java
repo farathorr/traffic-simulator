@@ -41,13 +41,8 @@ public class Controller implements IControllerForM, IControllerForV {
 		Results results = new Results(getEngine().getSimulationTime(), level.getLevelName());
 		resultsDao.persist(results);
 		for (ServicePoint servicePoint : level.getServicePoints()) {
-			if (servicePoint.getClass() == TrafficLights.class){
-				TrafficLights trafficLights = (TrafficLights) servicePoint;
-				Level_variables levelVariables = new Level_variables(results, trafficLights.getScheduledEventType(), trafficLights.getMean(), trafficLights.getVariance(), trafficLights.getCarCount());
-				levelvariableDao.persist(levelVariables);
-			} else if (servicePoint.getClass() == Crosswalk.class) {
-				Crosswalk crosswalk = (Crosswalk) servicePoint;
-				Level_variables levelVariables = new Level_variables(results, crosswalk.getScheduledEventType(), crosswalk.getMean(), crosswalk.getVariance(), crosswalk.getCarCount());
+			if (servicePoint.getClass() == TrafficLights.class || servicePoint.getClass() == Crosswalk.class){
+				Level_variables levelVariables = new Level_variables(results, servicePoint.getScheduledEventType(), servicePoint.getMean(), servicePoint.getMean2(), servicePoint.getVariance(), servicePoint.getVariance2(), servicePoint.getCarCount());
 				levelvariableDao.persist(levelVariables);
 			} else if (servicePoint.getClass() == Goal.class) {
 				Goal goal = (Goal) servicePoint;
