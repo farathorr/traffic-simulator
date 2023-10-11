@@ -367,6 +367,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 case E -> {
                     screen.exportSelectedLevel();
                 }
+                case Q -> {
+                    screen.pickATileInfo();
+                }
             }
 
             screen.setPlaceRotation(placeRotation);
@@ -456,9 +459,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     }
 
     private void setCanvasDrawPreview(Canvas canvas) {
+        if(!Debug.getInstance().isDebug()) return;
         final Visualization screen = (Visualization) canvas;
         canvas.setOnMouseMoved(event -> {
-            if(!Debug.getInstance().isDebug()) return;
             double gridSize = screen.getGridSize() * screen.getZoomLevel();
             int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
             int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);

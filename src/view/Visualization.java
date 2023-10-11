@@ -319,6 +319,20 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         servicePoints.add(servicePoint);
     }
 
+    public void pickATileInfo() {
+        ServicePoint servicePoint = getServicePointByCordinates(previewX, previewY);
+        if (servicePoint != null) {
+            // Regex to remove all the numbers and underscores from the string
+            placeTileType = servicePoint.getScheduledEventType().replaceAll("[0-9_]", "");
+            System.out.println(servicePoint + placeTileType);
+            if (servicePoint.getRotation().contains("right")) placeRotation = "right";
+            else if (servicePoint.getRotation().contains("left")) placeRotation = "left";
+            else if (servicePoint.getRotation().contains("top")) placeRotation = "top";
+            else if (servicePoint.getRotation().contains("bottom")) placeRotation = "bottom";
+            else placeRotation = "right";
+        }
+    }
+
     public void createServicePointConnection(int x, int y, String rotate) {
         ServicePoint servicePoint = getServicePointByCordinates(x, y);
         ServicePoint nextServicePoint = getServicePointByCordinates(x + (rotate.equals("right") ? 1 : rotate.equals("left") ? -1 : 0), y + (rotate.equals("top") ? -1 : rotate.equals("bottom") ? 1 : 0));
