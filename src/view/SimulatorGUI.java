@@ -83,6 +83,11 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         levelComboBox = new ComboBox<>();
         servicePointListView = new ListView<>();
         servicePointListView.setMaxHeight(200);
+        CheckBox showGrid = new CheckBox("Näytä kordinaatisto");
+
+        showGrid.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            Debug.getInstance().setGridMode(newValue);
+        });
 
         sePointMean = new InputElement("Vihreä valo", "5", "Arvo", "mean");
         sePointVariance = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance");
@@ -144,7 +149,6 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         }
 
 
-
         levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8", "Level 9", "Level 10");
         levelComboBox.setPromptText("Please Select");
         levelComboBox.setOnAction(event -> {
@@ -158,7 +162,11 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             updateServicePointSettingsList();
         });
 
-        headerConteiner.getChildren().addAll(levelComboBox, servicePointListView);
+        HBox levelRow = new HBox(levelComboBox, showGrid);
+        levelRow.setSpacing(10);
+        headerConteiner.getChildren().addAll(levelRow, servicePointListView);
+
+
 
         startButton = new Button();
         startButton.setText("Käynnistä simulointi");
@@ -211,11 +219,15 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             helpLabel.setText("""
                     Valitse simulaattorin vasemmasta yläkulmasta haluamasi taso.
                     Tasovalikon alle syntyy lista tason eri palvelupisteistä, joiden arvoja voit muuttaa palvelupistelistan alla olevista kentistä.
+                    Palvelupisteiden nimissä on myös palvelupisteen sijainti canvaksella.
+                    
                     Simulointiaika-kentästä voit muuttaa simulaation kokonaisaikaa.
                     Viive-kentästä voit muuttaa simulaation visuaalisen esityksen nopeutta.
                     Nopeuta- ja hidasta-napeilla voit vaihtaa simulaation nopeutta sen pyöriessä.
                     Kun olet valinnut haluamasi tason ja vaihtanut haluamasi arvoja, voit käynnistää simulaation Käynnistä simulaatio-napista.
                     Tulokset-napista voit tutkia simulaation tuloksia sen suorituksen jälkeen.
+                    
+                    Voit laittaa kordinaatiston päälle valitsemalla kordinaatisto-valintaruudun.
                     """);
             HBox container = new HBox(helpLabel);
             container.setSpacing(10);
