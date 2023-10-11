@@ -24,14 +24,14 @@ public class TrafficLights extends ServicePoint {
     }
 
     public void init() {
-        if (eventList == null) return;
-
         if (hasSettings("mean")) mean = getSettings("mean");
         if (hasSettings("variance")) variance = getSettings("variance");
         if (hasSettings("mean2")) mean2 = getSettings("mean2");
         if (hasSettings("variance2")) variance2 = getSettings("variance2");
         greenLightDurationGenerator = new Normal(mean, variance);
         redLightDurationGenerator = new Normal(mean2, variance2);
+
+        if (eventList == null) return;
 
         trafficLight = new ArrivalProcess(greenLightDurationGenerator, eventList, this.getScheduledEventType() + " Light Switch");
         nextLightSwitchEvent = trafficLight.generateNext();
@@ -100,12 +100,12 @@ public class TrafficLights extends ServicePoint {
         if(this.getLevel().hasNextServicePoint(this)) {
             ArrayList<String> points = this.getLevel().getAllNextServicePoints(this);
             if (points.size() == 1) {
-                text = String.format("level.add(new %s(%.0f, %.0f, eventList, \"%s\"), \"%s\");", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType, points.get(0));
+                text = String.format("level.add(new %s(%.0f, %.0f, %.0f, %.0f, eventList, \"%s\"), \"%s\");", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.getMean2(), this.getVariance2(), this.scheduledEventType, points.get(0));
             } else {
-                text = String.format("level.add(new %s(%.0f, %.0f, eventList, \"%s\"), new String[]{\"%s\"});", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType, String.join("\", \"", points));
+                text = String.format("level.add(new %s(%.0f, %.0f, %.0f, %.0f, eventList, \"%s\"), new String[]{\"%s\"});", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.getMean2(), this.getVariance2(), this.scheduledEventType, String.join("\", \"", points));
             }
         } else {
-            text = String.format("level.add(new %s(%.0f, %.0f, eventList, \"%s\"));", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.scheduledEventType);
+            text = String.format("level.add(new %s(%.0f, %.0f, %.0f, %.0f, eventList, \"%s\"));", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.getMean2(), this.getVariance2(), this.scheduledEventType);
         }
 
         System.out.println(text);
