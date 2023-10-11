@@ -1,20 +1,23 @@
 package simu.entity;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 public class LevelVariablesModel {
     private final StringProperty servicePointName = new SimpleStringProperty();
     private final DoubleProperty eventInterval = new SimpleDoubleProperty();
     private final DoubleProperty leadTime = new SimpleDoubleProperty();
+    private final IntegerProperty  carCount = new SimpleIntegerProperty();
+    private final DoubleProperty averageTime = new SimpleDoubleProperty();
 
     public LevelVariablesModel(Level_variables levelVariables) {
         this.servicePointName.set(levelVariables.getServicePointName());
-        this.eventInterval.set(levelVariables.getEventInterval());
-        this.leadTime.set(levelVariables.getLeadTime());
+        this.eventInterval.set(levelVariables.getMean());
+        this.leadTime.set(levelVariables.getVariance());
+        this.carCount.set(levelVariables.getCarCount());
+        this.averageTime.set(levelVariables.getAverageTime());
     }
+
+
 
     public String getServicePointName() {
         return servicePointName.get();
@@ -50,5 +53,29 @@ public class LevelVariablesModel {
 
     public void setLeadTime(double leadTime) {
         this.leadTime.set(leadTime);
+    }
+
+    public int getCarCount() {
+        return carCount.get();
+    }
+
+    public IntegerProperty carCountProperty() {
+        return carCount;
+    }
+
+    public void setCarCount(int carCount) {
+        this.carCount.set(carCount);
+    }
+
+    public double getAverageTime() {
+        return averageTime.get();
+    }
+
+    public DoubleProperty averageTimeProperty() {
+        return averageTime;
+    }
+
+    public void setAverageTime(double averageTime) {
+        this.averageTime.set(averageTime);
     }
 }

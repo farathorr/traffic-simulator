@@ -2,10 +2,6 @@ package simu.entity;
 
 
 import jakarta.persistence.*;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 @Entity
 public class Level_variables {
@@ -15,17 +11,35 @@ public class Level_variables {
     @ManyToOne
     private Results levelId;
     private String servicePointName;
-    private double eventInterval;
-    private double leadTime;
-
+    private double mean;
+    private double variance;
+    private int carCount;
+    private double averageTime;
     @Transient
     private LevelVariablesModel levelVariablesModel;
 
-    public Level_variables(Results levelId, String servicePointName, double eventInterval, double leadTime) {
+    public Level_variables(Results levelId, String servicePointName, double mean, double variance, int carCount) {
+        this.carCount = carCount;
         this.levelId = levelId;
         this.servicePointName = servicePointName;
-        this.eventInterval = eventInterval;
-        this.leadTime = leadTime;
+        this.mean = mean;
+        this.variance = variance;
+        this.levelVariablesModel = new LevelVariablesModel(this);
+    }
+
+    public Level_variables(Results levelId, String servicePointName, double mean, double variance) {
+        this.levelId = levelId;
+        this.servicePointName = servicePointName;
+        this.mean = mean;
+        this.variance = variance;
+        this.levelVariablesModel = new LevelVariablesModel(this);
+    }
+
+    public Level_variables(Results levelId, String servicePointName, int carCount, double averageTime) {
+        this.averageTime = averageTime;
+        this.carCount = carCount;
+        this.levelId = levelId;
+        this.servicePointName = servicePointName;
         this.levelVariablesModel = new LevelVariablesModel(this);
     }
 
@@ -48,20 +62,20 @@ public class Level_variables {
         this.servicePointName = servicePointName;
     }
 
-    public double getEventInterval() {
-        return eventInterval;
+    public double getMean() {
+        return mean;
     }
 
-    public void setEventInterval(double eventInterval) {
-        this.eventInterval = eventInterval;
+    public void setMean(double mean) {
+        this.mean = mean;
     }
 
-    public double getLeadTime() {
-        return leadTime;
+    public double getVariance() {
+        return variance;
     }
 
-    public void setLeadTime(double leadTime) {
-        this.leadTime = leadTime;
+    public void setVariance(double variance) {
+        this.variance = variance;
     }
 
     public int getId() {
@@ -74,5 +88,21 @@ public class Level_variables {
 
     public LevelVariablesModel getLevelVariablesModel() {
         return levelVariablesModel;
+    }
+
+    public int getCarCount() {
+        return carCount;
+    }
+
+    public void setCarCount(int carCount) {
+        this.carCount = carCount;
+    }
+
+    public double getAverageTime() {
+        return averageTime;
+    }
+
+    public void setAverageTime(double averageTime) {
+        this.averageTime = averageTime;
     }
 }

@@ -246,14 +246,19 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                     variableTable.setItems(variablesObservableList);
 
                     TableColumn<Level_variables, String> servicePointNameCol = new TableColumn<>("Service Point");
-                    TableColumn<Level_variables, Double> eventIntervalsCol = new TableColumn<>("Event Interval");
-                    TableColumn<Level_variables, Double> leadTimeCol = new TableColumn<>("Lead time");
+                    TableColumn<Level_variables, Double> eventIntervalsCol = new TableColumn<>("Mean");
+                    TableColumn<Level_variables, Double> leadTimeCol = new TableColumn<>("Variance");
+                    TableColumn<Level_variables, Integer> carCountCol = new TableColumn<>("Car count");
+                    TableColumn<Level_variables, Double> averageTimeCol = new TableColumn<>("Average time");
+
 
                     servicePointNameCol.setCellValueFactory( data -> new SimpleStringProperty(data.getValue().getServicePointName()));
-                    eventIntervalsCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getEventInterval()).asObject());
-                    leadTimeCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getLeadTime()).asObject());
+                    eventIntervalsCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getMean()).asObject());
+                    leadTimeCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getVariance()).asObject());
+                    carCountCol.setCellValueFactory( data -> new SimpleIntegerProperty(data.getValue().getCarCount()).asObject());
+                    averageTimeCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getAverageTime()).asObject());
 
-                    variableTable.getColumns().setAll(servicePointNameCol, eventIntervalsCol, leadTimeCol);
+                    variableTable.getColumns().setAll(servicePointNameCol, eventIntervalsCol, leadTimeCol, carCountCol, averageTimeCol);
                 }
             });
 
