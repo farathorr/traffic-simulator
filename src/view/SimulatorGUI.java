@@ -324,6 +324,10 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             resultsGrid.setHgap(10);
             resultsGrid.setVgap(10);
 
+            if(!levels.isEmpty()){
+                levelsChoicebox.setValue(levels.get(0));
+            }
+
             resultsGrid.add(levelChoiceAndLabel, 0, 0);
             resultsGrid.add(simulationsTable, 0, 1, 2, 1);
             resultsGrid.add(variableTable, 0, 2);
