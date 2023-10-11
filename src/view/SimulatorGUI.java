@@ -120,8 +120,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 sePointMean.getLabel().setText("Vihreän valon kesto");
                 sePointMean2.getLabel().setText("Punaisen valon kesto");
             } else if (newSePoint.getClass() == Crosswalk.class) {
-                sePointMean.getLabel().setText("Tienylityksen kesto");
-                sePointMean2.getLabel().setText("Tienylitys tahti");
+                sePointMean.getLabel().setText("Tien ylityksen kesto");
+                sePointMean2.getLabel().setText("Tien ylitystahti");
             }
         });
 
