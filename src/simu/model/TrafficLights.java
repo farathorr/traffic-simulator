@@ -22,6 +22,7 @@ public class TrafficLights extends ServicePoint {
     }
 
     public void init() {
+        if (eventList == null) return;
         trafficLight = new ArrivalProcess(lightSwitchFrequencyGenerator, eventList, this.getScheduledEventType() + " Light Switch");
         nextLightSwitchEvent = trafficLight.generateNext();
     }

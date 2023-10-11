@@ -92,8 +92,9 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             }
 
             if(Debug.getInstance().isDebug()) {
-                drawPreviewServicePoint();
+                if(!placeTileType.equals("air")) drawPreviewServicePoint();
                 drawGrid();
+
                 if (placeTileType.equals("arrow")) {
                     servicePoints.forEach((ServicePoint point) -> {
                         if (!level.hasNextServicePoint(point)) return;
@@ -313,29 +314,14 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     private ServicePoint generateNewServicePoint(int x, int y, String tileType, String rotation) {
         return switch(tileType) {
-            case "roundabout" -> {
-                Roundabout roundabout = new Roundabout(5, 5, null, "roundabout" + x + "_" + y, 3);
-                roundabout.render(x, y, rotation);
-                yield roundabout;
-            }
-            case "trafficlight" -> {
-                TrafficLights trafficLights = new TrafficLights(5, 5,null, "trafficlight" + x + "_" + y);
-                trafficLights.render(x, y, rotation);
-                yield trafficLights;
-            }
-            case "crosswalk" -> {
-                Crosswalk crosswalk = new Crosswalk(5, 5, null, "crosswalk" + x + "_" + y);
-                crosswalk.render(x, y, rotation);
-                yield crosswalk;
-            }
-            case "goal" -> {
-                Goal goal = new Goal(null, "goal" + x + "_" + y);
-                goal.render(x, y, "goal");
-                yield goal;
-            }
             case "road" -> {
                 Road road = new Road(null, "road" + x + "_" + y);
                 road.render(x, y, rotation);
+                yield road;
+            }
+            case "road-turn" -> {
+                Road road = new Road(null, "road-turn" + x + "_" +y);
+                road.render(x,y,rotation+"-turn");
                 yield road;
             }
             case "t-intersection" -> {
@@ -343,20 +329,35 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 road.render(x, y, "t-intersection-"+rotation);
                 yield road;
             }
-            case "turn" -> {
-                Road road = new Road(null, "road-turn" + x + "_" +y);
-                road.render(x,y,rotation+"-turn");
-                yield road;
+            case "crosswalk" -> {
+                Crosswalk crosswalk = new Crosswalk(5, 5, null, "crosswalk" + x + "_" + y);
+                crosswalk.render(x, y, rotation);
+                yield crosswalk;
             }
-            case "double" -> {
+            case "traffic-lights" -> {
+                TrafficLights trafficLights = new TrafficLights(5, 5,null, "trafficlight" + x + "_" + y);
+                trafficLights.render(x, y, rotation);
+                yield trafficLights;
+            }
+            case "roundabout" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null, "roundabout" + x + "_" + y, 3);
+                roundabout.render(x, y, rotation);
+                yield roundabout;
+            }
+            case "roundabout-road" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-r-road" + x + "_" + y, 3);
+                roundabout.render(x,y,rotation+"-r-road");
+                yield roundabout;
+            }
+            case "roundabout-double" -> {
                 Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-double" + x + "_" + y, 3);
                 roundabout.render(x,y,rotation+"-double");
                 yield roundabout;
             }
-            case "r-road" -> {
-                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-r-road" + x + "_" + y, 3);
-                roundabout.render(x,y,rotation+"-r-road");
-                yield roundabout;
+            case "goal" -> {
+                Goal goal = new Goal(null, "goal" + x + "_" + y);
+                goal.render(x, y, "goal");
+                yield goal;
             }
             default -> {
                 Road road = new Road(null, "road" + x + "_" + y);
@@ -394,5 +395,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         servicePoints.forEach(ServicePoint::displayClass);
         System.out.println();
         servicePoints.forEach(ServicePoint::displayClassRender);
+    }
+
+    public void deleteServicePoint(int scaleX, int scaleY) {
+        ServicePoint servicePoint = getServicePointByCordinates(scaleX, scaleY);
+        if(servicePoint != null) {
+            level.remove(servicePoint);
+            servicePoints.remove(servicePoint);
+        }
     }
 }

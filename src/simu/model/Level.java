@@ -42,6 +42,11 @@ public class Level {
         point.init();
     }
 
+    public void remove(ServicePoint point) {
+        servicePoints.remove(point.getScheduledEventType());
+        nextPoints.remove(point);
+    }
+
     public void arrival(ArrivalProcess arrivalProcess, String nextPoint) {
         arrival(arrivalProcess, new String[]{nextPoint});
     }
