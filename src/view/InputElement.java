@@ -16,10 +16,8 @@ public class InputElement{
         this.defaultText = defaultText;
         this.promptText = promptText;
         label = new Label(labelText);
-        label.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         textField = new TextField(defaultText);
         textField.setPromptText(promptText);
-        textField.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         textField.setPrefWidth(150);
     }
 
@@ -28,10 +26,8 @@ public class InputElement{
         this.defaultText = defaultText;
         this.promptText = promptText;
         label = new Label(labelText);
-        label.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         textField = new TextField(defaultText);
         textField.setPromptText(promptText);
-        textField.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         textField.setPrefWidth(150);
         this.id = id;
     }

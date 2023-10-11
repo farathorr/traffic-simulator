@@ -177,9 +177,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         InputElement[] inputArray = {timeInput, delayInput};
 
         resultLabel = new Label("Kokonaisaika:");
-        resultLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         result = new Label();
-        result.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         result.setPrefWidth(150);
 
         Button helpButton = new Button("Ohjeet");
@@ -200,7 +198,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             container.setSpacing(10);
             container.setPadding(new Insets(15));
             container.setAlignment(Pos.CENTER);
-            helpWindow.setScene(new Scene(container));
+            Scene scene = new Scene(container);
+            scene.getStylesheets().add("styles.css");
+            helpWindow.setScene(scene);
             helpWindow.show();
         });
 
@@ -302,7 +302,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             resultsGrid.add(goalTable, 1, 2);
             resultsGrid.setPadding(insets);
             resultsGrid.setAlignment(Pos.CENTER);
-            resultsWindow.setScene(new Scene(resultsGrid));
+            Scene scene = new Scene(resultsGrid);
+            scene.getStylesheets().add("styles.css");
+            resultsWindow.setScene(scene);
             resultsWindow.show();
         });
 
@@ -331,6 +333,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         footerGrid.add(helpButton, 0, 7);   // sarake, rivi
         footerGrid.add(resultsButton, 1, 7);   // sarake, rivi
 
+        footerGrid.setPadding(new Insets(15));
+
         GridPane gridCustom = new GridPane();
         gridCustom.setAlignment(Pos.TOP_CENTER);
         gridCustom.setVgap(10);
@@ -351,6 +355,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         hBox.getChildren().addAll(vBox, (Canvas) screen);
 
         Scene scene = new Scene(hBox);
+        scene.getStylesheets().add("styles.css");
         primaryStage.setScene(scene);
         primaryStage.show();
 
