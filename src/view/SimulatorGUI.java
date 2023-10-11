@@ -137,7 +137,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             });
         }
 
-        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6");
+        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7");
         levelComboBox.setPromptText("Please Select");
         levelComboBox.setOnAction(event -> {
             String value = levelComboBox.getValue();
@@ -348,9 +348,10 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 }
                 case DIGIT3 -> {
                     switch (placeTileType) {
+                        case "roundabout-entrance" -> placeTileType = "roundabout";
                         case "roundabout" -> placeTileType = "roundabout-road";
                         case "roundabout-road" -> placeTileType = "roundabout-double";
-                        default -> placeTileType = "roundabout";
+                        default -> placeTileType = "roundabout-entrance";
                     }
                 }
                 case DIGIT4 -> placeTileType = "goal";
