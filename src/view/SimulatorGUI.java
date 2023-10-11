@@ -52,7 +52,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     ListView<ServicePoint> servicePointListView;
     private LevelSettings levelSettings;
     private String placeTileType = "road", placeRotation = "right";
-    private final int[] lastPlaced = { -9999, -9999 };
+    private final int[] lastPlaced = {-9999, -9999};
 
     @Override
     public void init() {
@@ -98,7 +98,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             }
 
             SettingsKeys settings = (String key) -> {
-                if(newSePoint.hasSettings(key)) return String.valueOf(newSePoint.getSettings(key));
+                if (newSePoint.hasSettings(key)) return String.valueOf(newSePoint.getSettings(key));
                 else return switch (key) {
                     case "mean" -> String.valueOf(newSePoint.getMean());
                     case "variance" -> String.valueOf(newSePoint.getVariance());
@@ -119,13 +119,13 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             if (newSePoint.getClass() == TrafficLights.class) {
                 sePointMean.getLabel().setText("Vihreän valon kesto");
                 sePointMean2.getLabel().setText("Punaisen valon kesto");
-            } else if(newSePoint.getClass() == Crosswalk.class) {
+            } else if (newSePoint.getClass() == Crosswalk.class) {
                 sePointMean.getLabel().setText("Tien ylityksen kesto");
                 sePointMean2.getLabel().setText("Tien ylitys tahti");
             }
         });
 
-        for(InputElement inputElement : customInputArray) {
+        for (InputElement inputElement : customInputArray) {
             inputElement.getTextField().setOnKeyTyped(event -> {
                 try {
                     double value = Double.parseDouble(inputElement.getTextField().getText());
@@ -208,71 +208,96 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             resultsWindow.setTitle("Tulokset");
             GridPane resultsGrid = new GridPane();
             Label levelsLabel = new Label("Tasot");
-            Label simulationsLabel = new Label("Simulaatiot");
-            List<Results> resultsList = controller.getResults();
-            Button findButton = new Button("Etsi tuloksia");
             ChoiceBox<String> levelsChoicebox = new ChoiceBox<>();
-            ChoiceBox<Integer> simulationsChoicebox = new ChoiceBox<>();
-            ArrayList<Level_variables> variablesList = new ArrayList<>();
+            VBox levelChoiceAndLabel = new VBox(levelsLabel, levelsChoicebox);
+
+            ArrayList<Level_variables> servicePointsList = new ArrayList<>();
             TableView<Level_variables> variableTable = new TableView<>();
+            ArrayList<Level_variables> goalsList = new ArrayList<>();
+            TableView<Level_variables> goalTable = new TableView<>();
+
+            List<Results> resultsList = controller.getResults();
+            List<String> levels = new ArrayList<>();
+            TableView<Results> simulationsTable = new TableView<>();
             variableTable.setPrefWidth(400);
 
-            List<String> levels = new ArrayList<>();
             for (Results selectedResult : resultsList) {
                 if (!levels.contains(selectedResult.getSimulationLevel())) {
                     levels.add(selectedResult.getSimulationLevel());
                 }
             }
+            Comparator<String> compareByLevelName = Comparator.comparing(String::toString);
+            levels.sort(compareByLevelName);
             levelsChoicebox.getItems().addAll(levels);
 
             levelsChoicebox.setOnAction(ae -> {
-                simulationsChoicebox.getItems().clear();
+                ArrayList<Results> simulationsList = new ArrayList<>();
                 for (Results selectedResult : resultsList) {
                     if (selectedResult.getSimulationLevel().equals(levelsChoicebox.getValue())) {
-                        simulationsChoicebox.getItems().add(selectedResult.getId());
+                        simulationsList.add(selectedResult);
                     }
                 }
+                simulationsTable.setItems(FXCollections.observableArrayList(simulationsList));
+
+                TableColumn<Results, Integer> simulationIdCol = new TableColumn<>("Simulaation id");
+                TableColumn<Results, Double> simulationTimeCol = new TableColumn<>("Simulaation aika");
+
+                simulationIdCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getId()).asObject());
+                simulationTimeCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getSimulationTime()).asObject());
+
+                simulationsTable.getColumns().setAll(simulationIdCol, simulationTimeCol);
             });
 
-            findButton.setOnAction(ae -> {
-                if (!(simulationsChoicebox.getValue() == null)) {
-                    int selectedSimulation = simulationsChoicebox.getValue();
-                    List<Level_variables> list = controller.getLevelVariables();
-                    for (Level_variables level_variable : list) {
-                        if (level_variable.getLevelId().getId() == selectedSimulation) {
-                            variablesList.add(level_variable);
-                        }
+            simulationsTable.getSelectionModel().selectedItemProperty().addListener(ae -> {
+                servicePointsList.clear();
+                goalsList.clear();
+                int selectedSimulation = simulationsTable.getSelectionModel().getSelectedItem().getId();
+                List<Level_variables> list = controller.getLevelVariables();
+                for (Level_variables level_variable : list) {
+                    if (level_variable.getLevelId().getId() == selectedSimulation) {
+                        if (level_variable.getServicePointName().contains("goal")) goalsList.add(level_variable);
+                        else servicePointsList.add(level_variable);
                     }
-                    ObservableList<Level_variables> variablesObservableList = FXCollections.observableArrayList(variablesList);
-                    variableTable.setItems(variablesObservableList);
-
-                    TableColumn<Level_variables, String> servicePointNameCol = new TableColumn<>("Service Point");
-                    TableColumn<Level_variables, Double> eventIntervalsCol = new TableColumn<>("Mean");
-                    TableColumn<Level_variables, Double> leadTimeCol = new TableColumn<>("Variance");
-                    TableColumn<Level_variables, Integer> carCountCol = new TableColumn<>("Car count");
-                    TableColumn<Level_variables, Double> averageTimeCol = new TableColumn<>("Average time");
-
-
-                    servicePointNameCol.setCellValueFactory( data -> new SimpleStringProperty(data.getValue().getServicePointName()));
-                    eventIntervalsCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getMean()).asObject());
-                    leadTimeCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getVariance()).asObject());
-                    carCountCol.setCellValueFactory( data -> new SimpleIntegerProperty(data.getValue().getCarCount()).asObject());
-                    averageTimeCol.setCellValueFactory( data -> new SimpleDoubleProperty(data.getValue().getAverageTime()).asObject());
-
-                    variableTable.getColumns().setAll(servicePointNameCol, eventIntervalsCol, leadTimeCol, carCountCol, averageTimeCol);
                 }
+                ObservableList<Level_variables> servicePointsObservableList = FXCollections.observableArrayList(servicePointsList);
+                ObservableList<Level_variables> goalsObservableList = FXCollections.observableArrayList(goalsList);
+                variableTable.setItems(servicePointsObservableList);
+                goalTable.setItems(goalsObservableList);
+
+                TableColumn<Level_variables, String> servicePointNameCol = new TableColumn<>("Nimi");
+                TableColumn<Level_variables, String> goalNameCol = new TableColumn<>("Nimi");
+                TableColumn<Level_variables, Double> mean1Col = new TableColumn<>("Keskiarvo1");
+                TableColumn<Level_variables, Double> mean2Col = new TableColumn<>("Keskiarvo2");
+                TableColumn<Level_variables, Double> variance1Col = new TableColumn<>("Vaihtelevuus1");
+                TableColumn<Level_variables, Double> variance2Col = new TableColumn<>("Vaihtelevuus2");
+                TableColumn<Level_variables, Integer> goalCarCountCol = new TableColumn<>("Autojen määrä");
+                TableColumn<Level_variables, Double> averageTimeCol = new TableColumn<>("Keskimääräinen aika");
+
+                servicePointNameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getServicePointName()));
+
+                goalNameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getServicePointName()));
+                mean1Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getMean1()).asObject());
+                mean2Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getMean2()).asObject());
+                variance1Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getVariance1()).asObject());
+                variance2Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getVariance2()).asObject());
+
+                goalCarCountCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getCarCount()).asObject());
+                averageTimeCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getAverageTime()).asObject());
+
+                variableTable.getColumns().setAll(servicePointNameCol, mean1Col, mean2Col, variance1Col, variance2Col);
+                goalTable.getColumns().setAll(goalNameCol, goalCarCountCol, averageTimeCol);
+
             });
 
 
             Insets insets = new Insets(15);
-            variableTable.setPadding(insets);
+            resultsGrid.setHgap(10);
+            resultsGrid.setVgap(10);
 
-            resultsGrid.add(levelsLabel, 0, 0);
-            resultsGrid.add(simulationsLabel, 1, 0);
-            resultsGrid.add(levelsChoicebox, 0, 1);
-            resultsGrid.add(simulationsChoicebox, 1, 1);
-            resultsGrid.add(findButton, 2, 1);
+            resultsGrid.add(levelChoiceAndLabel, 0, 0);
+            resultsGrid.add(simulationsTable, 0, 1, 2, 1);
             resultsGrid.add(variableTable, 0, 2);
+            resultsGrid.add(goalTable, 1, 2);
             resultsGrid.setPadding(insets);
             resultsGrid.setAlignment(Pos.CENTER);
             resultsWindow.setScene(new Scene(resultsGrid));
@@ -373,18 +398,17 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         });
 
 
-
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
             double padding = Math.max(oldVal.doubleValue() - screen.getWidth(), 380);
             double width = Math.max(newVal.doubleValue() - padding, 200.0);
-            screen.setWidth((int)width); // Set inside variables
+            screen.setWidth((int) width); // Set inside variables
             screen.setWidth(width); // Set canvas size
         });
 
         primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
             double padding = oldVal.doubleValue() - screen.getHeight();
             double height = Math.max(newVal.doubleValue() - padding, 200.0);
-            screen.setHeight((int)height); // Set inside variables
+            screen.setHeight((int) height); // Set inside variables
             screen.setHeight(height); // Set canvas size
         });
 
@@ -441,7 +465,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 startY.set(event.getY());
                 canvasX.set(screen.getX());
                 canvasY.set(screen.getY());
-            } else if(event.getButton() == MouseButton.SECONDARY) placeTilesOnCanvas(event);
+            } else if (event.getButton() == MouseButton.SECONDARY) placeTilesOnCanvas(event);
         });
 
         canvas.setOnMouseDragged(event -> {
@@ -450,14 +474,14 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 double deltaY = event.getY() - startY.get();
                 screen.setX(canvasX.get() + deltaX);
                 screen.setY(canvasY.get() + deltaY);
-            } else if(event.getButton() == MouseButton.SECONDARY) placeTilesOnCanvas(event);
+            } else if (event.getButton() == MouseButton.SECONDARY) placeTilesOnCanvas(event);
         });
     }
 
     private void setCanvasDrawPreview(Canvas canvas) {
         final Visualization screen = (Visualization) canvas;
         canvas.setOnMouseMoved(event -> {
-            if(!Debug.getInstance().isDebug()) return;
+            if (!Debug.getInstance().isDebug()) return;
             double gridSize = screen.getGridSize() * screen.getZoomLevel();
             int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
             int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
@@ -469,7 +493,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     }
 
     private void placeTilesOnCanvas(MouseEvent event) {
-        if(!Debug.getInstance().isDebug()) return;
+        if (!Debug.getInstance().isDebug()) return;
         double gridSize = screen.getGridSize() * screen.getZoomLevel();
         int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
         int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
@@ -477,10 +501,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
         if (placeTileType.equals("arrow")) {
             screen.createServicePointConnection(scaleX, scaleY, placeRotation);
-        } else if(placeTileType.equals("air")) {
+        } else if (placeTileType.equals("air")) {
             screen.deleteServicePoint(scaleX, scaleY);
-        }
-        else screen.createNewServicePoint(scaleX, scaleY, placeTileType, placeRotation);
+        } else screen.createNewServicePoint(scaleX, scaleY, placeTileType, placeRotation);
         lastPlaced[0] = scaleX;
         lastPlaced[1] = scaleY;
     }

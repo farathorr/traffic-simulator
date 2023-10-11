@@ -11,29 +11,26 @@ public class Level_variables {
     @ManyToOne
     private Results levelId;
     private String servicePointName;
-    private double mean;
-    private double variance;
+    private double mean1;
+    private double mean2;
+    private double variance1;
+    private double variance2;
     private int carCount;
     private double averageTime;
     @Transient
     private LevelVariablesModel levelVariablesModel;
 
-    public Level_variables(Results levelId, String servicePointName, double mean, double variance, int carCount) {
+    public Level_variables(Results levelId, String servicePointName, double mean1, double mean2, double variance1, double variance2, int carCount) {
         this.carCount = carCount;
         this.levelId = levelId;
         this.servicePointName = servicePointName;
-        this.mean = mean;
-        this.variance = variance;
+        this.mean1 = mean1;
+        this.mean2 = mean2;
+        this.variance1 = variance1;
+        this.variance2 = variance2;
         this.levelVariablesModel = new LevelVariablesModel(this);
     }
 
-    public Level_variables(Results levelId, String servicePointName, double mean, double variance) {
-        this.levelId = levelId;
-        this.servicePointName = servicePointName;
-        this.mean = mean;
-        this.variance = variance;
-        this.levelVariablesModel = new LevelVariablesModel(this);
-    }
 
     public Level_variables(Results levelId, String servicePointName, int carCount, double averageTime) {
         this.averageTime = averageTime;
@@ -62,20 +59,20 @@ public class Level_variables {
         this.servicePointName = servicePointName;
     }
 
-    public double getMean() {
-        return mean;
+    public double getMean1() {
+        return mean1;
     }
 
-    public void setMean(double mean) {
-        this.mean = mean;
+    public void setMean1(double mean) {
+        this.mean1 = mean;
     }
 
-    public double getVariance() {
-        return variance;
+    public double getVariance1() {
+        return variance1;
     }
 
-    public void setVariance(double variance) {
-        this.variance = variance;
+    public void setVariance1(double variance) {
+        this.variance1 = variance;
     }
 
     public int getId() {
@@ -104,5 +101,21 @@ public class Level_variables {
 
     public void setAverageTime(double averageTime) {
         this.averageTime = averageTime;
+    }
+
+    public double getMean2() {
+        return mean2;
+    }
+
+    public void setMean2(double mean2) {
+        this.mean2 = mean2;
+    }
+
+    public double getVariance2() {
+        return variance2;
+    }
+
+    public void setVariance2(double variance2) {
+        this.variance2 = variance2;
     }
 }
