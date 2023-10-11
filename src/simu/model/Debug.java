@@ -4,7 +4,7 @@ import simu.framework.Clock;
 
 public class Debug {
     private static Debug debug = null;
-    private static boolean debugMode = true;
+    private static boolean debugMode = false;
 
     private Debug() {
 
@@ -23,5 +23,9 @@ public class Debug {
 
     public boolean isDebug() {
         return debugMode;
+    }
+
+    public void toggle() {
+        debugMode = !debugMode;
     }
 }
