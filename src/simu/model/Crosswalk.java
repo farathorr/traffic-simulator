@@ -22,9 +22,9 @@ public class Crosswalk extends ServicePoint {
 
     public void init() {
         if (eventList == null) return;
-        if (getLevel().hasGenerator2(this.getScheduledEventType())) {
-            crossingFrequencyGenerator = new Normal(getLevel().getGenerator2(this.getScheduledEventType()), 2);
-        }
+        String pointType = this.getScheduledEventType();
+        if (hasSettings("mean")) crossingFrequencyGenerator = new Normal(getSettings("mean"), 2);
+        if (hasSettings("average")) crossingFrequencyGenerator = new Normal(getSettings("average"), 2);
         crosswalk = new ArrivalProcess(crossingFrequencyGenerator, eventList, this.getScheduledEventType() + " Road Crossing");
         nextCrossingEvent = crosswalk.generateNext();
     }

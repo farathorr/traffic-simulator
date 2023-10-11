@@ -135,4 +135,24 @@ public abstract class ServicePoint {
     public void displayClassRender() {
         System.out.printf("controller.render(level, \"%s\", %.0f, %.0f, \"%s\");\n", this.scheduledEventType, this.x, this.y, this.rotation);
     }
+
+    public boolean hasSettings(String key) {
+    	return LevelSettings.getInstance().has(level.getLevelName() + "." + this.scheduledEventType + "." + key);
+    }
+
+    public double getSettings(String key) {
+        return LevelSettings.getInstance().get(level.getLevelName() + "." + this.scheduledEventType + "." + key);
+    }
+
+    public void setSettings(String key, double value) {
+    	LevelSettings.getInstance().add(level.getLevelName() + "." + this.scheduledEventType + "." + key, value);
+    }
+
+    public double getMean() {
+    	return 0.0;
+    }
+
+    public double getVariance() {
+    	return 0.0;
+    }
 }

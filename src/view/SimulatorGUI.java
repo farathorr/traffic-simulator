@@ -86,15 +86,33 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         servicePointListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             for (InputElement inputElement : customInputArray) inputElement.setVisible(true);
-
-
             selectedServicePoint = newValue;
+            if (newValue == null) return;
+            if(newValue.hasSettings("mean")) carMean.getTextField().setText(String.valueOf(newValue.getSettings("mean")));
+            else carMean.getTextField().setText(String.valueOf(newValue.getMean()));
+            if(newValue.hasSettings("average")) carVariance.getTextField().setText(String.valueOf(newValue.getSettings("average")));
+            else carVariance.getTextField().setText(String.valueOf(newValue.getMean()));
+
+            if (newValue.getClass() == TrafficLights.class) {
+                carMean.getLabel().setText("Vihreän valon kesto");
+                carVariance.getLabel().setText("Punaisen valon kesto");
+            } else if(newValue.getClass() == Crosswalk.class) {
+                carMean.getLabel().setText("Tien ylitys tahti");
+                carVariance.getLabel().setText("Tien ylitys pituus");
+            }
+
+            else {
+                carMean.getLabel().setText("Keskiarvo");
+                carVariance.getLabel().setText("Vaihtelevuus");
+            }
+        });
+
+        carMean.getTextField().setOnKeyTyped(event -> {
+            selectedServicePoint.setSettings("mean", Double.parseDouble(carMean.getTextField().getText()));
         });
 
         carVariance.getTextField().setOnKeyTyped(event -> {
-            String key = selectedLevel.getLevelName() + selectedServicePoint.getScheduledEventType() + "generator2";
-            levelSettings.add(key, Double.parseDouble(carVariance.getTextField().getText()));
-            System.out.println("Vaihtelevuus: " + levelSettings.get(key));
+            selectedServicePoint.setSettings("variance", Double.parseDouble(carMean.getTextField().getText()));
         });
 
         levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6");
