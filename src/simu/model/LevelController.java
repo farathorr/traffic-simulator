@@ -174,8 +174,10 @@ public class LevelController {
         level.add(new Road(eventList, "road4_0"), "road3_0");
         level.add(new Road(eventList, "road3_0"), "road3_-1");
         level.add(new Road(eventList, "road3_-1"), "crosswalk2_-1");
-        level.add(new Crosswalk(50, 5, 20, 20, eventList, "crosswalk2_-1"), "goal1_-1");
-        level.add(new Goal(eventList, "goal1_-1"));
+        level.add(new Crosswalk(25, 5, 25, 20, eventList, "crosswalk2_-1"), "road1_-1");
+        level.add(new Road(eventList, "road1_-1"), "road0_-1");
+        level.add(new Road(eventList, "road0_-1"), "goal-1_-1");
+        level.add(new Goal(eventList, "goal-1_-1"));
 
         controller.render(level, "road0_0", 0, 0, "right");
         controller.render(level, "crosswalk1_0", 1, 0, "right");
@@ -203,7 +205,9 @@ public class LevelController {
         controller.render(level, "road3_0", 3, 0, "right-turn");
         controller.render(level, "road3_-1", 3, -1, "left-turn");
         controller.render(level, "crosswalk2_-1", 2, -1, "left");
-        controller.render(level, "goal1_-1", 1, -1, "goal");
+        controller.render(level, "road1_-1", 1, -1, "right");
+        controller.render(level, "road0_-1", 0, -1, "right");
+        controller.render(level, "goal-1_-1", -1, -1, "goal");
 
         return level;
     }

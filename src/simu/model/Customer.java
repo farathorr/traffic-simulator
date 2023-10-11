@@ -121,14 +121,14 @@ public class Customer implements Comparable<Customer> {
 
     public void moveCustomer() {
 
-        double speed = Math.max(20/destinations.size(), 1);
+        double speed = Math.max(20 / (destinations.size() * 2), 1);
 
         double deltaX = destinationX - this.x;
         double deltaY = destinationY - this.y;
         this.x += deltaX / speed;
         this.y += deltaY / speed;
 
-        if (Math.abs(this.destinationX - this.x) + Math.abs(this.destinationY - this.y) < 0.025) {
+        if (Math.abs(this.destinationX - this.x) + Math.abs(this.destinationY - this.y) < 0.1) {
             if (destinations.size() > 1) {
                 destinations.remove(0);
                 this.destinationX = destinations.get(0)[0];
