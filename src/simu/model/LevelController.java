@@ -25,6 +25,7 @@ public class LevelController {
             case "Level 4" -> getLevel4();
             case "Level 5" -> getLevel5();
             case "Level 6" -> getLevel6();
+            case "Level 7" -> getLevel7();
             default -> null;
         };
 
@@ -442,6 +443,32 @@ public class LevelController {
         controller.render(level, "goal12_6", 12, 6, "goal");
         controller.render(level, "goal12_4", 12, 4, "goal");
         controller.render(level, "goal12_2", 12, 2, "goal");
+
+        return level;
+    }
+
+    public Level getLevel7() {
+        Level level = new Level("Level 7");
+
+        level.arrival(new ArrivalProcess(new Normal(100, 1), eventList, "ARR1", 0, 0), "road0_0");
+
+        level.add(new Road(eventList, "road0_0"), "road1_0");
+        level.add(new Road(eventList, "road1_0"), "roundabout-entrance2_0");
+        level.add(new Roundabout(5, 5, eventList, "roundabout-entrance2_0", 3), "roundabout3_0");
+        level.add(new Roundabout(5, 5, eventList, "roundabout-r-road2_-1", 3), new String[]{"roundabout-entrance2_0", "road1_-1"});
+        level.add(new Roundabout(5, 5, eventList, "roundabout3_-1", 3), "roundabout-r-road2_-1");
+        level.add(new Roundabout(5, 5, eventList, "roundabout3_0", 3), "roundabout3_-1");
+        level.add(new Road(eventList, "road1_-1"), "goal0_-1");
+        level.add(new Goal(eventList, "goal0_-1"));
+
+        controller.render(level, "road0_0", 0, 0, "right");
+        controller.render(level, "road1_0", 1, 0, "right");
+        controller.render(level, "roundabout-entrance2_0", 2, 0, "right-r-entrance");
+        controller.render(level, "roundabout-r-road2_-1", 2, -1, "bottom-r-road");
+        controller.render(level, "roundabout3_-1", 3, -1, "left");
+        controller.render(level, "roundabout3_0", 3, 0, "top");
+        controller.render(level, "road1_-1", 1, -1, "right");
+        controller.render(level, "goal0_-1", 0, -1, "goal");
 
         return level;
     }

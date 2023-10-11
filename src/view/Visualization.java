@@ -26,6 +26,8 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image roundaboutRoad = new Image("roundabout-with-road.png");
     private Image roundaboutDouble = new Image("roundabout-double.png");
     private Image roundaboutRoad2 = new Image("roundabout-with-road2.png");
+    private Image roundaboutEntrance = new Image("roundabout-entrance.png");
+    private Image roundaboutEntrance2 = new Image("roundabout-entrance2.png");
     private Image trafficLightGreen = new Image("trafficlight-green.png");
     private Image trafficLightGreen2 = new Image("trafficlight-green2.png");
     private Image trafficLightRed = new Image("trafficlight-red.png");
@@ -153,6 +155,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 case "top-r-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                 case "left-r-road" -> drawImage(roundaboutRoad, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
                 case "bottom-r-road" -> drawImage(roundaboutRoad2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                case "right-r-entrance" -> drawImage(roundaboutEntrance, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                case "top-r-entrance" -> drawImage(roundaboutEntrance2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
+                case "left-r-entrance" -> drawImage(roundaboutEntrance, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
+                case "bottom-r-entrance" -> drawImage(roundaboutEntrance2, servicePoint.getX() * gridSize + gridSize, servicePoint.getY() * gridSize + gridSize, -gridSize, -gridSize);
             }
         }
         else if (servicePoint.getClass() == TrafficLights.class) {
@@ -297,6 +303,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         for(int i = 0; i < servicePoints.size(); i++) {
             if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
                 ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
+                level.remove(servicePoints.get(i));
                 level.add(servicePoint);
                 servicePoints.set(i, servicePoint);
                 testServicePointForConnectionErrors(x - 1, y);
@@ -310,6 +317,20 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
         level.add(servicePoint);
         servicePoints.add(servicePoint);
+    }
+
+    public void pickATileInfo() {
+        ServicePoint servicePoint = getServicePointByCordinates(previewX, previewY);
+        if (servicePoint != null) {
+            // Regex to remove all the numbers and underscores from the string
+            placeTileType = servicePoint.getScheduledEventType().replaceAll("[0-9_]", "");
+            System.out.println(servicePoint + placeTileType);
+            if (servicePoint.getRotation().contains("right")) placeRotation = "right";
+            else if (servicePoint.getRotation().contains("left")) placeRotation = "left";
+            else if (servicePoint.getRotation().contains("top")) placeRotation = "top";
+            else if (servicePoint.getRotation().contains("bottom")) placeRotation = "bottom";
+            else placeRotation = "right";
+        }
     }
 
     public void createServicePointConnection(int x, int y, String rotate) {
@@ -366,6 +387,11 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             case "roundabout" -> {
                 Roundabout roundabout = new Roundabout(5, 5, null, "roundabout" + x + "_" + y, 3);
                 roundabout.render(x, y, rotation);
+                yield roundabout;
+            }
+            case "roundabout-entrance" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null, "roundabout-entrance" + x + "_" + y, 3);
+                roundabout.render(x, y, rotation+"-r-entrance");
                 yield roundabout;
             }
             case "roundabout-road" -> {

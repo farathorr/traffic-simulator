@@ -13,7 +13,7 @@ import java.util.PriorityQueue;
 public class Roundabout extends ServicePoint {
 
     private ContinuousGenerator exitGenerator;
-    private int maxRotations;
+    private int maxRotations = 3;
     private double mean, variance;
     private PriorityQueue<Customer> queue = new PriorityQueue<>();
 
@@ -22,7 +22,6 @@ public class Roundabout extends ServicePoint {
         this.mean = mean;
         this.variance = variance;
         this.exitGenerator = new Normal(mean, variance);
-        this.maxRotations = maxRotations;
     }
 
     @Override

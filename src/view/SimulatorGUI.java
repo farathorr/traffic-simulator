@@ -137,7 +137,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             });
         }
 
-        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6");
+        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7");
         levelComboBox.setPromptText("Please Select");
         levelComboBox.setOnAction(event -> {
             String value = levelComboBox.getValue();
@@ -373,9 +373,10 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 }
                 case DIGIT3 -> {
                     switch (placeTileType) {
+                        case "roundabout-entrance" -> placeTileType = "roundabout";
                         case "roundabout" -> placeTileType = "roundabout-road";
                         case "roundabout-road" -> placeTileType = "roundabout-double";
-                        default -> placeTileType = "roundabout";
+                        default -> placeTileType = "roundabout-entrance";
                     }
                 }
                 case DIGIT4 -> placeTileType = "goal";
@@ -390,6 +391,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 }
                 case E -> {
                     screen.exportSelectedLevel();
+                }
+                case Q -> {
+                    screen.pickATileInfo();
                 }
             }
 
@@ -479,9 +483,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     }
 
     private void setCanvasDrawPreview(Canvas canvas) {
+        if(!Debug.getInstance().isDebug()) return;
         final Visualization screen = (Visualization) canvas;
         canvas.setOnMouseMoved(event -> {
-            if (!Debug.getInstance().isDebug()) return;
             double gridSize = screen.getGridSize() * screen.getZoomLevel();
             int scaleX = (int) Math.floor((event.getX() - screen.getX()) / gridSize);
             int scaleY = (int) Math.floor((event.getY() - screen.getY()) / gridSize);
