@@ -42,6 +42,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image tIntersection = new Image("t-intersection.png");
     private Image tIntersection2 = new Image("t-intersection2.png");
     private Image goal = new Image("goal.png");
+    private Image start = new Image("start.png");
     private Image arrow = new Image("arrow.png");
     private Image arrow2 = new Image("arrow2.png");
     private Level level;
@@ -115,7 +116,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 case "t-intersection-top" -> drawImage(tIntersection, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
                 case "t-intersection-left" -> drawImage(tIntersection2, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                 case "t-intersection-bottom" -> drawImage(tIntersection, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-
+                case "start" -> drawImage(start, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
             }
         }else if (servicePoint.getClass() == Goal.class) {
             switch(servicePoint.getRotation()){
@@ -407,6 +408,11 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 Goal goal = new Goal(null, "goal" + x + "_" + y);
                 goal.render(x, y, "goal");
                 yield goal;
+            }
+            case "start" -> {
+                Road start = new Road(null, "start" + x + "_" + y);
+                start.render(x, y, "start");
+                yield start;
             }
             default -> {
                 Road road = new Road(null, "road" + x + "_" + y);

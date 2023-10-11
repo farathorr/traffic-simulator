@@ -382,7 +382,12 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                         default -> placeTileType = "roundabout-entrance";
                     }
                 }
-                case DIGIT4 -> placeTileType = "goal";
+                case DIGIT4 -> {
+                    switch (placeTileType) {
+                        case "start" -> placeTileType = "goal";
+                        default -> placeTileType = "start";
+                    }
+                }
                 case DIGIT5 -> placeTileType = "arrow";
                 case R -> {
                     switch (placeRotation) {
