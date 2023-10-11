@@ -145,7 +145,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
 
 
-        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8", "Level 9");
+        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8", "Level 9", "Level 10");
         levelComboBox.setPromptText("Please Select");
         levelComboBox.setOnAction(event -> {
             String value = levelComboBox.getValue();
