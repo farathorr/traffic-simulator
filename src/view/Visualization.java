@@ -329,7 +329,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             else if (servicePoint.getRotation().contains("top")) placeRotation = "top";
             else if (servicePoint.getRotation().contains("bottom")) placeRotation = "bottom";
             else placeRotation = "right";
-        }
+        } else placeTileType = "air";
     }
 
     public void createServicePointConnection(int x, int y, String rotate) {
