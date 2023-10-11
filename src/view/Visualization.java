@@ -99,9 +99,9 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             removeCustomers.forEach(customers::remove);
             removeCustomers.clear();
 
+            if(Debug.getInstance().isGrid()) drawGrid();
             if(Debug.getInstance().isDebug()) {
                 if(!placeTileType.equals("air")) drawPreviewServicePoint();
-                drawGrid();
                 if (placeTileType.equals("arrow")) renderRoadConnectionsArrows();
             }
         });

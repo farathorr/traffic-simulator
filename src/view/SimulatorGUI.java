@@ -57,7 +57,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private ServicePoint selectedServicePoint;
     ListView<ServicePoint> servicePointListView;
     private LevelSettings levelSettings;
-    private String placeTileType = "road", placeRotation = "right";
+    private String placeTileType = "air", placeRotation = "right";
     private final int[] lastPlaced = {-9999, -9999};
 
     @Override
