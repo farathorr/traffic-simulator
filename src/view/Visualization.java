@@ -447,6 +447,19 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     }
 
     public void exportSelectedLevel() {
+        for(ServicePoint servicePoint : servicePoints) {
+            if (!servicePoint.getRotation().equals("start")) continue;
+
+            System.out.printf("level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, \"%s\", %.0f, %.0f), \"%s\");\n",
+                    "ARR-" + servicePoint.getScheduledEventType(),
+                    servicePoint.getX(),
+                    servicePoint.getY(),
+                    servicePoint.getScheduledEventType()
+            );
+        }
+
+        System.out.println();
+
         servicePoints.forEach(ServicePoint::displayClass);
         System.out.println();
         servicePoints.forEach(ServicePoint::displayClassRender);
