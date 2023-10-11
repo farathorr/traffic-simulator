@@ -354,12 +354,12 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 yield road;
             }
             case "crosswalk" -> {
-                Crosswalk crosswalk = new Crosswalk(5, 5, null, "crosswalk" + x + "_" + y);
+                Crosswalk crosswalk = new Crosswalk(5, 5, 10, 10,null, "crosswalk" + x + "_" + y);
                 crosswalk.render(x, y, rotation);
                 yield crosswalk;
             }
             case "traffic-lights" -> {
-                TrafficLights trafficLights = new TrafficLights(5, 5,null, "trafficlight" + x + "_" + y);
+                TrafficLights trafficLights = new TrafficLights(20, 5,10, 5, null, "trafficlight" + x + "_" + y);
                 trafficLights.render(x, y, rotation);
                 yield trafficLights;
             }

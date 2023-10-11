@@ -41,4 +41,7 @@ public class ArrivalProcess {
 		return type;
 	}
 
+	public void setGenerator(ContinuousGenerator generator) {
+		this.generator = generator;
+	}
 }

@@ -5,27 +5,35 @@ import eduni.distributions.Normal;
 import simu.framework.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Crosswalk extends ServicePoint {
     private ArrivalProcess crosswalk;
     private boolean crossable = true;
     private Event nextCrossingEvent = null;
-    private ContinuousGenerator crossingFrequencyGenerator;
-    private double mean, variance;
+    private ContinuousGenerator crossingFrequencyGenerator, crossingTimeGenerator;
+    private double mean, variance, mean2, variance2;
 
-    public Crosswalk(double mean, double variance, EventList eventList, String type) {
+    public Crosswalk(double mean, double variance, double mean2, double variance2, EventList eventList, String type) {
         super( eventList, type);
         this.mean = mean;
         this.variance = variance;
-        this.crossingFrequencyGenerator = new Normal(mean, variance);
+        this.mean2 = mean2;
+        this.variance2 = variance2;
     }
 
     public void init() {
         if (eventList == null) return;
-        String pointType = this.getScheduledEventType();
-        if (hasSettings("mean")) crossingFrequencyGenerator = new Normal(getSettings("mean"), 2);
-        if (hasSettings("average")) crossingFrequencyGenerator = new Normal(getSettings("average"), 2);
-        crosswalk = new ArrivalProcess(crossingFrequencyGenerator, eventList, this.getScheduledEventType() + " Road Crossing");
+        if (hasSettings("mean")) mean = getSettings("mean");
+        if (hasSettings("variance")) variance = getSettings("variance");
+        if (hasSettings("mean2")) mean2 = getSettings("mean2");
+        if (hasSettings("variance2")) variance2 = getSettings("variance2");
+
+        crossingFrequencyGenerator = new Normal(mean, variance);
+        crossingTimeGenerator = new Normal(mean2, variance2);
+
+        crosswalk = new ArrivalProcess(crossingTimeGenerator, eventList, this.getScheduledEventType() + " Road Crossing");
         nextCrossingEvent = crosswalk.generateNext();
     }
 
@@ -42,6 +50,7 @@ public class Crosswalk extends ServicePoint {
     }
 
     public void switchCrossable() {
+        crosswalk.setGenerator(crossable ? crossingFrequencyGenerator : crossingTimeGenerator);
         crossable = !crossable;
         this.nextCrossingEvent = crosswalk.generateNext();
     }
@@ -68,6 +77,22 @@ public class Crosswalk extends ServicePoint {
 
     public void setVariance(double variance) {
         this.variance = variance;
+    }
+
+    public double getMean2() {
+        return mean2;
+    }
+
+    public void setMean2(double mean2) {
+        this.mean2 = mean2;
+    }
+
+    public double getVariance2() {
+        return variance2;
+    }
+
+    public void setVariance2(double variance2) {
+        this.variance2 = variance2;
     }
 
     public void displayClass() {

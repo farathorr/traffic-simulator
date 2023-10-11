@@ -90,7 +90,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             if (newValue == null) return;
             if(newValue.hasSettings("mean")) carMean.getTextField().setText(String.valueOf(newValue.getSettings("mean")));
             else carMean.getTextField().setText(String.valueOf(newValue.getMean()));
-            if(newValue.hasSettings("average")) carVariance.getTextField().setText(String.valueOf(newValue.getSettings("average")));
+            if(newValue.hasSettings("variance")) carVariance.getTextField().setText(String.valueOf(newValue.getSettings("average")));
             else carVariance.getTextField().setText(String.valueOf(newValue.getMean()));
 
             if (newValue.getClass() == TrafficLights.class) {

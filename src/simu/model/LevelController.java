@@ -60,14 +60,14 @@ public class LevelController {
         level.add(new Roundabout(10, 5, eventList, "roundabout-road4_10", 2));
         level.add(new Roundabout(10, 5, eventList, "roundabout-road4_12", 2));
         level.add(new Roundabout(10, 5, eventList, "roundabout-road4_14", 2));
-        level.add(new TrafficLights(50, 1, eventList, "traffic-lights6_0"));
-        level.add(new TrafficLights(50, 1, eventList, "traffic-lights6_2"));
-        level.add(new TrafficLights(50, 1, eventList, "traffic-lights6_4"));
-        level.add(new TrafficLights(50, 1, eventList, "traffic-lights6_6"));
-        level.add(new Crosswalk(50, 5, eventList, "crosswalk8_0"));
-        level.add(new Crosswalk(50, 5, eventList, "crosswalk8_2"));
-        level.add(new Crosswalk(50, 5, eventList, "crosswalk8_4"));
-        level.add(new Crosswalk(50, 5, eventList, "crosswalk8_6"));
+        level.add(new TrafficLights(100, 1, 20, 1, eventList, "traffic-lights6_0"));
+        level.add(new TrafficLights(50, 1, 20, 1, eventList, "traffic-lights6_2"));
+        level.add(new TrafficLights(50, 1, 20, 1, eventList, "traffic-lights6_4"));
+        level.add(new TrafficLights(50, 1, 20, 1, eventList, "traffic-lights6_6"));
+        level.add(new Crosswalk(100, 1, 20, 1, eventList, "crosswalk8_0"));
+        level.add(new Crosswalk(50, 5, 20, 20, eventList, "crosswalk8_2"));
+        level.add(new Crosswalk(50, 5, 20, 20, eventList, "crosswalk8_4"));
+        level.add(new Crosswalk(50, 5, 20, 20, eventList, "crosswalk8_6"));
         level.add(new Goal(eventList, "goal6_8"));
 
 
@@ -107,17 +107,18 @@ public class LevelController {
 
         return level;
     }
+
     public Level getLevel1() {
         Level level = new Level("Level 1");
         level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
         level.add(new Road(eventList, "road0_0"), "crosswalk1_0");
-        level.add(new Crosswalk(50, 5, eventList, "crosswalk1_0"), "road1_1");
+        level.add(new Crosswalk(50, 5, 20, 20, eventList, "crosswalk1_0"), "road1_1");
         level.add(new Road(eventList, "road1_1"), "trafficlights1_2");
-        level.add(new TrafficLights(50, 1, eventList, "trafficlights1_2"), "road1_3");
+        level.add(new TrafficLights(50, 1, 20, 1, eventList, "trafficlights1_2"), "road1_3");
         level.add(new Road(eventList, "road1_3"), new String[]{"road1_4", "road2_3"});
         level.add(new Road(eventList, "road2_3"), "crosswalk3_3");
         level.add(new Road(eventList, "road1_4"));
-        level.add(new Crosswalk(10, 5, eventList, "crosswalk3_3"), "road4_3");
+        level.add(new Crosswalk(10, 5, 20, 20, eventList, "crosswalk3_3"), "road4_3");
         level.add(new Road(eventList, "road4_3"), "roundabout_right4_2");
 
         level.add(new Roundabout(0, 3, eventList, "roundabout_right4_2", 3), "roundabout_top5_2");
@@ -140,6 +141,69 @@ public class LevelController {
         controller.render(level, "roundabout_left5_1", 5, 1, "left-r-road");
         controller.render(level, "roundabout_bottom4_1", 4, 1, "bottom-r-road");
         controller.render(level, "goal3_1", 3, 1, "goal");
+
+        return level;
+    }
+
+    public Level getLevel2(){
+        Level level = new Level("Level 2");
+        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
+
+        level.add(new Road(eventList, "road0_0"), "crosswalk1_0");
+        level.add(new Crosswalk(50, 5, 20, 20, eventList, "crosswalk1_0"), "road2_0");
+        level.add(new Road(eventList, "road2_0"), "trafficlights2_1");
+        level.add(new TrafficLights(50, 1, 20, 1, eventList, "trafficlights2_1"), "road2_2");
+        level.add(new Road(eventList, "road2_2"), "crosswalk1_2");
+        level.add(new Crosswalk(10, 5, 20, 20, eventList, "crosswalk1_2"), "road0_2");
+        level.add(new Road(eventList, "road0_2"), "trafficlights0_3");
+        level.add(new TrafficLights(50, 1, 20, 1, eventList, "trafficlights0_3"), "road0_4");
+        level.add(new Road(eventList, "road0_4"), "roundabout_bottom1_4");
+        level.add(new Roundabout(0, 3, eventList, "roundabout_bottom1_4", 3), "roundabout_right1_5");
+        level.add(new Roundabout(0, 3, eventList, "roundabout_right1_5", 3), "roundabout_top2_5");
+        level.add(new Roundabout(0, 3, eventList, "roundabout_top2_5", 3), "roundabout_left2_4");
+        level.add(new Roundabout(0, 3, eventList, "roundabout_left2_4", 3), new String[]{"roundabout_bottom1_4", "road3_4"});
+        level.add(new Road(eventList, "road3_4"), "trafficlights4_4");
+        level.add(new TrafficLights(50, 1, 20, 1, eventList, "trafficlights4_4"), "road5_4");
+        level.add(new Road(eventList, "road5_4"), "crosswalk5_3");
+        level.add(new Crosswalk(50, 5, 20, 20, eventList, "crosswalk5_3"), "road5_2");
+        level.add(new Road(eventList, "road5_2"), "roundabout_right5_1");
+        level.add(new Roundabout(0, 3, eventList, "roundabout_right5_1", 3), "roundabout_top6_1");
+        level.add(new Roundabout(0, 3, eventList, "roundabout_top6_1", 3), "roundabout_left6_0");
+        level.add(new Roundabout(0, 3, eventList, "roundabout_left6_0", 3), "roundabout_bottom5_0");
+        level.add(new Roundabout(0, 3, eventList, "roundabout_bottom5_0", 3), new String[]{"roundabout_right5_1", "road4_0"});
+        level.add(new Road(eventList, "road4_0"), "road3_0");
+        level.add(new Road(eventList, "road3_0"), "road3_-1");
+        level.add(new Road(eventList, "road3_-1"), "crosswalk2_-1");
+        level.add(new Crosswalk(50, 5, 20, 20, eventList, "crosswalk2_-1"), "goal1_-1");
+        level.add(new Goal(eventList, "goal1_-1"));
+
+        controller.render(level, "road0_0", 0, 0, "right");
+        controller.render(level, "crosswalk1_0", 1, 0, "right");
+        controller.render(level, "road2_0", 2, 0, "left-turn");
+        controller.render(level, "trafficlights2_1", 2, 1, "bottom");
+        controller.render(level, "road2_2", 2, 2, "top-turn");
+        controller.render(level, "crosswalk1_2", 1, 2, "left");
+        controller.render(level, "road0_2", 0, 2, "bottom-turn");
+        controller.render(level, "trafficlights0_3", 0, 3, "bottom");
+        controller.render(level, "road0_4", 0, 4, "right-turn");
+        controller.render(level, "roundabout_bottom1_4", 1, 4, "bottom-r-road");
+        controller.render(level, "roundabout_right1_5", 1, 5, "right-r-road");
+        controller.render(level, "roundabout_top2_5", 2, 5, "top-r-road");
+        controller.render(level, "roundabout_left2_4", 2, 4, "left-r-road");
+        controller.render(level, "road3_4", 3, 4, "right");
+        controller.render(level, "trafficlights4_4", 4, 4, "right");
+        controller.render(level, "road5_4", 5, 4, "top-turn");
+        controller.render(level, "crosswalk5_3", 5, 3, "top");
+        controller.render(level, "road5_2", 5, 2, "top");
+        controller.render(level, "roundabout_right5_1", 5, 1, "right-r-road");
+        controller.render(level, "roundabout_top6_1", 6, 1, "top-r-road");
+        controller.render(level, "roundabout_left6_0", 6, 0, "left-r-road");
+        controller.render(level, "roundabout_bottom5_0", 5, 0, "bottom-r-road");
+        controller.render(level, "road4_0", 4, 0, "left");
+        controller.render(level, "road3_0", 3, 0, "right-turn");
+        controller.render(level, "road3_-1", 3, -1, "left-turn");
+        controller.render(level, "crosswalk2_-1", 2, -1, "left");
+        controller.render(level, "goal1_-1", 1, -1, "goal");
 
         return level;
     }
@@ -230,69 +294,6 @@ public class LevelController {
         return level;
     }
 
-    public Level getLevel2(){
-        Level level = new Level("Level 2");
-        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
-
-        level.add(new Road(eventList, "road0_0"), "crosswalk1_0");
-        level.add(new Crosswalk(50, 5, eventList, "crosswalk1_0"), "road2_0");
-        level.add(new Road(eventList, "road2_0"), "trafficlights2_1");
-        level.add(new TrafficLights(50, 1, eventList, "trafficlights2_1"), "road2_2");
-        level.add(new Road(eventList, "road2_2"), "crosswalk1_2");
-        level.add(new Crosswalk(10, 5, eventList, "crosswalk1_2"), "road0_2");
-        level.add(new Road(eventList, "road0_2"), "trafficlights0_3");
-        level.add(new TrafficLights(50, 1, eventList, "trafficlights0_3"), "road0_4");
-        level.add(new Road(eventList, "road0_4"), "roundabout_bottom1_4");
-        level.add(new Roundabout(0, 3, eventList, "roundabout_bottom1_4", 3), "roundabout_right1_5");
-        level.add(new Roundabout(0, 3, eventList, "roundabout_right1_5", 3), "roundabout_top2_5");
-        level.add(new Roundabout(0, 3, eventList, "roundabout_top2_5", 3), "roundabout_left2_4");
-        level.add(new Roundabout(0, 3, eventList, "roundabout_left2_4", 3), new String[]{"roundabout_bottom1_4", "road3_4"});
-        level.add(new Road(eventList, "road3_4"), "trafficlights4_4");
-        level.add(new TrafficLights(50, 1, eventList, "trafficlights4_4"), "road5_4");
-        level.add(new Road(eventList, "road5_4"), "crosswalk5_3");
-        level.add(new Crosswalk(50, 5, eventList, "crosswalk5_3"), "road5_2");
-        level.add(new Road(eventList, "road5_2"), "roundabout_right5_1");
-        level.add(new Roundabout(0, 3, eventList, "roundabout_right5_1", 3), "roundabout_top6_1");
-        level.add(new Roundabout(0, 3, eventList, "roundabout_top6_1", 3), "roundabout_left6_0");
-        level.add(new Roundabout(0, 3, eventList, "roundabout_left6_0", 3), "roundabout_bottom5_0");
-        level.add(new Roundabout(0, 3, eventList, "roundabout_bottom5_0", 3), new String[]{"roundabout_right5_1", "road4_0"});
-        level.add(new Road(eventList, "road4_0"), "road3_0");
-        level.add(new Road(eventList, "road3_0"), "road3_-1");
-        level.add(new Road(eventList, "road3_-1"), "crosswalk2_-1");
-        level.add(new Crosswalk(50, 5, eventList, "crosswalk2_-1"), "goal1_-1");
-        level.add(new Goal(eventList, "goal1_-1"));
-
-        controller.render(level, "road0_0", 0, 0, "right");
-        controller.render(level, "crosswalk1_0", 1, 0, "right");
-        controller.render(level, "road2_0", 2, 0, "left-turn");
-        controller.render(level, "trafficlights2_1", 2, 1, "bottom");
-        controller.render(level, "road2_2", 2, 2, "top-turn");
-        controller.render(level, "crosswalk1_2", 1, 2, "left");
-        controller.render(level, "road0_2", 0, 2, "bottom-turn");
-        controller.render(level, "trafficlights0_3", 0, 3, "bottom");
-        controller.render(level, "road0_4", 0, 4, "right-turn");
-        controller.render(level, "roundabout_bottom1_4", 1, 4, "bottom-r-road");
-        controller.render(level, "roundabout_right1_5", 1, 5, "right-r-road");
-        controller.render(level, "roundabout_top2_5", 2, 5, "top-r-road");
-        controller.render(level, "roundabout_left2_4", 2, 4, "left-r-road");
-        controller.render(level, "road3_4", 3, 4, "right");
-        controller.render(level, "trafficlights4_4", 4, 4, "right");
-        controller.render(level, "road5_4", 5, 4, "top-turn");
-        controller.render(level, "crosswalk5_3", 5, 3, "top");
-        controller.render(level, "road5_2", 5, 2, "top");
-        controller.render(level, "roundabout_right5_1", 5, 1, "right-r-road");
-        controller.render(level, "roundabout_top6_1", 6, 1, "top-r-road");
-        controller.render(level, "roundabout_left6_0", 6, 0, "left-r-road");
-        controller.render(level, "roundabout_bottom5_0", 5, 0, "bottom-r-road");
-        controller.render(level, "road4_0", 4, 0, "left");
-        controller.render(level, "road3_0", 3, 0, "right-turn");
-        controller.render(level, "road3_-1", 3, -1, "left-turn");
-        controller.render(level, "crosswalk2_-1", 2, -1, "left");
-        controller.render(level, "goal1_-1", 1, -1, "goal");
-
-        return level;
-    }
-
     public Level getLevel5(){
         Level level = new Level("Level 5");
         level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
@@ -300,12 +301,12 @@ public class LevelController {
         level.add(new Road(eventList, "road1_0"),new String[]{"road1_-1","road1_1"});
         level.add(new Road(eventList, "road1_-1"),"road1_-2");
         level.add(new Road(eventList, "road1_-2"),"crosswalk2_-2");
-        level.add(new Crosswalk(50,5, eventList, "crosswalk2_-2"),"road3_-2");
+        level.add(new Crosswalk(50,5, 20, 20, eventList, "crosswalk2_-2"),"road3_-2");
         level.add(new Road(eventList, "road3_-2"),"road3_-1");
         level.add(new Road(eventList, "road3_-1"),"roundabout_bottom4_-1");
 
         level.add(new Road(eventList, "road1_1"),"trafficlights2_1");
-        level.add(new TrafficLights(50,1, eventList, "trafficlights2_1"),"road3_1");
+        level.add(new TrafficLights(50,1, 20, 1, eventList, "trafficlights2_1"),"road3_1");
         level.add(new Road(eventList,"road3_1"),"road4_1");
         level.add(new Road(eventList,"road4_1"),"roundabout_right4_0");
 
@@ -315,11 +316,11 @@ public class LevelController {
         level.add(new Roundabout(0, 3, eventList, "roundabout_bottom4_-1", 3), "roundabout_right4_0");
 
         level.add(new Road(eventList,"road6_0"),"crosswalk7_0");
-        level.add(new Crosswalk(50,5, eventList, "crosswalk7_0"),"goal8_0");
+        level.add(new Crosswalk(50,5, 20, 20, eventList, "crosswalk7_0"),"goal8_0");
         level.add(new Goal(eventList,"goal8_0"));
 
         level.add(new Road(eventList,"road5_-2"),"trafficlights5_-3");
-        level.add(new TrafficLights(50,1, eventList, "trafficlights5_-3"),"goal5_-4");
+        level.add(new TrafficLights(50,1, 20, 1, eventList, "trafficlights5_-3"),"goal5_-4");
         level.add(new Goal(eventList,"goal5_-4"));
 
 
