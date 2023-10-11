@@ -47,7 +47,6 @@ public class Roundabout extends ServicePoint {
 
     @Override
     public void startService() {
-        //Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + queue.peek().getId());
         Customer selectedCustomer = queue.peek();
         selectedCustomer.setFirstInQueue(true);
         if (selectedCustomer.getRoundaboutExit() == null) {
