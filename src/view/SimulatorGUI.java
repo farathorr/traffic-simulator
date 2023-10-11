@@ -45,7 +45,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private Button slowdownButton;
     private Button speedupButton;
     private InputElement timeInput, delayInput, sePointMean, sePointVariance, sePointMean2, sePointVariance2;
-    private Visualization screen = new Visualization(1000, 800);
+    private Visualization screen = new Visualization(700, 700);
     private Level selectedLevel;
     private ServicePoint selectedServicePoint;
     ListView<ServicePoint> servicePointListView;
@@ -75,6 +75,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         levelComboBox = new ComboBox<>();
         servicePointListView = new ListView<>();
+        servicePointListView.setMaxHeight(200);
+
         sePointMean = new InputElement("Vihree valo", "5", "Arvo", "mean");
         sePointVariance = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance");
         sePointMean2 = new InputElement("Punainen valo", "5", "Arvo", "mean2");
@@ -115,20 +117,22 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
             if (newSePoint.getClass() == TrafficLights.class) {
                 sePointMean.getLabel().setText("Vihreän valon kesto");
-//                sePointVariance.getLabel().setText("Keston vaihtelevuus");
                 sePointMean2.getLabel().setText("Punaisen valon kesto");
-//                sePointVariance2.getLabel().setText("Keston vaihtelevuus");
             } else if(newSePoint.getClass() == Crosswalk.class) {
                 sePointMean.getLabel().setText("Tien ylityksen kesto");
-//                sePointVariance.getLabel().setText("Keston vaihtelevuus");
                 sePointMean2.getLabel().setText("Tien ylitys tahti");
-//                sePointVariance2.getLabel().setText("Keston vaihtelevuus");
             }
         });
 
         for(InputElement inputElement : customInputArray) {
             inputElement.getTextField().setOnKeyTyped(event -> {
-                selectedServicePoint.setSettings(inputElement.getId(), Double.parseDouble(inputElement.getTextField().getText()));
+                try {
+                    double value = Double.parseDouble(inputElement.getTextField().getText());
+                    System.out.println(value);
+                    selectedServicePoint.setSettings(inputElement.getId(), value);
+                } catch (NumberFormatException e) {
+                    inputElement.getTextField().setText("");
+                }
             });
         }
 
@@ -362,6 +366,22 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             screen.setPlaceTileType(placeTileType);
         });
 
+
+
+        primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            double padding = Math.max(oldVal.doubleValue() - screen.getWidth(), 380);
+            double width = Math.max(newVal.doubleValue() - padding, 200.0);
+            screen.setWidth((int)width); // Set inside variables
+            screen.setWidth(width); // Set canvas size
+        });
+
+        primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
+            double padding = oldVal.doubleValue() - screen.getHeight();
+            double height = Math.max(newVal.doubleValue() - padding, 200.0);
+            screen.setHeight((int)height); // Set inside variables
+            screen.setHeight(height); // Set canvas size
+        });
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -371,9 +391,6 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         timer.start();
     }
-
-
-    //Käyttöliittymän rajapintametodit (kutsutaan kontrollerista)
 
     @Override
     public double getTime() {

@@ -17,7 +17,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     double x = 0, y = 0;
     private int previewX = 0, previewY = 0;
     private String placeTileType = "road", placeRotation = "right";
-    private final int width, height;
+    private int width, height;
     private final int gridSize = 128;
     private double zoomLevel = 1.0;
     private List<ServicePoint> servicePoints = new ArrayList<>();
@@ -438,5 +438,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         gc.setLineWidth(5.0);
         double grid = gridSize * zoomLevel;
         gc.strokeRect(this.x + x * zoomLevel, this.y + y * zoomLevel, grid, grid);
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
