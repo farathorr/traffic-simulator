@@ -52,7 +52,7 @@ public class Roundabout extends ServicePoint {
         if (selectedCustomer.getRoundaboutExit() == null) {
             Roundabout currentRoundabout = this;
             do {
-                int i = Math.min((int) Math.round(Math.abs(exitGenerator.sample())), maxRotations);
+                int i = (int)Math.round(Math.random() * maxRotations);
                 for(int j = 0; j < i; j++) {
                     currentRoundabout = (Roundabout) this.getLevel().getNextRoundaboutServicePoint(currentRoundabout, false);
                 }

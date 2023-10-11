@@ -1059,10 +1059,10 @@ public class LevelController {
     public Level getLevel10() {
         Level level = new Level("Level 10");
 
-        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR-start7_6", 7, 6), "start7_6");
-        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR-start12_6", 12, 6), "start12_6");
-        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR-start5_4", 5, 4), "start5_4");
-        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR-start10_8", 10, 8), "start10_8");
+        level.arrival(new ArrivalProcess(new Normal(10, 5), eventList, "ARR-start7_6", 7, 6), "start7_6");
+        level.arrival(new ArrivalProcess(new Normal(10, 5), eventList, "ARR-start12_6", 12, 6), "start12_6");
+        level.arrival(new ArrivalProcess(new Normal(10, 5), eventList, "ARR-start5_4", 5, 4), "start5_4");
+        level.arrival(new ArrivalProcess(new Normal(10, 5), eventList, "ARR-start10_8", 10, 8), "start10_8");
 
         level.add(new Roundabout(5, 5, eventList, "roundabout-entrance10_4", 3), "roundabout-entrance10_3");
         level.add(new Roundabout(5, 5, eventList, "roundabout-entrance9_4", 3), "roundabout-entrance10_4");
