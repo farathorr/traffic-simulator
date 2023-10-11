@@ -7,14 +7,11 @@ public class Results {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
-    private int carCount;
-    private double averageTime;
+
     private double simulationTime;
     private String simulationLevel;
 
-    public Results(int carCount, double averageTime, double simulationTime, String simulationLevel) {
-        this.carCount = carCount;
-        this.averageTime = averageTime;
+    public Results(double simulationTime, String simulationLevel) {
         this.simulationTime = simulationTime;
         this.simulationLevel = simulationLevel;
     }
@@ -28,22 +25,6 @@ public class Results {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getCarCount() {
-        return carCount;
-    }
-
-    public void setCarCount(int carCount) {
-        this.carCount = carCount;
-    }
-
-    public double getAverageTime() {
-        return averageTime;
-    }
-
-    public void setAverageTime(double averageTime) {
-        this.averageTime = averageTime;
     }
 
     public double getSimulationTime() {

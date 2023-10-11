@@ -38,11 +38,22 @@ public class Controller implements IControllerForM, IControllerForV {
 	}
 
 	public void uploadResults(Level level) {
-		Results results = new Results(5, 0.5, 0.5, level.getLevelName());
+		Results results = new Results(getEngine().getSimulationTime(), level.getLevelName());
 		resultsDao.persist(results);
 		for (ServicePoint servicePoint : level.getServicePoints()) {
-			Level_variables levelVariables = new Level_variables(results, servicePoint.getScheduledEventType(), 0.5, 0.5);
-			levelvariableDao.persist(levelVariables);
+			if (servicePoint.getClass() == TrafficLights.class){
+				TrafficLights trafficLights = (TrafficLights) servicePoint;
+				Level_variables levelVariables = new Level_variables(results, trafficLights.getScheduledEventType(), trafficLights.getMean(), trafficLights.getVariance(), trafficLights.getCarCount());
+				levelvariableDao.persist(levelVariables);
+			} else if (servicePoint.getClass() == Crosswalk.class) {
+				Crosswalk crosswalk = (Crosswalk) servicePoint;
+				Level_variables levelVariables = new Level_variables(results, crosswalk.getScheduledEventType(), crosswalk.getMean(), crosswalk.getVariance(), crosswalk.getCarCount());
+				levelvariableDao.persist(levelVariables);
+			} else if (servicePoint.getClass() == Goal.class) {
+				Goal goal = (Goal) servicePoint;
+				Level_variables levelVariables = new Level_variables(results, goal.getScheduledEventType(), goal.getCarCount(), goal.getAverageCompletionTime());
+				levelvariableDao.persist(levelVariables);
+			}
 		}
 	}
 

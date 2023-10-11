@@ -12,6 +12,7 @@ public class Crosswalk extends ServicePoint {
     private Event nextCrossingEvent = null;
     private ContinuousGenerator crossingFrequencyGenerator;
     private double mean, variance;
+    private int carCount;
 
     public Crosswalk(double mean, double variance, EventList eventList, String type) {
         super( eventList, type);
@@ -39,6 +40,7 @@ public class Crosswalk extends ServicePoint {
         Trace.out(Trace.Level.INFO, "Jalankulkijat ylittävät tietä, aikaa kuluu: " + ServicePoint.getCarSpacingInterval());
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + ServicePoint.getCarSpacingInterval()));
         reserved = true;
+        carCount++;
     }
 
     public void switchCrossable() {
@@ -84,5 +86,8 @@ public class Crosswalk extends ServicePoint {
         }
 
         System.out.println(text);
+    }
+    public int getCarCount() {
+        return carCount;
     }
 }

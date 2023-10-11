@@ -9,8 +9,7 @@ import java.util.List;
 // TODO:
 // Customer koodataan simulointimallin edellyttämällä tavalla (data!)
 public class Customer implements Comparable<Customer> {
-    private double arrivalTime;
-    private double leavingTime;
+    private double arrivalTime, startTime, leavingTime;
     private int id;
     private Level level;
     private static int customerCount = 1;
@@ -43,6 +42,10 @@ public class Customer implements Comparable<Customer> {
         this.leavingTime = leavingTime;
     }
 
+    public double getLeavingTime() {
+        return leavingTime;
+    }
+
     public double getWaitingTime() {
         return Rounding.toFixed(leavingTime - arrivalTime, 2);
     }
@@ -72,6 +75,7 @@ public class Customer implements Comparable<Customer> {
     public void setLastServicePoint(String lastServicePoint) {
         this.lastServicePoint = lastServicePoint;
     }
+
 
     @Override
     public int compareTo(Customer arg) {
@@ -141,5 +145,13 @@ public class Customer implements Comparable<Customer> {
 
     public double getY() {
         return y;
+    }
+
+    public double getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public static int getCustomerCount() {
+        return customerCount;
     }
 }

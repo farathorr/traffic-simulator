@@ -2,7 +2,7 @@ package simu.framework;
 
 import controller.IControllerForM;
 import simu.model.CustomEngine;
-
+import simu.model.Customer;
 public abstract class Engine extends Thread implements IEngine {
 	private double simulationTime = 0;
 	static private int engineCount = 0;
@@ -48,7 +48,6 @@ public abstract class Engine extends Thread implements IEngine {
 
 			this.controller.showEndtime(this.clock.getTime());
 		}
-		results();
 		controller.uploadResults(((CustomEngine) controller.getEngine()).getCurrentLevel());
 		controller.enableStartButton();
 	}
@@ -65,6 +64,10 @@ public abstract class Engine extends Thread implements IEngine {
 	
 	public boolean simulating() {
 		return clock.getTime() < simulationTime && this.engineNumber == engineCount;
+	}
+
+	public double getSimulationTime() {
+		return simulationTime;
 	}
 
 	protected abstract void executeEvent(Event t);  // Määritellään simu.model-pakkauksessa Moottorin aliluokassa
