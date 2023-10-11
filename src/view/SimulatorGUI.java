@@ -6,7 +6,6 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,8 +44,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private ComboBox<String> levelComboBox;
     private Button slowdownButton;
     private Button speedupButton;
-    private InputElement timeInput, delayInput, carMean, carVariance;
-    private Visualization screen = new Visualization(1000, 800);
+    private InputElement timeInput, delayInput, sePointMean, sePointVariance, sePointMean2, sePointVariance2;
+    private Visualization screen = new Visualization(700, 700);
     private Level selectedLevel;
     private ServicePoint selectedServicePoint;
     ListView<ServicePoint> servicePointListView;
@@ -76,23 +75,66 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         levelComboBox = new ComboBox<>();
         servicePointListView = new ListView<>();
-        carMean = new InputElement("Keskiarvo", "5", "Syötä keskiarvo");
-        carVariance = new InputElement("Vaihtelevuus", "5", "Syötä vaihtelevuus");
+        servicePointListView.setMaxHeight(200);
 
-        InputElement[] customInputArray = {carMean, carVariance};
+        sePointMean = new InputElement("Vihree valo", "5", "Arvo", "mean");
+        sePointVariance = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance");
+        sePointMean2 = new InputElement("Punainen valo", "5", "Arvo", "mean2");
+        sePointVariance2 = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance2");
 
-        servicePointListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            for (InputElement inputElement : customInputArray) inputElement.setVisible(true);
+        InputElement[] customInputArray = {sePointMean, sePointVariance, sePointMean2, sePointVariance2};
+
+        servicePointListView.getSelectionModel().selectedItemProperty().addListener((observable, oldSePoint, newSePoint) -> {
+            selectedServicePoint = newSePoint;
+            if (newSePoint == null) {
+                for (InputElement inputElement : customInputArray) inputElement.setVisible(false);
+                return;
+            }
+
+            @FunctionalInterface
+            interface SettingsKeys {
+                String search(String key);
+            }
+
+            SettingsKeys settings = (String key) -> {
+                if(newSePoint.hasSettings(key)) return String.valueOf(newSePoint.getSettings(key));
+                else return switch (key) {
+                    case "mean" -> String.valueOf(newSePoint.getMean());
+                    case "variance" -> String.valueOf(newSePoint.getVariance());
+                    case "mean2" -> String.valueOf(newSePoint.getMean2());
+                    case "variance2" -> String.valueOf(newSePoint.getVariance2());
+                    default -> "";
+                };
+            };
+
+            for (InputElement inputElement : customInputArray) {
+                inputElement.setVisible(true);
+                String settingKey = inputElement.getId();
+
+                inputElement.getTextField().setText(settings.search(settingKey));
+            }
 
 
-            selectedServicePoint = newValue;
+            if (newSePoint.getClass() == TrafficLights.class) {
+                sePointMean.getLabel().setText("Vihreän valon kesto");
+                sePointMean2.getLabel().setText("Punaisen valon kesto");
+            } else if(newSePoint.getClass() == Crosswalk.class) {
+                sePointMean.getLabel().setText("Tien ylityksen kesto");
+                sePointMean2.getLabel().setText("Tien ylitys tahti");
+            }
         });
 
-        carVariance.getTextField().setOnKeyTyped(event -> {
-            String key = selectedLevel.getLevelName() + selectedServicePoint.getScheduledEventType() + "generator2";
-            levelSettings.add(key, Double.parseDouble(carVariance.getTextField().getText()));
-            System.out.println("Vaihtelevuus: " + levelSettings.get(key));
-        });
+        for(InputElement inputElement : customInputArray) {
+            inputElement.getTextField().setOnKeyTyped(event -> {
+                try {
+                    double value = Double.parseDouble(inputElement.getTextField().getText());
+                    System.out.println(value);
+                    selectedServicePoint.setSettings(inputElement.getId(), value);
+                } catch (NumberFormatException e) {
+                    inputElement.getTextField().setText("");
+                }
+            });
+        }
 
         levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6");
         levelComboBox.setPromptText("Please Select");
@@ -329,6 +371,22 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             screen.setPlaceTileType(placeTileType);
         });
 
+
+
+        primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            double padding = Math.max(oldVal.doubleValue() - screen.getWidth(), 380);
+            double width = Math.max(newVal.doubleValue() - padding, 200.0);
+            screen.setWidth((int)width); // Set inside variables
+            screen.setWidth(width); // Set canvas size
+        });
+
+        primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
+            double padding = oldVal.doubleValue() - screen.getHeight();
+            double height = Math.max(newVal.doubleValue() - padding, 200.0);
+            screen.setHeight((int)height); // Set inside variables
+            screen.setHeight(height); // Set canvas size
+        });
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -338,9 +396,6 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         timer.start();
     }
-
-
-    //Käyttöliittymän rajapintametodit (kutsutaan kontrollerista)
 
     @Override
     public double getTime() {

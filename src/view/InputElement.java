@@ -9,6 +9,7 @@ public class InputElement{
     private String labelText, defaultText, promptText;
     private Label label = null;
     private TextField textField = null;
+    private String id = null;
 
     public InputElement(String labelText, String defaultText, String promptText) {
         this.labelText = labelText;
@@ -22,6 +23,19 @@ public class InputElement{
         textField.setPrefWidth(150);
     }
 
+    public InputElement(String labelText, String defaultText, String promptText, String id) {
+        this.labelText = labelText;
+        this.defaultText = defaultText;
+        this.promptText = promptText;
+        label = new Label(labelText);
+        label.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        textField = new TextField(defaultText);
+        textField.setPromptText(promptText);
+        textField.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        textField.setPrefWidth(150);
+        this.id = id;
+    }
+
     public Label getLabel() {
         return label;
     }
@@ -33,5 +47,9 @@ public class InputElement{
     public void setVisible(boolean visible) {
         label.setVisible(visible);
         textField.setVisible(visible);
+    }
+
+    public String getId() {
+        return id;
     }
 }
