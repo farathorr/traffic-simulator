@@ -155,4 +155,12 @@ public abstract class ServicePoint {
     public double getVariance() {
     	return 0.0;
     }
+
+    public double getMean2() {
+        return 0.0;
+    }
+
+    public double getVariance2() {
+        return 0.0;
+    }
 }

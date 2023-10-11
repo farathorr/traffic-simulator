@@ -33,7 +33,7 @@ public class TrafficLights extends ServicePoint {
         greenLightDurationGenerator = new Normal(mean, variance);
         redLightDurationGenerator = new Normal(mean2, variance2);
 
-        trafficLight = new ArrivalProcess(redLightDurationGenerator, eventList, this.getScheduledEventType() + " Light Switch");
+        trafficLight = new ArrivalProcess(greenLightDurationGenerator, eventList, this.getScheduledEventType() + " Light Switch");
         nextLightSwitchEvent = trafficLight.generateNext();
     }
 

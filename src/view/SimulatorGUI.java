@@ -5,9 +5,7 @@ import controller.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,8 +17,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -48,7 +44,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
     private ComboBox<String> levelComboBox;
     private Button slowdownButton;
     private Button speedupButton;
-    private InputElement timeInput, delayInput, carMean, carVariance;
+    private InputElement timeInput, delayInput, sePointMean, sePointVariance, sePointMean2, sePointVariance2;
     private Visualization screen = new Visualization(1000, 800);
     private Level selectedLevel;
     private ServicePoint selectedServicePoint;
@@ -79,41 +75,62 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         levelComboBox = new ComboBox<>();
         servicePointListView = new ListView<>();
-        carMean = new InputElement("Keskiarvo", "5", "Syötä keskiarvo");
-        carVariance = new InputElement("Vaihtelevuus", "5", "Syötä vaihtelevuus");
+        sePointMean = new InputElement("Vihree valo", "5", "Arvo", "mean");
+        sePointVariance = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance");
+        sePointMean2 = new InputElement("Punainen valo", "5", "Arvo", "mean2");
+        sePointVariance2 = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance2");
 
-        InputElement[] customInputArray = {carMean, carVariance};
+        InputElement[] customInputArray = {sePointMean, sePointVariance, sePointMean2, sePointVariance2};
 
-        servicePointListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            for (InputElement inputElement : customInputArray) inputElement.setVisible(true);
-            selectedServicePoint = newValue;
-            if (newValue == null) return;
-            if(newValue.hasSettings("mean")) carMean.getTextField().setText(String.valueOf(newValue.getSettings("mean")));
-            else carMean.getTextField().setText(String.valueOf(newValue.getMean()));
-            if(newValue.hasSettings("variance")) carVariance.getTextField().setText(String.valueOf(newValue.getSettings("average")));
-            else carVariance.getTextField().setText(String.valueOf(newValue.getMean()));
-
-            if (newValue.getClass() == TrafficLights.class) {
-                carMean.getLabel().setText("Vihreän valon kesto");
-                carVariance.getLabel().setText("Punaisen valon kesto");
-            } else if(newValue.getClass() == Crosswalk.class) {
-                carMean.getLabel().setText("Tien ylitys tahti");
-                carVariance.getLabel().setText("Tien ylitys pituus");
+        servicePointListView.getSelectionModel().selectedItemProperty().addListener((observable, oldSePoint, newSePoint) -> {
+            selectedServicePoint = newSePoint;
+            if (newSePoint == null) {
+                for (InputElement inputElement : customInputArray) inputElement.setVisible(false);
+                return;
             }
 
-            else {
-                carMean.getLabel().setText("Keskiarvo");
-                carVariance.getLabel().setText("Vaihtelevuus");
+            @FunctionalInterface
+            interface SettingsKeys {
+                String search(String key);
+            }
+
+            SettingsKeys settings = (String key) -> {
+                if(newSePoint.hasSettings(key)) return String.valueOf(newSePoint.getSettings(key));
+                else return switch (key) {
+                    case "mean" -> String.valueOf(newSePoint.getMean());
+                    case "variance" -> String.valueOf(newSePoint.getVariance());
+                    case "mean2" -> String.valueOf(newSePoint.getMean2());
+                    case "variance2" -> String.valueOf(newSePoint.getVariance2());
+                    default -> "";
+                };
+            };
+
+            for (InputElement inputElement : customInputArray) {
+                inputElement.setVisible(true);
+                String settingKey = inputElement.getId();
+
+                inputElement.getTextField().setText(settings.search(settingKey));
+            }
+
+
+            if (newSePoint.getClass() == TrafficLights.class) {
+                sePointMean.getLabel().setText("Vihreän valon kesto");
+//                sePointVariance.getLabel().setText("Keston vaihtelevuus");
+                sePointMean2.getLabel().setText("Punaisen valon kesto");
+//                sePointVariance2.getLabel().setText("Keston vaihtelevuus");
+            } else if(newSePoint.getClass() == Crosswalk.class) {
+                sePointMean.getLabel().setText("Tien ylityksen kesto");
+//                sePointVariance.getLabel().setText("Keston vaihtelevuus");
+                sePointMean2.getLabel().setText("Tien ylitys tahti");
+//                sePointVariance2.getLabel().setText("Keston vaihtelevuus");
             }
         });
 
-        carMean.getTextField().setOnKeyTyped(event -> {
-            selectedServicePoint.setSettings("mean", Double.parseDouble(carMean.getTextField().getText()));
-        });
-
-        carVariance.getTextField().setOnKeyTyped(event -> {
-            selectedServicePoint.setSettings("variance", Double.parseDouble(carMean.getTextField().getText()));
-        });
+        for(InputElement inputElement : customInputArray) {
+            inputElement.getTextField().setOnKeyTyped(event -> {
+                selectedServicePoint.setSettings(inputElement.getId(), Double.parseDouble(inputElement.getTextField().getText()));
+            });
+        }
 
         levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6");
         levelComboBox.setPromptText("Please Select");
