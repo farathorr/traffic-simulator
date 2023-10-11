@@ -47,15 +47,15 @@ public class Level {
         nextPoints.remove(point);
     }
 
-    public void arrival(ArrivalProcess arrivalProcess, String nextPoint) {
-        arrival(arrivalProcess, new String[]{nextPoint});
+    public void arrival(ArrivalProcess arrivalProcess, String startPoint) {
+        arrival(arrivalProcess, new String[]{startPoint});
     }
 
-    public void arrival(ArrivalProcess arrivalProcess, String[] nextPoint) {
+    public void arrival(ArrivalProcess arrivalProcess, String[] startPoints) {
         arrivalProcesses.put(arrivalProcess.getScheduledEventType(), arrivalProcess);
 
         ArrayList<String> nextPoints = new ArrayList<>();
-        nextPoints.addAll(Arrays.asList(nextPoint));
+        nextPoints.addAll(Arrays.asList(startPoints));
         this.nextPoints.put(arrivalProcess, nextPoints);
     }
 

@@ -29,6 +29,7 @@ import simu.entity.Results;
 import simu.framework.Trace;
 import simu.model.*;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -386,7 +387,12 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                         default -> placeTileType = "roundabout-entrance";
                     }
                 }
-                case DIGIT4 -> placeTileType = "goal";
+                case DIGIT4 -> {
+                    switch (placeTileType) {
+                        case "start" -> placeTileType = "goal";
+                        default -> placeTileType = "start";
+                    }
+                }
                 case DIGIT5 -> placeTileType = "arrow";
                 case R -> {
                     switch (placeRotation) {
@@ -397,10 +403,14 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                     }
                 }
                 case E -> {
+                    System.out.println("\n".repeat(50));
                     screen.exportSelectedLevel();
+                    System.out.println("\n".repeat(5));
                 }
                 case Q -> {
                     screen.pickATileInfo();
+                    placeRotation = screen.getPlaceRotation();
+                    placeTileType = screen.getPlaceTileType();
                 }
             }
 
