@@ -284,17 +284,32 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         scene.setOnKeyPressed(event -> {
             System.out.println(event.getCode());
+            lastPlaced[0] = -9999;
+            lastPlaced[1] = -9999;
             switch (event.getCode()) {
-                case DIGIT0 -> placeTileType = "road";
-                case DIGIT1 -> placeTileType = "roundabout";
-                case DIGIT2 -> placeTileType = "trafficlights"; //wtf
-                case DIGIT3 -> placeTileType = "crosswalk";
+                case DIGIT0 -> placeTileType = "air";
+                case DIGIT1 -> {
+                    switch (placeTileType) {
+                        case "road" -> placeTileType = "road-turn";
+                        case "road-turn" -> placeTileType = "t-intersection";
+                        default -> placeTileType = "road";
+                    }
+                }
+                case DIGIT2 -> {
+                    switch (placeTileType) {
+                        case "crosswalk" -> placeTileType = "traffic-lights";
+                        default -> placeTileType = "crosswalk";
+                    }
+                }
+                case DIGIT3 -> {
+                    switch (placeTileType) {
+                        case "roundabout" -> placeTileType = "roundabout-road";
+                        case "roundabout-road" -> placeTileType = "roundabout-double";
+                        default -> placeTileType = "roundabout";
+                    }
+                }
                 case DIGIT4 -> placeTileType = "goal";
-                case DIGIT5 -> placeTileType = "turn";
-                case DIGIT6 -> placeTileType = "t-intersection";
-                case DIGIT7 -> placeTileType = "double";
-                case DIGIT8 -> placeTileType = "r-road";
-                case DIGIT9 -> placeTileType = "arrow";
+                case DIGIT5 -> placeTileType = "arrow";
                 case R -> {
                     switch (placeRotation) {
                         case "right" -> placeRotation = "bottom";
@@ -404,7 +419,10 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         if (scaleX == lastPlaced[0] && scaleY == lastPlaced[1]) return;
         if (placeTileType.equals("arrow")) {
             screen.createServicePointConnection(scaleX, scaleY, placeRotation);
-        } else screen.createNewServicePoint(scaleX, scaleY, placeTileType, placeRotation);
+        } else if(placeTileType.equals("air")) {
+            screen.deleteServicePoint(scaleX, scaleY);
+        }
+        else screen.createNewServicePoint(scaleX, scaleY, placeTileType, placeRotation);
         lastPlaced[0] = scaleX;
         lastPlaced[1] = scaleY;
     }

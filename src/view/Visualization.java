@@ -92,31 +92,15 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             }
 
             if(Debug.getInstance().isDebug()) {
-                drawPreviewServicePoint();
+                if(!placeTileType.equals("air")) drawPreviewServicePoint();
                 drawGrid();
-                if (placeTileType.equals("arrow")) {
-                    servicePoints.forEach((ServicePoint point) -> {
-                        if (!level.hasNextServicePoint(point)) return;
-                        ArrayList<String> nextPoints = level.getAllNextServicePoints(point);
-                        nextPoints.forEach((String key) -> {
-                            ServicePoint nextPoint = level.getServicePoint(key);
-                            if(point.getX() - nextPoint.getX() < 0) drawImage(arrow, point.getX() * gridSize + gridSize, point.getY() * gridSize, -gridSize, gridSize);
-                            else if(point.getX() - nextPoint.getX() > 0) drawImage(arrow, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
-                            else if(point.getY() - nextPoint.getY() > 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize + gridSize, gridSize, -gridSize);
-                            else if(point.getY() - nextPoint.getY() < 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
-                        });
-                    });
-
-                    if(placeRotation.equals("right")) drawImage(arrow, previewX * gridSize + gridSize, previewY * gridSize, -gridSize, gridSize);
-                    else if(placeRotation.equals("left")) drawImage(arrow, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
-                    else if(placeRotation.equals("top")) drawImage(arrow2, previewX * gridSize, previewY * gridSize + gridSize, gridSize, -gridSize);
-                    else if(placeRotation.equals("bottom")) drawImage(arrow2, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
-                }
+                if (placeTileType.equals("arrow")) renderRoadConnectionsArrows();
             }
         });
     }
 
     public void renderServicePoint(ServicePoint servicePoint) {
+        if (servicePoint.isConnectionError()) drawErrorConnectionBorder(servicePoint.getX() * gridSize, servicePoint.getY() * gridSize);
         if (servicePoint.getClass() == Road.class) {
             switch (servicePoint.getRotation()) {
                 case "right", "left" -> drawImage(roadImage, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
@@ -201,6 +185,42 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         }
     }
 
+    private void renderRoadConnectionsArrows() {
+        servicePoints.forEach(point -> {
+            if (!level.hasNextServicePoint(point)) return;
+            ArrayList<String> nextPoints = level.getAllNextServicePoints(point);
+            nextPoints.forEach((String key) -> {
+                ServicePoint nextPoint = level.getServicePoint(key);
+                if(point.getX() - nextPoint.getX() < 0) drawImage(arrow, point.getX() * gridSize + gridSize, point.getY() * gridSize, -gridSize, gridSize);
+                else if(point.getX() - nextPoint.getX() > 0) drawImage(arrow, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
+                else if(point.getY() - nextPoint.getY() > 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize + gridSize, gridSize, -gridSize);
+                else if(point.getY() - nextPoint.getY() < 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
+            });
+        });
+
+        switch (placeRotation) {
+            case "right" -> drawImage(arrow, previewX * gridSize + gridSize, previewY * gridSize, -gridSize, gridSize);
+            case "left" -> drawImage(arrow, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
+            case "top" -> drawImage(arrow2, previewX * gridSize, previewY * gridSize + gridSize, gridSize, -gridSize);
+            case "bottom" -> drawImage(arrow2, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
+        }
+    }
+
+    public void testServicePointForConnectionErrors(int x, int y) {
+        ServicePoint servicePoint = getServicePointByCordinates(x, y);
+        if (servicePoint != null) servicePoint.setConnectionError(false);
+        if (level.hasNextServicePoint(servicePoint)) {
+            ArrayList<String> points = level.getAllNextServicePoints(servicePoint);
+            for (String point : points) {
+                ServicePoint nextPoint = level.getServicePoint(point);
+                if (nextPoint == null) {
+                    servicePoint.setConnectionError(true);
+                    break;
+                }
+            }
+        }
+    }
+
     public void drawImage(Image img, double x, double y, double w, double h) {
         gc.drawImage(img, this.x + x * zoomLevel, this.y + y * zoomLevel, w * zoomLevel, h * zoomLevel);
     }
@@ -279,6 +299,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
                 level.add(servicePoint);
                 servicePoints.set(i, servicePoint);
+                testServicePointForConnectionErrors(x - 1, y);
+                testServicePointForConnectionErrors(x + 1, y);
+                testServicePointForConnectionErrors(x, y - 1);
+                testServicePointForConnectionErrors(x, y + 1);
                 return;
             }
         }
@@ -295,6 +319,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             ArrayList<String> points = new ArrayList<>();
             if (level.hasNextServicePoint(servicePoint)) {
                 points = level.getAllNextServicePoints(servicePoint);
+                if (points.contains(nextServicePoint.getScheduledEventType())) return;
                 points.add(nextServicePoint.getScheduledEventType());
             } else points.add(nextServicePoint.getScheduledEventType());
 
@@ -313,29 +338,14 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     private ServicePoint generateNewServicePoint(int x, int y, String tileType, String rotation) {
         return switch(tileType) {
-            case "roundabout" -> {
-                Roundabout roundabout = new Roundabout(5, 5, null, "roundabout" + x + "_" + y, 3);
-                roundabout.render(x, y, rotation);
-                yield roundabout;
-            }
-            case "trafficlight" -> {
-                TrafficLights trafficLights = new TrafficLights(5, 5,null, "trafficlight" + x + "_" + y);
-                trafficLights.render(x, y, rotation);
-                yield trafficLights;
-            }
-            case "crosswalk" -> {
-                Crosswalk crosswalk = new Crosswalk(5, 5, null, "crosswalk" + x + "_" + y);
-                crosswalk.render(x, y, rotation);
-                yield crosswalk;
-            }
-            case "goal" -> {
-                Goal goal = new Goal(null, "goal" + x + "_" + y);
-                goal.render(x, y, "goal");
-                yield goal;
-            }
             case "road" -> {
                 Road road = new Road(null, "road" + x + "_" + y);
                 road.render(x, y, rotation);
+                yield road;
+            }
+            case "road-turn" -> {
+                Road road = new Road(null, "road-turn" + x + "_" +y);
+                road.render(x,y,rotation+"-turn");
                 yield road;
             }
             case "t-intersection" -> {
@@ -343,20 +353,35 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 road.render(x, y, "t-intersection-"+rotation);
                 yield road;
             }
-            case "turn" -> {
-                Road road = new Road(null, "road-turn" + x + "_" +y);
-                road.render(x,y,rotation+"-turn");
-                yield road;
+            case "crosswalk" -> {
+                Crosswalk crosswalk = new Crosswalk(5, 5, null, "crosswalk" + x + "_" + y);
+                crosswalk.render(x, y, rotation);
+                yield crosswalk;
             }
-            case "double" -> {
+            case "traffic-lights" -> {
+                TrafficLights trafficLights = new TrafficLights(5, 5,null, "trafficlight" + x + "_" + y);
+                trafficLights.render(x, y, rotation);
+                yield trafficLights;
+            }
+            case "roundabout" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null, "roundabout" + x + "_" + y, 3);
+                roundabout.render(x, y, rotation);
+                yield roundabout;
+            }
+            case "roundabout-road" -> {
+                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-r-road" + x + "_" + y, 3);
+                roundabout.render(x,y,rotation+"-r-road");
+                yield roundabout;
+            }
+            case "roundabout-double" -> {
                 Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-double" + x + "_" + y, 3);
                 roundabout.render(x,y,rotation+"-double");
                 yield roundabout;
             }
-            case "r-road" -> {
-                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-r-road" + x + "_" + y, 3);
-                roundabout.render(x,y,rotation+"-r-road");
-                yield roundabout;
+            case "goal" -> {
+                Goal goal = new Goal(null, "goal" + x + "_" + y);
+                goal.render(x, y, "goal");
+                yield goal;
             }
             default -> {
                 Road road = new Road(null, "road" + x + "_" + y);
@@ -394,5 +419,24 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         servicePoints.forEach(ServicePoint::displayClass);
         System.out.println();
         servicePoints.forEach(ServicePoint::displayClassRender);
+    }
+
+    public void deleteServicePoint(int scaleX, int scaleY) {
+        ServicePoint servicePoint = getServicePointByCordinates(scaleX, scaleY);
+        if(servicePoint != null) {
+            level.remove(servicePoint);
+            servicePoints.remove(servicePoint);
+            testServicePointForConnectionErrors(scaleX - 1, scaleY);
+            testServicePointForConnectionErrors(scaleX + 1, scaleY);
+            testServicePointForConnectionErrors(scaleX, scaleY - 1);
+            testServicePointForConnectionErrors(scaleX, scaleY + 1);
+        }
+    }
+
+    private void drawErrorConnectionBorder(double x, double y) {
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(5.0);
+        double grid = gridSize * zoomLevel;
+        gc.strokeRect(this.x + x * zoomLevel, this.y + y * zoomLevel, grid, grid);
     }
 }
