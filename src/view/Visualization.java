@@ -94,30 +94,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             if(Debug.getInstance().isDebug()) {
                 if(!placeTileType.equals("air")) drawPreviewServicePoint();
                 drawGrid();
-
-                if (placeTileType.equals("arrow")) {
-                    servicePoints.forEach((ServicePoint point) -> {
-                        if (!level.hasNextServicePoint(point)) return;
-                        ArrayList<String> nextPoints = level.getAllNextServicePoints(point);
-                        nextPoints.forEach((String key) -> {
-                            ServicePoint nextPoint = level.getServicePoint(key);
-                            if(point.getX() - nextPoint.getX() < 0) drawImage(arrow, point.getX() * gridSize + gridSize, point.getY() * gridSize, -gridSize, gridSize);
-                            else if(point.getX() - nextPoint.getX() > 0) drawImage(arrow, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
-                            else if(point.getY() - nextPoint.getY() > 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize + gridSize, gridSize, -gridSize);
-                            else if(point.getY() - nextPoint.getY() < 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
-                        });
-                    });
-
-                    if(placeRotation.equals("right")) drawImage(arrow, previewX * gridSize + gridSize, previewY * gridSize, -gridSize, gridSize);
-                    else if(placeRotation.equals("left")) drawImage(arrow, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
-                    else if(placeRotation.equals("top")) drawImage(arrow2, previewX * gridSize, previewY * gridSize + gridSize, gridSize, -gridSize);
-                    else if(placeRotation.equals("bottom")) drawImage(arrow2, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
-                }
+                if (placeTileType.equals("arrow")) renderRoadConnectionsArrows();
             }
         });
     }
 
     public void renderServicePoint(ServicePoint servicePoint) {
+        if (servicePoint.isConnectionError()) drawErrorConnectionBorder(servicePoint.getX() * gridSize, servicePoint.getY() * gridSize);
         if (servicePoint.getClass() == Road.class) {
             switch (servicePoint.getRotation()) {
                 case "right", "left" -> drawImage(roadImage, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
@@ -202,6 +185,42 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         }
     }
 
+    private void renderRoadConnectionsArrows() {
+        servicePoints.forEach(point -> {
+            if (!level.hasNextServicePoint(point)) return;
+            ArrayList<String> nextPoints = level.getAllNextServicePoints(point);
+            nextPoints.forEach((String key) -> {
+                ServicePoint nextPoint = level.getServicePoint(key);
+                if(point.getX() - nextPoint.getX() < 0) drawImage(arrow, point.getX() * gridSize + gridSize, point.getY() * gridSize, -gridSize, gridSize);
+                else if(point.getX() - nextPoint.getX() > 0) drawImage(arrow, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
+                else if(point.getY() - nextPoint.getY() > 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize + gridSize, gridSize, -gridSize);
+                else if(point.getY() - nextPoint.getY() < 0) drawImage(arrow2, point.getX() * gridSize, point.getY() * gridSize, gridSize, gridSize);
+            });
+        });
+
+        switch (placeRotation) {
+            case "right" -> drawImage(arrow, previewX * gridSize + gridSize, previewY * gridSize, -gridSize, gridSize);
+            case "left" -> drawImage(arrow, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
+            case "top" -> drawImage(arrow2, previewX * gridSize, previewY * gridSize + gridSize, gridSize, -gridSize);
+            case "bottom" -> drawImage(arrow2, previewX * gridSize, previewY * gridSize, gridSize, gridSize);
+        }
+    }
+
+    public void testServicePointForConnectionErrors(int x, int y) {
+        ServicePoint servicePoint = getServicePointByCordinates(x, y);
+        if (servicePoint != null) servicePoint.setConnectionError(false);
+        if (level.hasNextServicePoint(servicePoint)) {
+            ArrayList<String> points = level.getAllNextServicePoints(servicePoint);
+            for (String point : points) {
+                ServicePoint nextPoint = level.getServicePoint(point);
+                if (nextPoint == null) {
+                    servicePoint.setConnectionError(true);
+                    break;
+                }
+            }
+        }
+    }
+
     public void drawImage(Image img, double x, double y, double w, double h) {
         gc.drawImage(img, this.x + x * zoomLevel, this.y + y * zoomLevel, w * zoomLevel, h * zoomLevel);
     }
@@ -280,6 +299,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
                 level.add(servicePoint);
                 servicePoints.set(i, servicePoint);
+                testServicePointForConnectionErrors(x - 1, y);
+                testServicePointForConnectionErrors(x + 1, y);
+                testServicePointForConnectionErrors(x, y - 1);
+                testServicePointForConnectionErrors(x, y + 1);
                 return;
             }
         }
@@ -402,6 +425,17 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         if(servicePoint != null) {
             level.remove(servicePoint);
             servicePoints.remove(servicePoint);
+            testServicePointForConnectionErrors(scaleX - 1, scaleY);
+            testServicePointForConnectionErrors(scaleX + 1, scaleY);
+            testServicePointForConnectionErrors(scaleX, scaleY - 1);
+            testServicePointForConnectionErrors(scaleX, scaleY + 1);
         }
+    }
+
+    private void drawErrorConnectionBorder(double x, double y) {
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(5.0);
+        double grid = gridSize * zoomLevel;
+        gc.strokeRect(this.x + x * zoomLevel, this.y + y * zoomLevel, grid, grid);
     }
 }

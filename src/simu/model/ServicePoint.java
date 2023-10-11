@@ -18,6 +18,7 @@ public abstract class ServicePoint {
     private String rotation;
     private static double carSpacingInterval = 2.0;
     protected boolean reserved = false;
+    private boolean connectionError = false;
 
     public ServicePoint(EventList eventList, String type) {
         this.eventList = eventList;
@@ -33,6 +34,14 @@ public abstract class ServicePoint {
         Customer selectedCustomer = queue.poll();
         selectedCustomer.setLastServicePoint(scheduledEventType);
         return selectedCustomer;
+    }
+
+    public boolean isConnectionError() {
+        return connectionError;
+    }
+
+    public void setConnectionError(boolean connectionError) {
+        this.connectionError = connectionError;
     }
 
     public void addToQueue(Customer customer) {
