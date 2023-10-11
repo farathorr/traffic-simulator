@@ -29,6 +29,7 @@ import simu.entity.Results;
 import simu.framework.Trace;
 import simu.model.*;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -78,7 +79,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         servicePointListView = new ListView<>();
         servicePointListView.setMaxHeight(200);
 
-        sePointMean = new InputElement("Vihree valo", "5", "Arvo", "mean");
+        sePointMean = new InputElement("Vihreä valo", "5", "Arvo", "mean");
         sePointVariance = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance");
         sePointMean2 = new InputElement("Punainen valo", "5", "Arvo", "mean2");
         sePointVariance2 = new InputElement("Keston vaihtelevuus", "5", "Vaihtelevuus", "variance2");
@@ -121,7 +122,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                 sePointMean2.getLabel().setText("Punaisen valon kesto");
             } else if (newSePoint.getClass() == Crosswalk.class) {
                 sePointMean.getLabel().setText("Tien ylityksen kesto");
-                sePointMean2.getLabel().setText("Tien ylitys tahti");
+                sePointMean2.getLabel().setText("Tien ylitystahti");
             }
         });
 
@@ -138,7 +139,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         }
 
 
-        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8");
+
+        levelComboBox.getItems().addAll("DEBUG world", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8", "Level 9");
         levelComboBox.setPromptText("Please Select");
         levelComboBox.setOnAction(event -> {
             String value = levelComboBox.getValue();
@@ -391,10 +393,14 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                     }
                 }
                 case E -> {
+                    System.out.println("\n".repeat(50));
                     screen.exportSelectedLevel();
+                    System.out.println("\n".repeat(5));
                 }
                 case Q -> {
                     screen.pickATileInfo();
+                    placeRotation = screen.getPlaceRotation();
+                    placeTileType = screen.getPlaceTileType();
                 }
             }
 

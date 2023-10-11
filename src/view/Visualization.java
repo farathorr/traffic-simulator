@@ -299,7 +299,6 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     }
 
     public void createNewServicePoint(int x, int y, String tileType, String rotation) {
-        System.out.println(rotation);
         for(int i = 0; i < servicePoints.size(); i++) {
             if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
                 ServicePoint servicePoint = generateNewServicePoint(x, y, tileType, rotation);
@@ -324,13 +323,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         if (servicePoint != null) {
             // Regex to remove all the numbers and underscores from the string
             placeTileType = servicePoint.getScheduledEventType().replaceAll("[0-9_]", "");
-            System.out.println(servicePoint + placeTileType);
+            System.out.println(placeTileType);
             if (servicePoint.getRotation().contains("right")) placeRotation = "right";
             else if (servicePoint.getRotation().contains("left")) placeRotation = "left";
             else if (servicePoint.getRotation().contains("top")) placeRotation = "top";
             else if (servicePoint.getRotation().contains("bottom")) placeRotation = "bottom";
             else placeRotation = "right";
-        }
+        } else placeTileType = "air";
     }
 
     public void createServicePointConnection(int x, int y, String rotate) {
@@ -380,7 +379,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 yield crosswalk;
             }
             case "traffic-lights" -> {
-                TrafficLights trafficLights = new TrafficLights(20, 5,10, 5, null, "trafficlight" + x + "_" + y);
+                TrafficLights trafficLights = new TrafficLights(20, 5,10, 5, null, "traffic-lights" + x + "_" + y);
                 trafficLights.render(x, y, rotation);
                 yield trafficLights;
             }
@@ -395,7 +394,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 yield roundabout;
             }
             case "roundabout-road" -> {
-                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-r-road" + x + "_" + y, 3);
+                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-road" + x + "_" + y, 3);
                 roundabout.render(x,y,rotation+"-r-road");
                 yield roundabout;
             }
