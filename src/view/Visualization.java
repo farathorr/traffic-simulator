@@ -188,7 +188,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
             if (customer.isFirstInQueue()) gc.setFill(Color.web("#32a852"));
             else gc.setFill(Color.web("#eb4034"));
 
-            gc.fillOval(x + (customer.getX() * gridSize + gridSize / 2) * zoomLevel, y + (customer.getY() * gridSize + gridSize / 2) * zoomLevel, 10 * zoomLevel, 10 * zoomLevel);
+            gc.fillOval(x + (customer.getX() * gridSize + gridSize / 2) * zoomLevel, y + (customer.getY() * gridSize + gridSize / 2) * zoomLevel, 20 * zoomLevel, 20 * zoomLevel);
         }
     }
 
