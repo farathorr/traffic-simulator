@@ -26,6 +26,7 @@ public class LevelController {
             case "Level 5" -> getLevel5();
             case "Level 6" -> getLevel6();
             case "Level 7" -> getLevel7();
+            case "Level 8" -> getLevel8();
             default -> null;
         };
 
@@ -469,6 +470,12 @@ public class LevelController {
         controller.render(level, "roundabout3_0", 3, 0, "top");
         controller.render(level, "road1_-1", 1, -1, "right");
         controller.render(level, "goal0_-1", 0, -1, "goal");
+        return level;
+    }
+    public Level getLevel8(){
+        Level level = new Level("Level 8");
+
+
 
         return level;
     }
