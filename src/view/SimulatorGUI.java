@@ -284,6 +284,8 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
 
         scene.setOnKeyPressed(event -> {
             System.out.println(event.getCode());
+            lastPlaced[0] = -9999;
+            lastPlaced[1] = -9999;
             switch (event.getCode()) {
                 case DIGIT0 -> placeTileType = "road";
                 case DIGIT1 -> placeTileType = "roundabout";
