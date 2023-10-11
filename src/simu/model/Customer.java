@@ -19,6 +19,8 @@ public class Customer implements Comparable<Customer> {
     private String roundaboutExit = null;
     private double x, y, destinationX, destinationY;
     private boolean firstInQueue = false;
+    private boolean reachedGoal = false;
+    private boolean canDelete = false;
 
     private List<Double[]> destinations = new ArrayList<>();
 
@@ -52,6 +54,14 @@ public class Customer implements Comparable<Customer> {
 
     public int getId() {
         return id;
+    }
+
+    public boolean isReachedGoal() {
+        return reachedGoal;
+    }
+
+    public void setReachedGoal(boolean reachedGoal) {
+        this.reachedGoal = reachedGoal;
     }
 
     public void report() {
@@ -120,7 +130,7 @@ public class Customer implements Comparable<Customer> {
     }
 
     public void moveCustomer() {
-
+        if (destinations.isEmpty()) return;
         double speed = Math.max(20 / (destinations.size() * 2), 1);
 
         double deltaX = destinationX - this.x;
@@ -133,10 +143,8 @@ public class Customer implements Comparable<Customer> {
                 destinations.remove(0);
                 this.destinationX = destinations.get(0)[0];
                 this.destinationY = destinations.get(0)[1];
-            }
+            } else if(reachedGoal) canDelete = true;
         }
-
-
     }
 
     public double getX() {
@@ -153,5 +161,9 @@ public class Customer implements Comparable<Customer> {
 
     public static int getCustomerCount() {
         return customerCount;
+    }
+
+    public boolean canDelete() {
+        return canDelete;
     }
 }

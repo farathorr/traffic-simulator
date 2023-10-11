@@ -9,6 +9,7 @@ import simu.model.*;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Visualization extends Canvas implements IVisualizationForV, IVisualizationForM {
@@ -21,7 +22,8 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private final int gridSize = 128;
     private double zoomLevel = 1.0;
     private List<ServicePoint> servicePoints = new ArrayList<>();
-    private List<Customer> customers = new ArrayList<>();
+    private LinkedList<Customer> customers = new LinkedList<>();
+    private List<Customer> removeCustomers = new ArrayList<>();
     private Image roundaboutTurn = new Image("roundabout.png");
     private Image roundaboutRoad = new Image("roundabout-with-road.png");
     private Image roundaboutDouble = new Image("roundabout-double.png");
@@ -94,6 +96,9 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 System.out.println("Working as intended");
             }
 
+            removeCustomers.forEach(customers::remove);
+            removeCustomers.clear();
+
             if(Debug.getInstance().isDebug()) {
                 if(!placeTileType.equals("air")) drawPreviewServicePoint();
                 drawGrid();
@@ -137,7 +142,7 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                         case "left" -> drawImage(crosswalkCrossingImage, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
                         case "top" -> drawImage(crosswalk2CrossingImage, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize + gridSize, gridSize, -gridSize);
                         case "bottom" -> drawImage(crosswalk2CrossingImage, servicePoint.getX() * gridSize, servicePoint.getY() * gridSize, gridSize, gridSize);
-                        }
+                    }
                 }
             }
 
@@ -184,11 +189,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void drawQueue(Customer customer) {
         if (customer != null) {
+            if (customer.canDelete()) removeCustomers.add(customer);
+            double size = 20 * zoomLevel;
             customer.moveCustomer();
             if (customer.isFirstInQueue()) gc.setFill(Color.web("#32a852"));
             else gc.setFill(Color.web("#eb4034"));
 
-            gc.fillOval(x + (customer.getX() * gridSize + gridSize / 2) * zoomLevel, y + (customer.getY() * gridSize + gridSize / 2) * zoomLevel, 20 * zoomLevel, 20 * zoomLevel);
+            gc.fillOval(x + (customer.getX() * gridSize + gridSize / 2) * zoomLevel - size / 2, y + (customer.getY() * gridSize + gridSize / 2) * zoomLevel - size / 2, size, size);
         }
     }
 

@@ -20,6 +20,7 @@ public class Goal extends ServicePoint {
         carCount++;
         totalTime += Clock.getInstance().getTime() - customer.getArrivalTime();
         customer.setFirstInQueue(true);
+        customer.setReachedGoal(true);
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + 2));
     }
 
