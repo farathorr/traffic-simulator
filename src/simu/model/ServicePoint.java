@@ -19,6 +19,7 @@ public abstract class ServicePoint {
     private static double carSpacingInterval = 2.0;
     protected boolean reserved = false;
     private boolean connectionError = false;
+    private int maxQueueSize = 0;
 
     public ServicePoint(EventList eventList, String type) {
         this.eventList = eventList;
@@ -167,4 +168,12 @@ public abstract class ServicePoint {
     public int getCarCount() {
     	return 0;
     }
+
+    public int getMaxQueueSize(){return 0;}
+
+    public void setMaxQueueSize(int newMax){
+        this.maxQueueSize = newMax;
+    }
+
+
 }
