@@ -1176,10 +1176,8 @@ public class LevelController {
     private Level getDrawLevelDemo() {
         Level level = new Level("Draw demo");
 
-        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR-start0_1", 0, 1), "start0_1");
 
-
-
+        
         return level;
     }
 }
