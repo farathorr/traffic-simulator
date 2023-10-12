@@ -172,7 +172,8 @@ public class LevelController {
 
     public Level getLevel2(){
         Level level = new Level("Level 2");
-        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR1", 0, 0), "road0_0");
+        
+        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR-start-1_0", -1, 0), "start-1_0");
 
         level.add(new Road(eventList, "road0_0"), "crosswalk1_0");
         level.add(new Crosswalk(50, 5, 20, 20, eventList, "crosswalk1_0"), "road2_0");
@@ -203,6 +204,7 @@ public class LevelController {
         level.add(new Road(eventList, "road1_-1"), "road0_-1");
         level.add(new Road(eventList, "road0_-1"), "goal-1_-1");
         level.add(new Goal(eventList, "goal-1_-1"));
+        level.add(new Road(eventList, "start-1_0"), "road0_0");
 
         controller.render(level, "road0_0", 0, 0, "right");
         controller.render(level, "crosswalk1_0", 1, 0, "right");
@@ -233,6 +235,7 @@ public class LevelController {
         controller.render(level, "road1_-1", 1, -1, "right");
         controller.render(level, "road0_-1", 0, -1, "right");
         controller.render(level, "goal-1_-1", -1, -1, "goal");
+        controller.render(level, "start-1_0", -1, 0, "start");
 
         return level;
     }
