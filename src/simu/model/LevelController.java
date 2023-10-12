@@ -1,7 +1,6 @@
 package simu.model;
 
 
-import controller.Controller;
 import controller.IControllerForM;
 import eduni.distributions.Normal;
 import simu.framework.ArrivalProcess;
@@ -19,6 +18,7 @@ public class LevelController {
     public Level getLevel(String levelKey) {
         Level level = switch (levelKey) {
             case "DEBUG world" -> getDebugLevel();
+            case "Draw demo" -> getDrawLevelDemo();
             case "Level 1" -> getLevel1();
             case "Level 2" -> getLevel2();
             case "Level 3" -> getLevel3();
@@ -691,7 +691,7 @@ public class LevelController {
     }
     public Level getLevel9(){
         Level level = new Level("Level 9");
-        
+
         level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR-start0_0", 0, 0), "start0_0");
 
         level.add(new Road(eventList, "start0_0"), "road1_0");
@@ -1168,6 +1168,16 @@ public class LevelController {
         controller.render(level, "traffic-lights13_2", 13, 2, "top");
         controller.render(level, "road-turn13_1", 13, 1, "left-turn");
         controller.render(level, "road-turn7_0", 7, 0, "bottom-turn");
+
+
+        return level;
+    }
+
+    private Level getDrawLevelDemo() {
+        Level level = new Level("Draw demo");
+
+        level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, "ARR-start0_1", 0, 1), "start0_1");
+
 
 
         return level;
