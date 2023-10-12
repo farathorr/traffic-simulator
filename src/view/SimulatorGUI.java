@@ -76,7 +76,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             System.exit(0);
         });
 
-        primaryStage.setTitle("Simulaattori");
+        primaryStage.setTitle("Liikenne-simulaattori");
 
         VBox headerConteiner = new VBox();
 
