@@ -11,7 +11,7 @@ public class TrafficLights extends ServicePoint {
     private boolean greenLight = true;
     private Event nextLightSwitchEvent = null;
     private ContinuousGenerator greenLightDurationGenerator, redLightDurationGenerator;
-    private int carCount;
+    private int carCount, maxQueueSize;
 
     private double mean, variance, mean2, variance2;
 
@@ -48,6 +48,9 @@ public class TrafficLights extends ServicePoint {
         Trace.out(Trace.Level.INFO, "Auto " + queue.peek().getId() + " ajaa liikennevalojen läpi.");
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + ServicePoint.getCarSpacingInterval()));
         carCount++;
+        if(this.maxQueueSize < this.getQueue().size()){
+            this.maxQueueSize = this.getQueue().size();
+        }
     }
 
     public void switchGreenLight() {
@@ -115,4 +118,7 @@ public class TrafficLights extends ServicePoint {
     public int getCarCount() {
         return carCount;
     }
+
+    @Override
+    public int getMaxQueueSize(){return maxQueueSize;}
 }

@@ -17,10 +17,12 @@ public class Level_variables {
     private double variance2;
     private int carCount;
     private double averageTime;
+
+    private int maxQueueSize;
     @Transient
     private LevelVariablesModel levelVariablesModel;
 
-    public Level_variables(Results levelId, String servicePointName, double mean1, double mean2, double variance1, double variance2, int carCount) {
+    public Level_variables(Results levelId, String servicePointName, double mean1, double mean2, double variance1, double variance2, int carCount, int maxQueueSize) {
         this.carCount = carCount;
         this.levelId = levelId;
         this.servicePointName = servicePointName;
@@ -28,6 +30,7 @@ public class Level_variables {
         this.mean2 = mean2;
         this.variance1 = variance1;
         this.variance2 = variance2;
+        this.maxQueueSize = maxQueueSize;
         this.levelVariablesModel = new LevelVariablesModel(this);
     }
 
@@ -117,5 +120,13 @@ public class Level_variables {
 
     public void setVariance2(double variance2) {
         this.variance2 = variance2;
+    }
+
+    public int getMaxQueueSize() {
+        return maxQueueSize;
+    }
+
+    public void setMaxQueueSize(int maxQueueSize) {
+        this.maxQueueSize = maxQueueSize;
     }
 }

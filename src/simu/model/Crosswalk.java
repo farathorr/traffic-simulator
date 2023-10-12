@@ -14,7 +14,7 @@ public class Crosswalk extends ServicePoint {
     private Event nextCrossingEvent = null;
     private ContinuousGenerator crossingFrequencyGenerator, crossingTimeGenerator;
     private double mean, variance, mean2, variance2;
-    private int carCount;
+    private int carCount, maxQueueSize;
 
     public Crosswalk(double mean, double variance, double mean2, double variance2, EventList eventList, String type) {
         super( eventList, type);
@@ -50,6 +50,9 @@ public class Crosswalk extends ServicePoint {
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + ServicePoint.getCarSpacingInterval()));
         reserved = true;
         carCount++;
+        if(this.maxQueueSize < this.getQueue().size()){
+            this.maxQueueSize = this.getQueue().size();
+        }
     }
 
     public void switchCrossable() {
@@ -115,5 +118,10 @@ public class Crosswalk extends ServicePoint {
     }
     public int getCarCount() {
         return carCount;
+    }
+
+    @Override
+    public int getMaxQueueSize(){
+        return maxQueueSize;
     }
 }

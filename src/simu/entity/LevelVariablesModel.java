@@ -10,6 +10,7 @@ public class LevelVariablesModel {
     private final DoubleProperty variance2 = new SimpleDoubleProperty();
     private final IntegerProperty  carCount = new SimpleIntegerProperty();
     private final DoubleProperty averageTime = new SimpleDoubleProperty();
+    private final IntegerProperty maxQueueSize = new SimpleIntegerProperty();
 
     public LevelVariablesModel(Level_variables levelVariables) {
         this.servicePointName.set(levelVariables.getServicePointName());
@@ -19,6 +20,7 @@ public class LevelVariablesModel {
         this.variance2.set(levelVariables.getVariance2());
         this.carCount.set(levelVariables.getCarCount());
         this.averageTime.set(levelVariables.getAverageTime());
+        this.maxQueueSize.set(levelVariables.getMaxQueueSize());
     }
 
 
@@ -105,5 +107,17 @@ public class LevelVariablesModel {
 
     public void setVariance2(double variance2) {
         this.variance2.set(variance2);
+    }
+
+    public int getMaxQueueSize() {
+        return maxQueueSize.get();
+    }
+
+    public IntegerProperty maxQueueSizeProperty() {
+        return maxQueueSize;
+    }
+
+    public void setMaxQueueSize(int maxQueueSize) {
+        this.maxQueueSize.set(maxQueueSize);
     }
 }

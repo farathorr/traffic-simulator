@@ -13,6 +13,7 @@ import java.util.PriorityQueue;
 public class Roundabout extends ServicePoint {
 
     private ContinuousGenerator exitGenerator;
+    private int maxQueueSize = 0;
     private int maxRotations = 3;
     private double mean, variance;
     private PriorityQueue<Customer> queue = new PriorityQueue<>();
@@ -59,7 +60,9 @@ public class Roundabout extends ServicePoint {
             } while(!this.getLevel().roundaboutHasExitPoint(currentRoundabout));
             selectedCustomer.setRoundaboutExit(currentRoundabout.getScheduledEventType());
         }
-
+        if(this.maxQueueSize < this.getQueue().size()){
+            this.maxQueueSize = this.getQueue().size();
+        }
         reserved = true;
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + ServicePoint.getCarSpacingInterval()));
     }
@@ -103,5 +106,10 @@ public class Roundabout extends ServicePoint {
         }
 
         System.out.println(text);
+    }
+
+    @Override
+    public int getMaxQueueSize() {
+        return maxQueueSize;
     }
 }

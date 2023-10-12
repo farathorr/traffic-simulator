@@ -6,6 +6,7 @@ import simu.framework.Event;
 import simu.framework.EventList;
 
 public class Road extends ServicePoint {
+    private int maxQueueSize = 0;
     public Road(EventList eventList, String type) {
         super(eventList, type);
     }
@@ -15,5 +16,13 @@ public class Road extends ServicePoint {
         reserved = true;
         queue.peek().setFirstInQueue(true);
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + 2));
+        if(this.maxQueueSize < this.getQueue().size()){
+            this.maxQueueSize = this.getQueue().size();
+        }
+    }
+
+    @Override
+    public int getMaxQueueSize() {
+        return maxQueueSize;
     }
 }

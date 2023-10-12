@@ -256,7 +256,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
             List<Results> resultsList = controller.getResults();
             List<String> levels = new ArrayList<>();
             TableView<Results> simulationsTable = new TableView<>();
-            variableTable.setPrefWidth(600);
+            variableTable.setPrefWidth(750);
             goalTable.setPrefWidth(500);
 
             for (Results selectedResult : resultsList) {
@@ -309,6 +309,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                     TableColumn<Level_variables, Double> mean2Col = new TableColumn<>("Keskiarvo2");
                     TableColumn<Level_variables, Double> variance1Col = new TableColumn<>("Vaihtelevuus1");
                     TableColumn<Level_variables, Double> variance2Col = new TableColumn<>("Vaihtelevuus2");
+                    TableColumn<Level_variables, Integer> maxQueueCol = new TableColumn<>("Jonon maksimi");
                     TableColumn<Level_variables, Integer> goalCarCountCol = new TableColumn<>("Autojen määrä");
                     TableColumn<Level_variables, Double> averageTimeCol = new TableColumn<>("Keskimääräinen aika");
 
@@ -319,11 +320,12 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
                     mean2Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getMean2()).asObject());
                     variance1Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getVariance1()).asObject());
                     variance2Col.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getVariance2()).asObject());
+                    maxQueueCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getMaxQueueSize()).asObject());
 
                     goalCarCountCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getCarCount()).asObject());
                     averageTimeCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getAverageTime()).asObject());
 
-                    variableTable.getColumns().setAll(servicePointNameCol, mean1Col, mean2Col, variance1Col, variance2Col);
+                    variableTable.getColumns().setAll(servicePointNameCol, mean1Col, mean2Col, variance1Col, variance2Col, maxQueueCol);
                     goalTable.getColumns().setAll(goalNameCol, goalCarCountCol, averageTimeCol);
 
                 }});
