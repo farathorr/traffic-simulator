@@ -6,15 +6,35 @@ import eduni.distributions.Normal;
 import simu.framework.ArrivalProcess;
 import simu.framework.EventList;
 
+/**
+ * LevelController-luokka, joka sisältää kaikki tasot.
+ * Tasot luodaan tässä luokassa.
+ */
 public class LevelController {
+    /**
+     * Controller kerkustelee canvas piirron kanssa, joten sitä tarivaan tason piirtämiseen.
+     */
     private IControllerForM controller;
+    /**
+     * EventList, joka sisältää kaikki tapahtumat.
+     * Tätä tarvitaan konstruktorissa, jotta voidaan luoda uusia palvelupisteitä tasoihin.
+     */
     private EventList eventList;
 
+    /**
+     * @param controller Controller kerkustelee canvas piirron kanssa, joten sitä tarivaan tason piirtämiseen.
+     * @param eventList EventList, joka sisältää kaikki tapahtumat.
+     */
     public LevelController(IControllerForM controller, EventList eventList) {
         this.controller = controller;
         this.eventList = eventList;
     }
 
+    /**
+     * Palauttaa halutun tason, hekamalla tason nimellä.
+     * @param levelKey
+     * @return palauttaa halutun tason.
+     */
     public Level getLevel(String levelKey) {
         Level level = switch (levelKey) {
             case "DEBUG world" -> getDebugLevel();
@@ -36,6 +56,11 @@ public class LevelController {
         return level;
     }
 
+    /**
+     * Jokainen taso on luotu omaan metodiin, jotta niitä olisi helpompi luoda ja löytää koodista.
+     * Jokainen taso on tehty samalla rakenteella.
+     * @return palauttaa debug tason.
+     */
     public Level getDebugLevel() {
         Level level = new Level("DEBUG world");
 
