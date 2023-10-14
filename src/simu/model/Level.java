@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Taso-luokka.
+ */
 public class Level {
     /**
      * HashMap johon tallennetaan kaikki tason palvelupisteet

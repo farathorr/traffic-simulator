@@ -136,7 +136,7 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         levelComboBox = new ComboBox<>();
         servicePointListView = new ListView<>();
         servicePointListView.setMaxHeight(200);
-        CheckBox showGrid = new CheckBox("Näytä kordinaatisto");
+        CheckBox showGrid = new CheckBox("Näytä koordinaatisto");
 
         showGrid.selectedProperty().addListener((observable, oldValue, newValue) -> {
             Debug.getInstance().setGridMode(newValue);
