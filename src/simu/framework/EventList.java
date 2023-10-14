@@ -22,4 +22,8 @@ public class EventList {
 	public double getNextTime() {
 		return list.peek().getTime();
 	}
+
+	public PriorityQueue<Event> getList() {
+		return list;
+	}
 }
