@@ -392,22 +392,22 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
                 yield trafficLights;
             }
             case "roundabout" -> {
-                Roundabout roundabout = new Roundabout(5, 5, null, "roundabout" + x + "_" + y, 3);
+                Roundabout roundabout = new Roundabout(null, "roundabout" + x + "_" + y);
                 roundabout.render(x, y, rotation);
                 yield roundabout;
             }
             case "roundabout-entrance" -> {
-                Roundabout roundabout = new Roundabout(5, 5, null, "roundabout-entrance" + x + "_" + y, 3);
+                Roundabout roundabout = new Roundabout(null, "roundabout-entrance" + x + "_" + y);
                 roundabout.render(x, y, rotation+"-r-entrance");
                 yield roundabout;
             }
             case "roundabout-road" -> {
-                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-road" + x + "_" + y, 3);
+                Roundabout roundabout = new Roundabout(null,"roundabout-road" + x + "_" + y);
                 roundabout.render(x,y,rotation+"-r-road");
                 yield roundabout;
             }
             case "roundabout-double" -> {
-                Roundabout roundabout = new Roundabout(5, 5, null,"roundabout-double" + x + "_" + y, 3);
+                Roundabout roundabout = new Roundabout(null,"roundabout-double" + x + "_" + y);
                 roundabout.render(x,y,rotation+"-double");
                 yield roundabout;
             }
