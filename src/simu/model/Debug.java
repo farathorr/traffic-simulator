@@ -2,19 +2,33 @@ package simu.model;
 
 import simu.framework.Clock;
 
+/**
+ * Debug luokka joka sisältää GUI:n debug-tilaan liittyviä muuttujia.
+ */
 public class Debug {
+    /**
+     * Debug luokan instanssi.
+     */
     private static Debug debug = null;
+    /**
+     * Debug-tilan boolean-muuttuja.
+     */
     private static boolean debugMode = false;
+    /**
+     * Grid-tilan boolean-muuttuja.
+     */
     private boolean gridMode = false;
 
+    /**
+     * Debug luokan private-konstruktori.
+     */
     private Debug() {
 
     }
 
-    public static void setDebug(boolean debug) {
-        debugMode = debug;
-    }
-
+    /**
+     * @return Debug luokan instanssi.
+     */
     public static Debug getInstance() {
         if (debug == null) {
             debug = new Debug();
