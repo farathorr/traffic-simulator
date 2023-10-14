@@ -8,14 +8,44 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Luokka jalankulkijoiden ylityspaikkaa edustavalle palvelupisteelle.
+ * Luokka perii ServicePoint-luokan.
+ */
 public class Crosswalk extends ServicePoint {
+    /**
+     * Tienylitystapahtumalle luodaan oma ArrivalProcess-olio.
+     */
     private ArrivalProcess crosswalk;
+    /**
+     * Tienylityspaikka on oletuksena ylitettävissä.
+     */
     private boolean crossable = true;
+    /**
+     * Tienylitystapahtuma on oletuksena null.
+     */
     private Event nextCrossingEvent = null;
+    /**
+     * Tienylitystapahtumalle luodaan kaksi ContinuousGenerator-oliota, yksi määrittää tienylitystapahtumien aikavälit, ja toinen niiden pituudet.
+     */
     private ContinuousGenerator crossingFrequencyGenerator, crossingTimeGenerator;
+    /**
+     * Tienylitystapahtumien aikavälien ja pituuksien keskiarvot ja varianssit.
+     */
     private double mean, variance, mean2, variance2;
+    /**
+     * startService() metodissa päivitettävät kokonaisluvut, jotka lähetetään SQL-tietokantaan simulaation päätyttyä.
+     */
     private int carCount, maxQueueSize;
 
+    /**
+     * @param mean Tienylitystapahtumien aikavälien keskiarvo
+     * @param variance Tienylitystapahtumien aikavälien varianssi
+     * @param mean2 Tienylitystapahtumien pituuksien keskiarvo
+     * @param variance2 Tienylitystapahtumien pituuksien varianssi
+     * @param eventList EventList-olio, joka sisältää simulaation tapahtumalistan
+     * @param type Tienylitystapahtuman tyyppi
+     */
     public Crosswalk(double mean, double variance, double mean2, double variance2, EventList eventList, String type) {
         super( eventList, type);
         this.mean = mean;
@@ -24,6 +54,13 @@ public class Crosswalk extends ServicePoint {
         this.variance2 = variance2;
     }
 
+    /**
+     * Metodi, joka alustaa Crosswalk-olion.
+     * Metodissa luodaan tienylitystapahtumalle ArrivalProcess-olio, joka luo tienylitystapahtumia.
+     * Metodissa luodaan myös tienylitystapahtumille kaksi ContinuousGenerator-oliota, jotka määrittävät tienylitystapahtumien aikavälit ja pituudet.
+     * Metodissa myös tarkistetaan, onko tienylitystapahtumalle annettu asetuksia, ja jos on, niin ne asetetaan olion käytettäviksi.
+     * Metodissa myös luodaan ensimmäinen tienylitystapahtuma.
+     */
     public void init() {
         if (hasSettings("mean")) mean = getSettings("mean");
         if (hasSettings("variance")) variance = getSettings("variance");
@@ -39,14 +76,24 @@ public class Crosswalk extends ServicePoint {
         nextCrossingEvent = crosswalk.generateNext();
     }
 
+    /**
+     * @return Palauttaa ohjelmaan määritetyn autojen kulkunopeuden.
+     */
     public double generateSampleDelay() {
         return ServicePoint.getCarSpacingInterval();
     }
 
+    /**
+     * Metodi, joka käsittelee yhden auton siirtymisen tienylityspaikan läpi.
+     * Metodi asettaa jonon ensimmäiselle asiakkaalle tiedon siitä, että asiakas on tienylityspaikan jonossa ensimmäisenä.
+     * Tapahtumalistaan lisätään tapahtuma auton poistumisesta tienylityspaikalta. Tapahtuma lisätään tapahtumalistaan auton kulkunopeuden päästä.
+     * Palvelupiste asetetaan varatuksi, ja palvelupisteen läpimenneiden autojen määrää kasvatetaan yhdellä.
+     * Palvelupisteen jonon maksimikoko päivitetään, jos jonon koko on suurempi kuin aiemmin.
+     */
     @Override
-    public void startService() {  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
+    public void startService() {
         queue.peek().setFirstInQueue(true);
-        Trace.out(Trace.Level.INFO, "Jalankulkijat ylittävät tietä, aikaa kuluu: " + ServicePoint.getCarSpacingInterval());
+        Trace.out(Trace.Level.INFO, "Auto ylittää tien, aikaa kuluu: " + ServicePoint.getCarSpacingInterval());
         eventList.add(new Event(scheduledEventType, Clock.getInstance().getTime() + ServicePoint.getCarSpacingInterval()));
         reserved = true;
         carCount++;
@@ -54,7 +101,32 @@ public class Crosswalk extends ServicePoint {
             this.maxQueueSize = this.getQueue().size();
         }
     }
+    /**
+     * Tulostaa konsoliin miten luokka luodaan taso syntaxilla.
+     * Metodia käytetään kun tehdään tasoja ja haluat exporttaa tason ulos.
+     * Tämä mahdollistaa tason luomisen konsolista kopioimalla.
+     */
+    public void displayClass() {
+        String text = null;
+        if(this.getLevel().hasNextServicePoint(this)) {
+            ArrayList<String> points = this.getLevel().getAllNextServicePoints(this);
+            if (points.size() == 1) {
+                text = String.format("level.add(new %s(%.0f, %.0f, %.0f, %.0f, eventList, \"%s\"), \"%s\");", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.getMean2(), this.getVariance2(), this.scheduledEventType, points.get(0));
+            } else {
+                text = String.format("level.add(new %s(%.0f, %.0f, %.0f, %.0f, eventList, \"%s\"), new String[]{\"%s\"});", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.getMean2(), this.getVariance2(), this.scheduledEventType, String.join("\", \"", points));
+            }
+        } else {
+            text = String.format("level.add(new %s(%.0f, %.0f, %.0f, %.0f, eventList, \"%s\"));", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.getMean2(), this.getVariance2(), this.scheduledEventType);
+        }
 
+        System.out.println(text);
+    }
+
+    /**
+     * Metodi vaihtaa tienylitystapahtumien aikavälien ja pituuksien generointiin käytettävän ContinuousGenerator-olion.
+     * Metodi myös vaihtaa crossable-booleanin arvon, joka kertoo onko tienylityspaikka ylitettävissä.
+     * Lopulta generoidaan seuraava tienylitystapahtuma.
+     */
     public void switchCrossable() {
         crosswalk.setGenerator(crossable ? crossingFrequencyGenerator : crossingTimeGenerator);
         crossable = !crossable;
@@ -101,21 +173,6 @@ public class Crosswalk extends ServicePoint {
         this.variance2 = variance2;
     }
 
-    public void displayClass() {
-        String text = null;
-        if(this.getLevel().hasNextServicePoint(this)) {
-            ArrayList<String> points = this.getLevel().getAllNextServicePoints(this);
-            if (points.size() == 1) {
-                text = String.format("level.add(new %s(%.0f, %.0f, %.0f, %.0f, eventList, \"%s\"), \"%s\");", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.getMean2(), this.getVariance2(), this.scheduledEventType, points.get(0));
-            } else {
-                text = String.format("level.add(new %s(%.0f, %.0f, %.0f, %.0f, eventList, \"%s\"), new String[]{\"%s\"});", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.getMean2(), this.getVariance2(), this.scheduledEventType, String.join("\", \"", points));
-            }
-        } else {
-            text = String.format("level.add(new %s(%.0f, %.0f, %.0f, %.0f, eventList, \"%s\"));", this.getClass().getSimpleName(), this.getMean(), this.getVariance(), this.getMean2(), this.getVariance2(), this.scheduledEventType);
-        }
-
-        System.out.println(text);
-    }
     public int getCarCount() {
         return carCount;
     }
