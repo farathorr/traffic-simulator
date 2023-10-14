@@ -14,6 +14,9 @@ class TrafficLightsTest {
         trafficLights.addToQueue(new Customer(null, 1, 1));
         trafficLights.startService();
         assertTrue(trafficLights.isReserved());
+        Customer selectedCustomer = trafficLights.takeFromQueue();
+        assertFalse(trafficLights.isReserved());
+        assertFalse(trafficLights.getQueue().contains(selectedCustomer));
     }
 
     @Test
