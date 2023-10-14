@@ -44,8 +44,8 @@ public class Event implements Comparable<Event> {
 
 	/**
 	 * @param arg Event-olio, johon verrataan.
-	 * @return Palauttaa -1, jos this.time < arg.time.
-	 * Palauttaa 1, jos this.time > arg.time.
+	 * @return Palauttaa -1, jos this.time on pienempi kuin arg.time.
+	 * Palauttaa 1, jos this.time on suurempi kuin arg.time.
 	 * Palauttaa 0, jos this.time == arg.time.
 	 */
 	@Override

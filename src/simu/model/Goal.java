@@ -35,7 +35,7 @@ public class Goal extends ServicePoint {
      * Asiakas asetetaan jonon ensimmäiseksi ja asiakas saavuttaa määränpäänsä.
      * Asiakkaan saapumisajan ja nykyisen ajan erotus lisätään totalTime-muuttujaan.
      * Autojen määrä kasvaa yhdellä.
-     * @see simu.framework.ServicePoint#startService()
+     * @see simu.model.ServicePoint#startService()
      */
     @Override
     public void startService() {  //Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
