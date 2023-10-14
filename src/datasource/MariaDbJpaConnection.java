@@ -4,6 +4,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+/**
+ * MariaDbJpaConnection-luokka, joka luo yhteyden tietokantaan.
+ * Yhteyden luomiseen käytetään JPA:ta.
+ * Yhteyden luomisen jälkeen luodaan EntityManager, jolla voidaan suorittaa kyselyitä tietokantaan.
+ * Luokka on singleton, joten yhteyttä ei luoda uudestaan, jos se on jo olemassa.
+ */
 public class MariaDbJpaConnection {
     private static EntityManagerFactory emf = null;
     private static EntityManager em = null;
