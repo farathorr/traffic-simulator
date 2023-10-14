@@ -12,21 +12,52 @@ import view.ISimulatorUI;
 
 import java.util.List;
 
+/**
+ * Kontrolleri, joka välittää tietoa moottorille ja käyttöliittymälle.
+ */
 public class Controller implements IControllerForM, IControllerForV {
-	
+
+	/**
+	 * Moottori, joka suorittaa simulaation.
+	 */
 	private IEngine engine;
+	/**
+	 * Käyttöliittymä, joka näyttää simulaation.
+	 */
 	private ISimulatorUI ui;
+	/**
+	 * Taso, joka valitaan simulaation alussa.
+	 * Tämän päälle tallennetaan toinen taso, jos vaihdat tasoa sivupalkista.
+	 */
 	private String levelKey = "DEBUG world";
 
+	/**
+	 * Level_variableDao, joka tallentaa tason muuttujat tietokantaan.
+	 */
 	private Level_variableDao levelvariableDao = new Level_variableDao();
 
+	/**
+	 * ResultsDao, joka tallentaa simulaation tulokset tietokantaan.
+	 */
 	private ResultsDao resultsDao = new ResultsDao();
-	
+
+	/**
+	 * @param ui Käyttöliittymä, joka näyttää simulaation.
+	 */
 	public Controller(ISimulatorUI ui) {
 		this.ui = ui;
 		this.engine = new CustomEngine(this, levelKey);
 	}
 
+	/**
+	 * Aloita simulaatio.
+	 * Simulaation aloitus nollaa käyttöliittymä canvaksen.
+	 * Nullaa asiakas laskurin.
+	 * Tekee uuden moottorin, johon laitetaan valittu taso.
+	 * Asettaa simulaatioon päättymis ajan.
+	 * Asettaa simulaation halutun viiveen.
+	 * Aloittaa simulaation toisella säikeellä.
+	 */
 	@Override
 	public void startSimulator() {
 		ui.getVisualization().reset();
@@ -37,6 +68,11 @@ public class Controller implements IControllerForM, IControllerForV {
 		((Thread) engine).start();
 	}
 
+	/**
+	 * Tallenna simulaation tulokset SQL tietokantaan.
+	 * Palvelupisteistä erotellaa tarkempia tietoja, riippuen palvelupiste tyypistä.
+	 * @param level Taso, joka valitaan simulaation alussa.
+	 */
 	public void uploadResults(Level level) {
 		Results results = new Results(getEngine().getSimulationTime(), level.getLevelName());
 		resultsDao.persist(results);
@@ -55,24 +91,40 @@ public class Controller implements IControllerForM, IControllerForV {
 		}
 	}
 
+	/**
+	 * Kasvata simulaation viivettä
+	 */
 	@Override
 	public void slowdown() { // hidastetaan moottorisäiettä
 		engine.setDelay((long)(engine.getDelay()*1.5));
 	}
 
+	/**
+	 * Pienennä simulaation viivettä
+	 */
 	@Override
 	public void speedup() { // nopeutetaan moottorisäiettä
 		engine.setDelay((long)(engine.getDelay()*0.9));
 	}
-	
-	// Simulointitulosten välittämistä käyttöliittymään.
-	// Koska FX-ui:n päivitykset tulevat moottorisäikeestä, ne pitää ohjata JavaFX-säikeeseen:
-		
+
+	/**
+	 * Aseta käyttöliittymään simulaation nyky aika.
+	 * @param time Aika, joka asetetaan käyttöliittymään simulaation nyky hetkisestä ajasta
+	 */
 	@Override
 	public void showEndtime(double time) {
 		Platform.runLater(() -> ui.setEndTime(time));
 	}
 
+	/**
+	 * Piirrä palvelupiste canvakselle.
+	 * Tämä metodi asettaa palvelupisteelle x, y ja rotation tiedot.
+	 * @param level Taso, joka valitaan simulaation alussa.
+	 * @param type Palvelupisteen tyyppi.
+	 * @param x Palvelupisteen x-koordinaatti.
+	 * @param y Palvelupisteen y-koordinaatti.
+	 * @param rotation Palvelupisteen kääntö.
+	 */
 	@Override
 	public void render(Level level, String type, double x, double y, String rotation) {
 		ServicePoint servicePoint = level.getServicePoint(type);
@@ -80,10 +132,20 @@ public class Controller implements IControllerForM, IControllerForV {
 		ui.getVisualization().addToRenderQueue(servicePoint);
 	}
 
+	/**
+	 * setToCurrentLevel asettaa visuaalisointiin valitan tason.
+	 * Tätä tasoa käytetään canvas piirroksen päivittämiseen.
+	 * @param level Taso, joka valitaan simulaation alussa.
+	 */
 	public void setToCurrentLevel(Level level) {
 		ui.getVisualization().setLevel(level);
 	}
 
+	/**
+	 * Lisää asiakas visuaalisointi jonoon.
+	 * Visuaalisointi pitää omaa kirjaa käyttäjistä, jotta ne voitaisiin nopeammin piirtää ja poistaa, joten ne pitää lisätä visuaalisointiin erikseen.
+	 * @param customer Asiakas, joka lisätään jonoon.
+	 */
 	@Override
 	public void addCustomerToRendererQueue(Customer customer) {
 		ui.getVisualization().addToCustomerQueue(customer);
