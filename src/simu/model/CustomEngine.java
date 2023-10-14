@@ -71,7 +71,7 @@ public class CustomEngine extends Engine {
             else if (servicePoint.getClass() == TrafficLights.class) {
                 TrafficLights trafficPoint = (TrafficLights)servicePoint;
                 if(!trafficPoint.isGreenLight()) continue;
-                if(trafficPoint.generateSampleDelay() + this.currentTime() < trafficPoint.getNextLightSwitchEvent().getTime()) {
+                if(ServicePoint.getCarSpacingInterval() + this.currentTime() < trafficPoint.getNextLightSwitchEvent().getTime()) {
                     trafficPoint.startService();
                 }
             }
