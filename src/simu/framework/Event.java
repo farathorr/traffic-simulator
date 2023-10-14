@@ -54,5 +54,4 @@ public class Event implements Comparable<Event> {
 		else if (this.time > arg.time) return 1;
 		return 0;
 	}
-
 }
