@@ -40,26 +40,75 @@ import static javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUM
 import static javafx.scene.control.TableView.UNCONSTRAINED_RESIZE_POLICY;
 
 
+/**
+ * Simulaattorin GUI luokka joka perii Application luokan. ja toteuttaa ISimulatorUI rajapinnan.
+ */
 public class SimulatorGUI extends Application implements ISimulatorUI {
 
-    //Kontrollerin esittely (tarvitaan käyttöliittymässä)
+    /**
+     * IControllerForV rajapinnan toteuttava olio.
+     */
     private IControllerForV controller;
-    // Käyttöliittymäkomponentit:
+    /**
+     * Label joka näyttää simulaation lopullisen kuluneen ajan.
+     */
     private Label result;
+    /**
+     * Label jossa lukee kokonaisaika.
+     */
     private Label resultLabel;
+    /**
+     * Käynnistä simulaatio-nappi.
+     */
     private Button startButton;
+    /**
+     * Valikko josta voi valita simulaation tason.
+     */
     private ComboBox<String> levelComboBox;
+    /**
+     * Hidasta-nappi.
+     */
     private Button slowdownButton;
+    /**
+     * Nopeuta-nappi.
+     */
     private Button speedupButton;
+    /**
+     * Kaikki syöte kentät johon syätetään halutut lähtöarvot.
+     */
     private InputElement timeInput, delayInput, sePointMean, sePointVariance, sePointMean2, sePointVariance2;
+    /**
+     * Canvas johon piirretään simulaation visuaalinen esitys.
+     */
     private Visualization screen = new Visualization(700, 700);
+    /**
+     * Valittu taso.
+     */
     private Level selectedLevel;
+    /**
+     * Valittu palvelupiste.
+     */
     private ServicePoint selectedServicePoint;
+    /**
+     * Palvelupisteiden lista.
+     */
     ListView<ServicePoint> servicePointListView;
+    /**
+     * Tasojen asetukset.
+     */
     private LevelSettings levelSettings;
+    /**
+     * Oletus arvot editoriin palvelupisteen luomista varten.
+     */
     private String placeTileType = "air", placeRotation = "right";
+    /**
+     * Viimeksi sijoitettu palvelupisteen kodinaatit.
+     */
     private final int[] lastPlaced = {-9999, -9999};
 
+    /**
+     * Alustaa controllerin itellään.
+     */
     @Override
     public void init() {
 
@@ -69,6 +118,10 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         levelSettings = controller.getLevelSettings();
     }
 
+    /**
+     * Pääohjelma joka käynnistää simulaattorin.
+     * sisältää nappeja ja kenttiä joilla voi muuttaa simulaation asetuksia.
+     */
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setOnCloseRequest(event -> {
@@ -522,6 +575,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         levelComboBox.setDisable(false);
     }
 
+    /**
+     * Canvas johon lisätään drag-toiminto.
+     */
     private void setCanvasDrag(Canvas canvas) {
         AtomicReference<Double> startX = new AtomicReference<>((double) 0);
         AtomicReference<Double> startY = new AtomicReference<>((double) 0);
@@ -548,6 +604,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         });
     }
 
+    /**
+     * Canvas johon lisätään preview-toiminto.
+     */
     private void setCanvasDrawPreview(Canvas canvas) {
         final Visualization screen = (Visualization) canvas;
         canvas.setOnMouseMoved(event -> {
@@ -562,6 +621,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         });
     }
 
+    /**
+     * Canvas johon lisätään palvelupisteiden sijoittaminen.
+     */
     private void placeTilesOnCanvas(MouseEvent event) {
         if (!Debug.getInstance().isDebug()) return;
         double gridSize = screen.getGridSize() * screen.getZoomLevel();
@@ -578,6 +640,9 @@ public class SimulatorGUI extends Application implements ISimulatorUI {
         lastPlaced[1] = scaleY;
     }
 
+    /**
+     * Canvas johon lisätään zoom-toiminto.
+     */
     private void setCanvasZoom(Canvas canvas) {
         final Visualization screen = (Visualization) canvas;
         final double minScale = .05, maxScale = 150.0;
