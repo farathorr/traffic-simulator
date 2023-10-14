@@ -127,7 +127,7 @@ public abstract class Engine extends Thread implements IEngine {
 	protected abstract void results(); // Määritellään simu.model-pakkauksessa Moottorin aliluokassa
 
 	/**
-	 * 
+	 *
 	 */
 	private void delay() { // UUSI
 		Trace.out(Trace.Level.INFO, "Viive " + delay);
