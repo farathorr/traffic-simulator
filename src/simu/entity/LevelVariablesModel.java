@@ -2,7 +2,22 @@ package simu.entity;
 
 import javafx.beans.property.*;
 
+/**
+ * LevelVariablesModel-luokka, joka sisältää Simulaation tuloksien esittelyssä käytettävän taulukon muuttujat.
+ */
 public class LevelVariablesModel {
+    /**
+     * Muuttujat, jotka ovat taulukoissa.
+     * Muuttujat ovat StringProperty, DoubleProperty ja IntegerProperty- olioita.
+     * servicePointName on palvelupisteen nimi.
+     * mean1 on palvelupisteen keskiarvon ensimmäinen arvo.
+     * mean2 on palvelupisteen keskiarvon toinen arvo.
+     * variance1 on palvelupisteen varianssin ensimmäinen arvo.
+     * variance2 on palvelupisteen varianssin toinen arvo.
+     * carCount on palvelupisteen läpimenneiden autojen määrä.
+     * averageTime on palvelupisteen saavuttamisen keskimääräinen palveluaika.
+     * maxQueueSize on palvelupisteen jonon maksimikoko.
+     */
     private final StringProperty servicePointName = new SimpleStringProperty();
     private final DoubleProperty mean1 = new SimpleDoubleProperty();
     private final DoubleProperty mean2 = new SimpleDoubleProperty();
@@ -12,6 +27,10 @@ public class LevelVariablesModel {
     private final DoubleProperty averageTime = new SimpleDoubleProperty();
     private final IntegerProperty maxQueueSize = new SimpleIntegerProperty();
 
+    /**
+     * @param levelVariables LevelVariables-olio, joka sisältää palvelupisteen tulokset.
+     * Konstruktori, joka asettaa muuttujat.
+     */
     public LevelVariablesModel(Level_variables levelVariables) {
         this.servicePointName.set(levelVariables.getServicePointName());
         this.mean1.set(levelVariables.getMean1());
@@ -22,8 +41,6 @@ public class LevelVariablesModel {
         this.averageTime.set(levelVariables.getAverageTime());
         this.maxQueueSize.set(levelVariables.getMaxQueueSize());
     }
-
-
 
     public String getServicePointName() {
         return servicePointName.get();

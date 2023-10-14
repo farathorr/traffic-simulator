@@ -12,18 +12,55 @@ import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Visualization-luokka, joka sisältää visualisointiin liittyvät metodit.
+ * Perii Canvas-luokan ja toteuttaa IVisualizationForV- ja IVisualizationForM-rajapinnat.
+ */
 public class Visualization extends Canvas implements IVisualizationForV, IVisualizationForM {
 
+    /**
+     * GraphicsContext-olio, joka sisältää metodeja, joita käytetään piirtämiseen.
+     */
     private final GraphicsContext gc;
+    /**
+     * x- ja y-koordinaatit.
+     */
     double x = 0, y = 0;
+    /**
+     * Näyttää kursorin x- ja y-kordinaatit.
+     */
     private int previewX = 0, previewY = 0;
+    /**
+     * Näyttää minkälaista palikkaa ollaan asettamassa.
+     */
     private String placeTileType = "road", placeRotation = "right";
+    /**
+     * Ruudun leveys ja korkeus.
+     */
     private int width, height;
+    /**
+     * Yhden gridin koko pikseleissä.
+     */
     private final int gridSize = 128;
+    /**
+     * Oletus-zoom taso.
+     */
     private double zoomLevel = 1.0;
+    /**
+     * Lista ServicePoint-olioista
+     */
     private List<ServicePoint> servicePoints = new ArrayList<>();
+    /**
+     * Lista Customer-olioista
+     */
     private LinkedList<Customer> customers = new LinkedList<>();
+    /**
+     * Lista Customer-olioista, jotka poistetaan seuraavassa renderöinnissä.
+     */
     private List<Customer> removeCustomers = new ArrayList<>();
+    /**
+     * Kuvat, joita käytetään visualisoinnissa.
+     */
     private Image roundaboutTurn = new Image("roundabout.png");
     private Image roundaboutRoad = new Image("roundabout-with-road.png");
     private Image roundaboutDouble = new Image("roundabout-double.png");
@@ -47,9 +84,19 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
     private Image start = new Image("start.png");
     private Image arrow = new Image("arrow.png");
     private Image arrow2 = new Image("arrow2.png");
+    /**
+     * Level-olio, jota visualisoidaan.
+     */
     private Level level;
 
 
+    /**
+     * @param w Ruudun leveys.
+     * @param h Ruudun korkeus.
+     * Konstruktori, joka luo uuden Visualization-olion.
+     * Konstruktori myös luo GraphicsContext-olion ja asettaa kuvan venytyksen pikselöidyksi.
+     * Konstruktori myös tyhjentää ruudun.
+     */
     public Visualization(int w, int h) {
         super(w, h);
         this.width = w;
@@ -59,9 +106,6 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         clearScreen();
     }
 
-    public void setLevel(Level level) {
-        this.level = level;
-    }
 
     public void reset() {
         servicePoints.clear();
@@ -69,22 +113,35 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         clearScreen();
     }
 
-    public int getGridSize() {
-        return gridSize;
-    }
-
+    /**
+     * Tyhjentää ruudun.
+     */
     public void clearScreen() {
         gc.clearRect(0, 0, this.getWidth(), this.getHeight());
     }
 
+    /**
+     * @param servicePoint ServicePoint-olio, joka piirretään.
+     * Lisää ServicePoint-olion renderöintijonoon.
+     */
     public void addToRenderQueue(ServicePoint servicePoint) {
         servicePoints.add(servicePoint);
     }
-
+    /**
+     * @param customer Customer-olio, joka lisätään jonoon.
+     * Lisää Customer-olion jonoon.
+     */
     public void addToCustomerQueue(Customer customer) {
         customers.add(customer);
     }
 
+    /**
+     * Metodi, joka renderöi ruutuun palvelupisteen kuvan.
+     * Metodi myös renderöi ruutuun jonossa olevat asiakkaat.
+     * Metodi myös poistaa jonossa olevat asiakkaat, jotka ovat valmiita poistettavaksi.
+     * Metodi myös piirtää canvakselle ruudukon, jos debug-tila on päällä.
+     * Metodi myös piirtää canvakselle palvelupisteiden väliset yhteydet, jos debug-tila on päällä ja käyttäjä piirtää yhdistysnuolia.
+     */
     public void render() {
         Platform.runLater(() -> {
             gc.clearRect(0, 0, this.getWidth(), this.getHeight());
@@ -107,6 +164,12 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         });
     }
 
+    /**
+     * @param servicePoint ServicePoint-olio, jota ollaan piirtämässä.
+     * Metodi, joka piirtää palvelupisteen kuvan.
+     * Metodi lukee palvelupisteen nimen ja rotaation ja piirtää sen mukaisen kuvan.
+     * Metodi myös piirtää palvelupisteen ympärille punaisen reunuksen, jos palvelupisteellä on yhteysvirhe.
+     */
     public void renderServicePoint(ServicePoint servicePoint) {
         if (servicePoint.isConnectionError()) drawErrorConnectionBorder(servicePoint.getX() * gridSize, servicePoint.getY() * gridSize);
         if (servicePoint.getClass() == Road.class) {
@@ -187,6 +250,11 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         }
     };
 
+    /**
+     * @param customer Customer-olio, joka piirretään.
+     * Metodi, joka piirtää jonossa olevan asiakkaan.
+     * Metodi myös poistaa jonossa olevan asiakkaan, jos se on valmis poistettavaksi.
+     */
     public void drawQueue(Customer customer) {
         if (customer != null) {
             if (customer.canDelete()) removeCustomers.add(customer);
@@ -199,6 +267,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         }
     }
 
+    /**
+     * Metodi yhdistysnuolien piirtämiselle.
+     * Yhdistysnuolia käytetään debug-modessa levelien rakentamiseen.
+     * Yhdistysnuolet kertovat servicePointeille mitkä ovat niiden seuraavat servicePointit.
+     * Nuolet piirretään siihen suuntaan mihin käyttäjä on kääntänyt valitun nuolen.
+     * Nuolet piirretään vain jos servicePointillä on seuraavia servicePointteja.
+     */
     private void renderRoadConnectionsArrows() {
         servicePoints.forEach(point -> {
             if (!level.hasNextServicePoint(point)) return;
@@ -220,6 +295,12 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         }
     }
 
+    /**
+     * @param x Palvelupisteen x-koordinaatti.
+     * @param y Palvelupisteen y-koordinaatti.
+     * Metodi, joka piirtää punaisen reunuksen palvelupisteen ympärille.
+     * Metodi piirtää reunuksen vain jos palvelupisteellä on yhteysvirhe.
+     */
     public void testServicePointForConnectionErrors(int x, int y) {
         ServicePoint servicePoint = getServicePointByCordinates(x, y);
         if (servicePoint != null) servicePoint.setConnectionError(false);
@@ -235,10 +316,22 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         }
     }
 
+    /**
+     * @param img Kuva, joka piirretään.
+     * @param x Kuvan x-koordinaatti.
+     * @param y Kuvan y-koordinaatti.
+     * @param w Kuvan leveys.
+     * @param h Kuvan korkeus.
+     * Metodi, joka piirtää kuvan canvakselle.
+     */
     public void drawImage(Image img, double x, double y, double w, double h) {
         gc.drawImage(img, this.x + x * zoomLevel, this.y + y * zoomLevel, w * zoomLevel, h * zoomLevel);
     }
 
+    /**
+     * Metodi joka piirtää kordinaatiston koko canvakselle.
+     * Metodi myös piirtää kordinaatiston numerot, jos zoom-taso on tarpeeksi lähellä.
+     */
     public void drawGrid() {
         gc.setFill(Color.BLACK);
         gc.setStroke(Color.BLACK);
@@ -276,36 +369,23 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         }
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getZoomLevel() {
-        return zoomLevel;
-    }
-
-    public void setZoomLevel(double zoomLevel) {
-        this.zoomLevel = zoomLevel;
-    }
-
+    /**
+     * Metodi joka piirtää debug-modessa valitun servicePointin kuvan kursorin kohdalle.
+     */
     public void drawPreviewServicePoint() {
         if (placeTileType.equals("arrow")) return;
         ServicePoint servicePoint = generateNewServicePoint(previewX, previewY, placeTileType, placeRotation);
         renderServicePoint(servicePoint);
     }
 
+    /**
+     * @param x Kursorin x-koordinaatti.
+     * @param y Kursorin y-koordinaatti.
+     * @param tileType Palvelupisteen tyyppi.
+     * @param rotation Palvelupisteen rotaatio.
+     * Metodi, joka luo uuden palvelupisteen kursorin kohdalle.
+     * Metodi myös tarkistaa onko palvelupisteellä yhteysvirheitä sen ympärillä oleviin palvelupisteisiin.
+     */
     public void createNewServicePoint(int x, int y, String tileType, String rotation) {
         for(int i = 0; i < servicePoints.size(); i++) {
             if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
@@ -326,6 +406,10 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         servicePoints.add(servicePoint);
     }
 
+    /**
+     * Metodi jolla voi valita valmiiksi piirretystä palvelupisteestä samansuuntaisen ja näköisen palvelupisteen.
+     * Jos kordinaatissa ei ole mitään, valitaan ilma-ruutu.
+     */
     public void pickATileInfo() {
         ServicePoint servicePoint = getServicePointByCordinates(previewX, previewY);
         if (servicePoint != null) {
@@ -340,6 +424,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         } else placeTileType = "air";
     }
 
+    /**
+     * @param x Kursorin x-koordinaatti.
+     * @param y Kursorin y-koordinaatti.
+     * @param rotate Yhdistysnuolen suunta.
+     * Metodi, joka luo yhdistysnuolen kursorin kohdalle.
+     * Metodi päivittää palvelupisteen seuraavan pisteen nuolen osoittamaan suuntaan.
+     */
     public void createServicePointConnection(int x, int y, String rotate) {
         ServicePoint servicePoint = getServicePointByCordinates(x, y);
         ServicePoint nextServicePoint = getServicePointByCordinates(x + (rotate.equals("right") ? 1 : rotate.equals("left") ? -1 : 0), y + (rotate.equals("top") ? -1 : rotate.equals("bottom") ? 1 : 0));
@@ -355,6 +446,13 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         }
     }
 
+    /**
+     * @param x Kursorin x-koordinaatti.
+     * @param y Kursorin y-koordinaatti.
+     * @return Palauttaa ServicePoint-olion, jos sellainen löytyy kordinaateista.
+     * Metodi, joka palauttaa ServicePoint-olion kursorin kohdalta.
+     * Metodi palauttaa null, jos kordinaateissa ei ole mitään.
+     */
     public ServicePoint getServicePointByCordinates(int x, int y) {
         for(int i = 0; i < servicePoints.size(); i++) {
             if(servicePoints.get(i).getX() == x && servicePoints.get(i).getY() == y) {
@@ -364,6 +462,15 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         return null;
     }
 
+    /**
+     * @param x Kursorin x-koordinaatti.
+     * @param y Kursorin y-koordinaatti.
+     * @param tileType Palvelupisteen tyyppi.
+     * @param rotation Palvelupisteen rotaatio.
+     * @return Palauttaa uuden ServicePoint-olion.
+     * Metodi, joka luo uuden ServicePoint-olion joka noudattaa debug-modessa valittuja parametrejä.
+     * Metodi palauttaa oletuksena Road-olion, jos parametrit eivät täsmää.
+     */
     private ServicePoint generateNewServicePoint(int x, int y, String tileType, String rotation) {
         return switch(tileType) {
             case "road" -> {
@@ -429,6 +536,85 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         };
     }
 
+    /**
+     * Metodi joka lukee canvakselta kaikki palvelupisteet ja niiden yhteydet.
+     * Metodi tulostaa sitten kaikki palvelupisteet ja niiden yhteydet koodina konsoliin.
+     */
+    public void exportSelectedLevel() {
+        for(ServicePoint servicePoint : servicePoints) {
+            if (!servicePoint.getRotation().equals("start")) continue;
+
+            System.out.printf("level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, \"%s\", %.0f, %.0f), \"%s\");\n",
+                    "ARR-" + servicePoint.getScheduledEventType(),
+                    servicePoint.getX(),
+                    servicePoint.getY(),
+                    servicePoint.getScheduledEventType()
+            );
+        }
+
+        System.out.println();
+
+        servicePoints.forEach(ServicePoint::displayClass);
+        System.out.println();
+        servicePoints.forEach(ServicePoint::displayClassRender);
+    }
+
+    /**
+     * @param scaleX Palvelupisteen x-koordinaatti.
+     * @param scaleY Palvelupisteen y-koordinaatti.
+     * Metodi, joka poistaa palvelupisteen parametreissä määriteltyjen kordinaattien kohdalta.
+     */
+    public void deleteServicePoint(int scaleX, int scaleY) {
+        ServicePoint servicePoint = getServicePointByCordinates(scaleX, scaleY);
+        if(servicePoint != null) {
+            level.remove(servicePoint);
+            servicePoints.remove(servicePoint);
+            testServicePointForConnectionErrors(scaleX - 1, scaleY);
+            testServicePointForConnectionErrors(scaleX + 1, scaleY);
+            testServicePointForConnectionErrors(scaleX, scaleY - 1);
+            testServicePointForConnectionErrors(scaleX, scaleY + 1);
+        }
+    }
+
+    /**
+     * @param x X-koordinaatti.
+     * @param y Y-koordinaatti.
+     * Metodi, joka piirtää punaisen reunuksen valittuun kordinaattiin.
+     */
+    private void drawErrorConnectionBorder(double x, double y) {
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(5.0);
+        double grid = gridSize * zoomLevel;
+        gc.strokeRect(this.x + x * zoomLevel, this.y + y * zoomLevel, grid, grid);
+    }
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public void setZoomLevel(double zoomLevel) {
+        this.zoomLevel = zoomLevel;
+    }
+
     public String getPlaceTileType() {
         return placeTileType;
     }
@@ -453,43 +639,6 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
         this.previewY = previewY;
     }
 
-    public void exportSelectedLevel() {
-        for(ServicePoint servicePoint : servicePoints) {
-            if (!servicePoint.getRotation().equals("start")) continue;
-
-            System.out.printf("level.arrival(new ArrivalProcess(new Normal(5, 5), eventList, \"%s\", %.0f, %.0f), \"%s\");\n",
-                    "ARR-" + servicePoint.getScheduledEventType(),
-                    servicePoint.getX(),
-                    servicePoint.getY(),
-                    servicePoint.getScheduledEventType()
-            );
-        }
-
-        System.out.println();
-
-        servicePoints.forEach(ServicePoint::displayClass);
-        System.out.println();
-        servicePoints.forEach(ServicePoint::displayClassRender);
-    }
-
-    public void deleteServicePoint(int scaleX, int scaleY) {
-        ServicePoint servicePoint = getServicePointByCordinates(scaleX, scaleY);
-        if(servicePoint != null) {
-            level.remove(servicePoint);
-            servicePoints.remove(servicePoint);
-            testServicePointForConnectionErrors(scaleX - 1, scaleY);
-            testServicePointForConnectionErrors(scaleX + 1, scaleY);
-            testServicePointForConnectionErrors(scaleX, scaleY - 1);
-            testServicePointForConnectionErrors(scaleX, scaleY + 1);
-        }
-    }
-
-    private void drawErrorConnectionBorder(double x, double y) {
-        gc.setStroke(Color.RED);
-        gc.setLineWidth(5.0);
-        double grid = gridSize * zoomLevel;
-        gc.strokeRect(this.x + x * zoomLevel, this.y + y * zoomLevel, grid, grid);
-    }
 
     public void setWidth(int width) {
         this.width = width;
@@ -497,5 +646,9 @@ public class Visualization extends Canvas implements IVisualizationForV, IVisual
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getGridSize() {
+        return gridSize;
     }
 }
