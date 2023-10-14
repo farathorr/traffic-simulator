@@ -27,18 +27,51 @@ public class Customer implements Comparable<Customer> {
      * Level-olio, joka kertoo missä tasossa asiakas on.
      */
     private Level level;
+    /**
+     * Kokonaisluku, joka kertoo montako asiakasta on luotu.
+     */
     private static int customerCount = 1;
+/**
+     * Kokonaisluku, jota käytetään asiakkaiden yhteisen odotusajan keskiarvon laskemiseen..
+     */
     private static long sum = 0;
+    /**
+     * String, joka kertoo asiakkaan viimeisimmän palvelupisteen.
+     */
     private String lastServicePoint = null;
-
+    /**
+     * String, joka kertoo asiakkaan poistumisreitin liikenneympyrässä.
+     */
     private String roundaboutExit = null;
+    /**
+     * Asiakkaan x-koordinaatti.
+     * Asiakkaan y-kordinaatti.
+     * Asiakkaan määränpään x-koordinaatti.
+     * Asiakkaan määränpään y-koordinaatti.
+     */
     private double x, y, destinationX, destinationY;
+    /**
+     * Boolean, joka kertoo onko asiakas jonon ensimmäinen.
+     */
     private boolean firstInQueue = false;
+    /**
+     * Boolean, joka kertoo onko asiakas saavuttanut määränpäänsä.
+     */
     private boolean reachedGoal = false;
+    /**
+     * Boolean, joka kertoo onko asiakas valmis poistumaan simulaatiosta.
+     */
     private boolean canDelete = false;
-
+    /**
+     * Lista, joka sisältää asiakkaan määränpään x ja y kordinaatit.
+     */
     private List<Double[]> destinations = new ArrayList<>();
 
+    /**
+     * @param level Tasoluokka, jossa asiakas on.
+     * @param x Asiakkaan x-koordinaatti.
+     * @param y Asiakkaan y-koordinaatti.
+     */
     public Customer(Level level, double x, double y) {
         id = customerCount++;
         this.level = level;
@@ -49,6 +82,33 @@ public class Customer implements Comparable<Customer> {
 
         arrivalTime = Clock.getInstance().getTime();
         Trace.out(Trace.Level.INFO, "Uusi asiakas nro " + id + " saapui klo " + arrivalTime);
+    }
+
+    /**
+     * Tulostaa asiakkaan tiedot konsoliin.
+     */
+    public void report() {
+        Trace.out(Trace.Level.INFO, "\nAuto " + id + " valmis! ");
+        Trace.out(Trace.Level.INFO, "Auto " + id + " saapui: " + arrivalTime);
+        Trace.out(Trace.Level.INFO, "Auto " + id + " poistui: " + leavingTime);
+        Trace.out(Trace.Level.INFO, "Auto " + id + " viipyi: " + getWaitingTime());
+        sum += getWaitingTime();
+        double average = sum / id;
+        Trace.out(Trace.Level.INFO, "Autojen läpimenoaikojen keskiarvo tähän asti " + average);
+    }
+
+    /**
+     * @param arg Asiakas, johon verrataan.
+     * @return Palauttaa 0, jos asiakkaat tulivat liikenneympyrästä, -1 jos tämä asiakas tuli liikenneympyrästä ja arg ei, ja 1 jos tämä asiakas ei tullut liikenneympyrästä ja arg tuli.
+     */
+    @Override
+    public int compareTo(Customer arg) {
+        if (cameFromRoundabout(this) == cameFromRoundabout(arg)) {
+            return 0;
+        } else {
+            if (cameFromRoundabout(this)) return -1;
+            else return 1;
+        }
     }
 
     public void setDestinationX(double destinationX) {
@@ -95,16 +155,6 @@ public class Customer implements Comparable<Customer> {
         this.reachedGoal = reachedGoal;
     }
 
-    public void report() {
-        Trace.out(Trace.Level.INFO, "\nAuto " + id + " valmis! ");
-        Trace.out(Trace.Level.INFO, "Auto " + id + " saapui: " + arrivalTime);
-        Trace.out(Trace.Level.INFO, "Auto " + id + " poistui: " + leavingTime);
-        Trace.out(Trace.Level.INFO, "Auto " + id + " viipyi: " + getWaitingTime());
-        sum += getWaitingTime();
-        double average = sum / id;
-        Trace.out(Trace.Level.INFO, "Autojen läpimenoaikojen keskiarvo tähän asti " + average);
-    }
-
     public String getRoundaboutExit() {
         return roundaboutExit;
     }
@@ -115,20 +165,6 @@ public class Customer implements Comparable<Customer> {
 
     public void setLastServicePoint(String lastServicePoint) {
         this.lastServicePoint = lastServicePoint;
-    }
-
-
-    @Override
-    public int compareTo(Customer arg) {
-//        if (this.time < arg.time) return -1;
-//        else if (this.time > arg.time) return 1;
-//        return 0;
-        if (cameFromRoundabout(this) == cameFromRoundabout(arg)) {
-            return 0;
-        } else {
-            if (cameFromRoundabout(this)) return -1;
-            else return 1;
-        }
     }
 
     public boolean isFirstInQueue() {
