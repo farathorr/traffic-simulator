@@ -36,6 +36,22 @@ public class Customer implements Comparable<Customer> {
         Trace.out(Trace.Level.INFO, "Uusi asiakas nro " + id + " saapui klo " + arrivalTime);
     }
 
+    public void setDestinationX(double destinationX) {
+        this.destinationX = destinationX;
+    }
+
+    public void setDestinationY(double destinationY) {
+        this.destinationY = destinationY;
+    }
+
+    public double getDestinationX() {
+        return destinationX;
+    }
+
+    public double getDestinationY() {
+        return destinationY;
+    }
+
     public static void resetCustomerCount() {
         customerCount = 1;
     }
