@@ -6,11 +6,26 @@ import simu.framework.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO:
-// Customer koodataan simulointimallin edellyttämällä tavalla (data!)
+/**
+ * Luokka simulaatiossa liikkuville asiakkaille, tämän simulaation asiakkaat ovat autoja.
+ * Luokka toteuttaa Comparable-rajapinnan, jotta asiakkaat voidaan järjestää saapumisjärjestyksen mukaan.
+ */
 public class Customer implements Comparable<Customer> {
-    private double arrivalTime, startTime, leavingTime;
+    /**
+     * Double, joka kertoo asiakkaan saapumisajan simulaatioon.
+     */
+    private double arrivalTime;
+    /**
+     * Double, joka kertoo asiakkaan poistumisajan simulaatiosta.
+     */
+    private double leavingTime;
+    /**
+     * Kokonaisluku, joka kertoo asiakkaan id:n.
+     */
     private int id;
+    /**
+     * Level-olio, joka kertoo missä tasossa asiakas on.
+     */
     private Level level;
     private static int customerCount = 1;
     private static long sum = 0;
